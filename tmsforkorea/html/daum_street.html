@@ -1,0 +1,62 @@
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <title>OpenLayers Daum Streets Layer</title>
+    <link rel="stylesheet" href="qgis.css" type="text/css">
+    <script src="OpenLayers.js"></script>
+    <script type="text/javascript" src="OpenLayers.Layer.DaumStreet.js"></script>
+    <script src="OlOverviewMarker.js"></script>
+    <script type="text/javascript">
+        var map;
+        var loadEnd;
+        var oloMarker; // OpenLayer Overview Marker
+        function init() {            
+            map = new OpenLayers.Map('map', {
+                theme: null,
+				controls: [
+					new OpenLayers.Control.Attribution(),
+					new OpenLayers.Control.Navigation({
+						dragPanOptions: {
+							enableKinetic: true
+						}
+					})
+				],
+                projection: new OpenLayers.Projection("EPSG:5181"),
+                units: "m",
+                maxResolution: 2048,
+                numZoomLevels: 14,
+                maxExtent: new OpenLayers.Bounds(-30000, -60000, 494288, 988576)
+            });
+
+            loadEnd = false;
+            function layerLoadStart(event)
+            {
+              loadEnd = false;
+            }
+            
+            function layerLoadEnd(event)
+            {
+              loadEnd = true;
+            }
+            
+            var daumLayer = new OpenLayers.Layer.DaumStreet("Daum Street Map",
+              {
+                sphericalMercator: false,
+                eventListeners: {
+                  "loadstart": layerLoadStart,
+                  "loadend": layerLoadEnd
+                }
+              }
+            );
+            
+            map.addLayer(daumLayer);
+            map.setCenter(new OpenLayers.LonLat(200000 ,500000), 0); // Zoom level
+            
+            oloMarker = new OlOverviewMarker(map, getPathUpper(document.URL) + '/x.png');
+        }
+    </script>
+  </head>
+  <body onload="init()">
+    <div id="map"></div>
+  </body>
+</html>
