@@ -9,12 +9,12 @@
 
 OpenLayers.Layer.DaumPhysical = OpenLayers.Class(OpenLayers.Layer.XYZ, {
 
-    name: "DaumPhysicalMap",
+    name: "Daum Physical Map",
     url: [
-		"http://sr0.maps.daum-img.net/image/G03/sr/1.04/L${z}/${y}/${x}.jpg",
-		"http://sr1.maps.daum-img.net/image/G03/sr/1.04/L${z}/${y}/${x}.jpg",
-		"http://sr2.maps.daum-img.net/image/G03/sr/1.04/L${z}/${y}/${x}.jpg",
-		"http://sr3.maps.daum-img.net/image/G03/sr/1.04/L${z}/${y}/${x}.jpg"
+		"http://sr0.maps.daum-img.net/map/image/G03/sr/1.00/L${z}/${y}/${x}.png",
+		"http://sr1.maps.daum-img.net/map/image/G03/sr/1.00/L${z}/${y}/${x}.png",
+		"http://sr2.maps.daum-img.net/map/image/G03/sr/1.00/L${z}/${y}/${x}.png",
+		"http://sr3.maps.daum-img.net/map/image/G03/sr/1.00/L${z}/${y}/${x}.png"
     ],
 	resolutions: [2048, 1024, 512, 256, 128, 64, 32, 16, 8, 4, 2, 1, 0.5, 0.25],
 	attribution: '<a target="_blank" href="http://local.daum.net/map/index.jsp" '
@@ -22,7 +22,6 @@ OpenLayers.Layer.DaumPhysical = OpenLayers.Class(OpenLayers.Layer.XYZ, {
 		+ 'title="Daum 지도로 보시려면 클릭하세요."></a>' 
 		+ 'ⓒ 2013 Daum',
 	sphericalMercator: false,
-	transitionEffect: "resize",
 	buffer: 1,
 	numZoomLevels: 14,
 	minResolution: 0.25,

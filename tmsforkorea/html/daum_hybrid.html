@@ -40,17 +40,25 @@
               loadEnd = true;
             }
             
-            var daumLayer = new OpenLayers.Layer.DaumHybrid("Daum Hybrid Map",
+            var hybridLayer = new OpenLayers.Layer.DaumHybrid("Daum Hybrid Map",
               {
                 sphericalMercator: false,
+                isBaseLayer: false,
                 eventListeners: {
                   "loadstart": layerLoadStart,
                   "loadend": layerLoadEnd
                 }
               }
             );
-                   
-            map.addLayer(daumLayer);            
+            
+            var satelliteLayer = new OpenLayers.Layer.DaumSatellite("Daum Satellite Map",
+              {
+                sphericalMercator: false,
+                isBaseLayer: true
+              }
+            );
+
+            map.addLayers([satelliteLayer, hybridLayer]);
             map.setCenter(new OpenLayers.LonLat(200000 ,500000), 0); // Zoom level
             
             oloMarker = new OlOverviewMarker(map, getPathUpper(document.URL) + '/x.png');

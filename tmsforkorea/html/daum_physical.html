@@ -5,6 +5,7 @@
     <link rel="stylesheet" href="qgis.css" type="text/css">
     <script src="OpenLayers.js"></script>
     <script type="text/javascript" src="OpenLayers.Layer.DaumPhysical.js"></script>
+    <script type="text/javascript" src="OpenLayers.Layer.DaumStreet.js"></script>
     <script src="OlOverviewMarker.js"></script>
     <script type="text/javascript">
         var map;
@@ -39,9 +40,10 @@
               loadEnd = true;
             }
             
-            var daumLayer = new OpenLayers.Layer.DaumPhysical("Daum Physical Map",
+            var streetLayer = new OpenLayers.Layer.DaumStreet("Daum Street Map",
               {
                 sphericalMercator: false,
+                isBaseLayer: true,
                 eventListeners: {
                   "loadstart": layerLoadStart,
                   "loadend": layerLoadEnd
@@ -49,7 +51,15 @@
               }
             );
             
-            map.addLayer(daumLayer);
+            var physicalLayer = new OpenLayers.Layer.DaumPhysical("Daum Physical Map",
+              {
+                sphericalMercator: false,
+                isBaseLayer: false,
+                opacity : 0.75
+              }
+            );
+            
+            map.addLayers([streetLayer, physicalLayer]);
             map.setCenter(new OpenLayers.LonLat(200000 ,500000), 0); // Zoom level
             
             oloMarker = new OlOverviewMarker(map, getPathUpper(document.URL) + '/x.png');

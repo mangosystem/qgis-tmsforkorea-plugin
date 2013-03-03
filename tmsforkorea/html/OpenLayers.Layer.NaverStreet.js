@@ -21,7 +21,6 @@ OpenLayers.Layer.NaverStreet = OpenLayers.Class(OpenLayers.Layer.XYZ, {
 		+ 'NHN Corp.</span></a>'
 		+ '<img class="nmap_logo_map" src="http://static.naver.net/maps2/logo_naver_s.png" width="43" height="9" alt="NAVER">',
 	sphericalMercator: false,
-	transitionEffect: "resize",
 	buffer: 0,
 	numZoomLevels: 14,
 	minResolution: 0.5,

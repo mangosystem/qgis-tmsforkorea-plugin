@@ -125,9 +125,9 @@ class OpenlayersPlugin:
     # Layers
     self.olLayerTypeRegistry = OlLayerTypeRegistry()
     self.olLayerTypeRegistry.add( OlLayerType(self, 'Daum Street', 'daum_icon.png', 'daum_street.html', False) )
-    # self.olLayerTypeRegistry.add( OlLayerType(self, 'Daum Physical', 'daum_icon.png', 'daum_physical.html', False) )
-    # self.olLayerTypeRegistry.add( OlLayerType(self, 'Daum Hybrid', 'daum_icon.png', 'daum_hybrid.html', False) )
     self.olLayerTypeRegistry.add( OlLayerType(self, 'Daum Satellite', 'daum_icon.png', 'daum_satellite.html', False) )
+    self.olLayerTypeRegistry.add( OlLayerType(self, 'Daum Hybrid', 'daum_icon.png', 'daum_hybrid.html', False) )
+    self.olLayerTypeRegistry.add( OlLayerType(self, 'Daum Physical', 'daum_icon.png', 'daum_physical.html', False) )
     self.olLayerTypeRegistry.add( OlLayerType(self, 'Naver Street', 'naver_icon.png', 'naver_street.html', False) )
     self.olLayerTypeRegistry.add( OlLayerType(self, 'Naver Satellite', 'naver_icon.png', 'naver_satellite.html', False) )
     self.olLayerTypeRegistry.add( OlLayerType(self, 'Naver Hybrid', 'naver_icon.png', 'naver_hybrid.html', False) )

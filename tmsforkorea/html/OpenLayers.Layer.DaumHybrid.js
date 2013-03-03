@@ -22,7 +22,6 @@ OpenLayers.Layer.DaumHybrid = OpenLayers.Class(OpenLayers.Layer.XYZ, {
 		+ 'title="Daum 지도로 보시려면 클릭하세요."></a>' 
 		+ 'ⓒ 2013 Daum',
 	sphericalMercator: false,
-	transitionEffect: "resize",
 	buffer: 1,
 	numZoomLevels: 14,
 	minResolution: 0.25,
