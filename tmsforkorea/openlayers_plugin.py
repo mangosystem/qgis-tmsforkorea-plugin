@@ -194,16 +194,25 @@ class OpenlayersPlugin:
         if mapCanvas.layerCount() == 0:
             mapCanvas.setExtent(QgsRectangle(-30000, -60000, 494288, 988576))
         
-    mapCanvas.mapRenderer().setDestinationSrs(self.targetSRS)
+    if QGis.QGIS_VERSION_INT >= 10900:
+      mapCanvas.mapRenderer().setDestinationCrs(self.targetSRS)
+    else:
+      mapCanvas.mapRenderer().setDestinationSrs(self.targetSRS)
     mapCanvas.setMapUnits(self.targetSRS.mapUnits())
     
     # On the fly    
-    theCoodRS = mapCanvas.mapRenderer().destinationSrs()
+    if QGis.QGIS_VERSION_INT >= 10900:
+      theCoodRS = mapCanvas.mapRenderer().destinationCrs()
+    else:
+      theCoodRS = mapCanvas.mapRenderer().destinationSrs()
     if theCoodRS != self.targetSRS:
       coodTrans = QgsCoordinateTransform(theCoodRS, self.targetSRS)
       extMap = mapCanvas.extent()
       extMap = coodTrans.transform(extMap, QgsCoordinateTransform.ForwardTransform)
-      mapCanvas.mapRenderer().setDestinationSrs(self.targetSRS)
+      if QGis.QGIS_VERSION_INT >= 10900:
+        mapCanvas.mapRenderer().setDestinationCrs(self.targetSRS)
+      else:
+        mapCanvas.mapRenderer().setDestinationSrs(self.targetSRS)
       mapCanvas.freeze(False)
       mapCanvas.setMapUnits(self.targetSRS.mapUnits())
       mapCanvas.setExtent(extMap)
@@ -212,7 +221,10 @@ class OpenlayersPlugin:
     layer.setLayerName(layerType.name)
     layer.setLayerType(layerType)
     if layer.isValid():
-      QgsMapLayerRegistry.instance().addMapLayer(layer)
+      if QGis.QGIS_VERSION_INT >= 10900:
+        QgsMapLayerRegistry.instance().addMapLayers([layer])
+      else:
+        QgsMapLayerRegistry.instance().addMapLayer(layer)
 
       # last added layer is new reference
       self.setReferenceLayer(layer)
@@ -228,13 +240,21 @@ class OpenlayersPlugin:
 
   def removeLayer(self, layerId):
     layerToRemove = None
-    if self.layer != None and self.layer.getLayerID() == layerId:
+    if QGis.QGIS_VERSION_INT >= 10900:
+      currentLayerId = self.layer.id()
+    else:
+      currentLayerId = self.layer.getLayerID()
+    if self.layer != None and currentLayerId == layerId:
       self.layer = None
       # TODO: switch to next available OpenLayers layer?
 
   def setDefaultSRS(self):
     # Daum = default srs
-    if not self.targetSRS.createFromEpsg(5181):
+    if QGis.QGIS_VERSION_INT >= 10900:
+      created = self.targetSRS.createFromOgcWmsCrs('EPSG:5181')
+    else:
+      created = self.targetSRS.createFromEpsg(5181)
+    if not created:
       google_proj_def = "+proj=tmerc +lat_0=38 +lon_0=127 +k=1 +x_0=200000 +y_0=500000 +ellps=GRS80 +towgs84=0,0,0,0,0,0,0 +units=m +no_defs"
       isOk = self.targetSRS.createFromProj4(google_proj_def)
       if isOk:
