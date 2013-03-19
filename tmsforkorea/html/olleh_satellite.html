@@ -1,11 +1,10 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-    <title>OpenLayers DaumPhysical Layer</title>
+    <title>OpenLayers OllehSatellite Layer</title>
     <link rel="stylesheet" href="qgis.css" type="text/css">
     <script src="OpenLayers.js"></script>
-    <script type="text/javascript" src="OpenLayers.Layer.DaumPhysical.js"></script>
-    <script type="text/javascript" src="OpenLayers.Layer.DaumStreet.js"></script>
+    <script type="text/javascript" src="OpenLayers.Layer.OllehSatellite.js"></script>
     <script src="OlOverviewMarker.js"></script>
     <script type="text/javascript">
         var map;
@@ -22,11 +21,11 @@
 						}
 					})
 				],
-                projection: new OpenLayers.Projection("EPSG:5181"),
+                projection: new OpenLayers.Projection("EPSG:5179"),
                 units: "m",
                 maxResolution: 2048,
-                numZoomLevels: 14,
-                maxExtent: new OpenLayers.Bounds(-30000, -60000, 494288, 988576)
+                numZoomLevels: 13,
+                maxExtent: new OpenLayers.Bounds(171162, 1214781, 1744026, 2787645)
             });
 
             loadEnd = false;
@@ -40,10 +39,9 @@
               loadEnd = true;
             }
             
-            var daumStreet = new OpenLayers.Layer.DaumStreet("Daum Street Map",
+            var ollehSatellite = new OpenLayers.Layer.OllehSatellite("OllehSatellite",
               {
                 sphericalMercator: false,
-                isBaseLayer: true,
                 eventListeners: {
                   "loadstart": layerLoadStart,
                   "loadend": layerLoadEnd
@@ -51,16 +49,8 @@
               }
             );
             
-            var daumPhysical = new OpenLayers.Layer.DaumPhysical("Daum Physical Map",
-              {
-                sphericalMercator: false,
-                isBaseLayer: false,
-                opacity : 0.75
-              }
-            );
-            
-            map.addLayers([daumStreet, daumPhysical]);
-            map.setCenter(new OpenLayers.LonLat(200000 ,500000), 0); // Zoom level
+            map.addLayer(ollehSatellite);
+            map.setCenter(new OpenLayers.LonLat(1000000, 2000000), 1); // Zoom level
             
             oloMarker = new OlOverviewMarker(map, getPathUpper(document.URL) + '/x.png');
         }

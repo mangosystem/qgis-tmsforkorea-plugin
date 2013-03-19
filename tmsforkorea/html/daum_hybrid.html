@@ -1,7 +1,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-    <title>OpenLayers Daum Hybrid Layer</title>
+    <title>OpenLayers DaumHybrid Layer</title>
     <link rel="stylesheet" href="qgis.css" type="text/css">
     <script src="OpenLayers.js"></script>
     <script type="text/javascript" src="OpenLayers.Layer.DaumHybrid.js"></script>
@@ -40,7 +40,7 @@
               loadEnd = true;
             }
             
-            var hybridLayer = new OpenLayers.Layer.DaumHybrid("Daum Hybrid Map",
+            var daumHybrid = new OpenLayers.Layer.DaumHybrid("Daum Hybrid Map",
               {
                 sphericalMercator: false,
                 isBaseLayer: false,
@@ -51,14 +51,14 @@
               }
             );
             
-            var satelliteLayer = new OpenLayers.Layer.DaumSatellite("Daum Satellite Map",
+            var daumSatellite = new OpenLayers.Layer.DaumSatellite("Daum Satellite Map",
               {
                 sphericalMercator: false,
                 isBaseLayer: true
               }
             );
 
-            map.addLayers([satelliteLayer, hybridLayer]);
+            map.addLayers([daumSatellite, daumHybrid]);
             map.setCenter(new OpenLayers.LonLat(200000 ,500000), 0); // Zoom level
             
             oloMarker = new OlOverviewMarker(map, getPathUpper(document.URL) + '/x.png');

@@ -46,10 +46,8 @@ OpenLayers.Layer.NaverStreet = OpenLayers.Class(OpenLayers.Layer.XYZ, {
 
 	getXYZ: function(bounds) {
         var res = this.getServerResolution();
-        var x = Math.round((bounds.left - this.maxExtent.left) /
-            (res * this.tileSize.w));
-        var y = Math.round((bounds.bottom - this.maxExtent.bottom) /
-            (res * this.tileSize.h));
+        var x = Math.round((bounds.left - this.maxExtent.left) / (res * this.tileSize.w));
+        var y = Math.round((bounds.bottom - this.maxExtent.bottom) / (res * this.tileSize.h));
         var z = this.getServerZoom() + 1;
 
         if (this.wrapDateLine) {

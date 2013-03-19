@@ -60,6 +60,7 @@ class OpenlayersLayer(QgsPluginLayer):
 
     if coordRSGoogle and coordRSGoogle.srsid() == 5179:
         # Naver, 5179 = 90112, 1192896, 1990673, 2761664
+        # Olleh, 5179 = 171162, 1214781, 1744026, 2787645
         self.setExtent(QgsRectangle(90112, 1192896, 1990673, 2761664))
     else:
         # Daum, 5181 = -30000, -60000, 494288, 988576

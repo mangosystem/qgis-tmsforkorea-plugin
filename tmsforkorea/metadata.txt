@@ -7,12 +7,11 @@
 
 # Mandatory items:
 
-
 [general]
 name=TMS for Korea
 qgisMinimumVersion=1.8
-description=QGIS plugin. Daum Map, Naver Map layers for Korean users
-version=0.2.0
+description=QGIS plugin. Daum, Naver, Olleh Map Layers for Korean users
+version=0.3.0
 
 # end of mandatory metadata
 
@@ -22,10 +21,10 @@ version=0.2.0
 changelog=
    0.1.0 -Added Daum(Street, Satellite), Naver(Street, Satellite, Hybrid, Cadstral)
    0.2.0 -Added Daum(Hybrid, Physical), Fixed some bugs
-    
+   0.3.0 -Added Olleh KT(Street, Satellite, Hybrid) layers
 
 # tags are comma separated with spaces allowed
-tags=openlayers, daum, naver
+tags=openlayers, daum, naver, olleh
 
 homepage=http://www.onspatial.com/2013/02/qgis-tms-for-korean-users-plugin.html
 tracker=http://hub.qgis.org/projects/tmsforkorea

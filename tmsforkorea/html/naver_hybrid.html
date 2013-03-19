@@ -1,7 +1,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-    <title>OpenLayers Naver Satellite Layer</title>
+    <title>OpenLayers NaverHybrid Layer</title>
     <link rel="stylesheet" href="qgis.css" type="text/css">
     <script src="OpenLayers.js"></script>
     <script type="text/javascript" src="OpenLayers.Layer.NaverHybrid.js"></script>
@@ -39,7 +39,7 @@
               loadEnd = true;
             }
             
-            var daumLayer = new OpenLayers.Layer.NaverHybrid("NaverHybridMap",
+            var naverHybrid = new OpenLayers.Layer.NaverHybrid("NaverHybridMap",
               {
                 sphericalMercator: false,
                 eventListeners: {
@@ -49,7 +49,7 @@
               }
             );
             
-            map.addLayer(daumLayer);
+            map.addLayer(naverHybrid);
             map.setCenter(new OpenLayers.LonLat(200000, 500000), 1); // Zoom level
             
             oloMarker = new OlOverviewMarker(map, getPathUpper(document.URL) + '/x.png');

@@ -77,7 +77,7 @@ class OLOverview(object):
 
   # Private
   def __setDocWidget(self):
-    self.__dockwidget = QDockWidget(QApplication.translate("OpenLayersOverviewWidget", "OpenLayers Overview"), self.__iface.mainWindow() )
+    self.__dockwidget = QDockWidget(QApplication.translate("OpenLayersOverviewWidget", "Overview"), self.__iface.mainWindow() )
     self.__dockwidget.setObjectName("dwOpenlayersOverview")
     self.__oloWidget = OpenLayersOverviewWidget(self.__iface, self.__dockwidget, self.__olLayerTypeRegistry)
     self.__dockwidget.setWidget(self.__oloWidget)
@@ -132,13 +132,19 @@ class OpenlayersPlugin:
     self.olLayerTypeRegistry.add( OlLayerType(self, 'Naver Satellite', 'naver_icon.png', 'naver_satellite.html', False) )
     self.olLayerTypeRegistry.add( OlLayerType(self, 'Naver Hybrid', 'naver_icon.png', 'naver_hybrid.html', False) )
     self.olLayerTypeRegistry.add( OlLayerType(self, 'Naver Cadstral', 'naver_icon.png', 'naver_cadastral.html', False) )
+    self.olLayerTypeRegistry.add( OlLayerType(self, 'Olleh Street', 'olleh_icon.png', 'olleh_street.html', False) )
+    self.olLayerTypeRegistry.add( OlLayerType(self, 'Olleh Satellite', 'olleh_icon.png', 'olleh_satellite.html', False) )
+    self.olLayerTypeRegistry.add( OlLayerType(self, 'Olleh Hybrid', 'olleh_icon.png', 'olleh_hybrid.html', False) )
+    
+    # custom projection = katech
+    # self.olLayerTypeRegistry.add( OlLayerType(self, 'Nate Street', 'nate_icon.png', 'nate_street.html', False) )
     
     # Overview
     self.olOverview = OLOverview( iface, self.olLayerTypeRegistry )
 
   def initGui(self):
     # Overview
-    self.overviewAddAction = QAction(QApplication.translate("OpenlayersPlugin", "OpenLayers Overview"), self.iface.mainWindow())
+    self.overviewAddAction = QAction(QApplication.translate("OpenlayersPlugin", "Overview"), self.iface.mainWindow())
     self.overviewAddAction.setCheckable(True)
     self.overviewAddAction.setChecked(False)
     QObject.connect(self.overviewAddAction, SIGNAL("toggled(bool)"), self.olOverview.setVisible )
@@ -154,7 +160,8 @@ class OpenlayersPlugin:
       QObject.connect(action, SIGNAL("triggered()"), layerType.addLayer)
       # Add toolbar button and menu item
       self.iface.addPluginToMenu(self.name, action)
-
+      
+    
     if not self.setDefaultSRS():
       QMessageBox.critical(self.iface.mainWindow(), self.name, QApplication.translate(self.name, "Could not set Korean projection!"))
       return
@@ -164,7 +171,7 @@ class OpenlayersPlugin:
 
     self.layer = None
     QObject.connect(QgsMapLayerRegistry.instance(), SIGNAL("layerWillBeRemoved(QString)"), self.removeLayer)
-    
+  
   def unload(self):
     # Remove the plugin menu item and icon
     for action in self.layerAddActions:
@@ -186,10 +193,19 @@ class OpenlayersPlugin:
     mapCanvas.mapRenderer().setProjectionsEnabled(True) 
     
     self.targetSRS = QgsCoordinateReferenceSystem(5181)   # Daum 5181
-    if layerType.name.startswith('Naver'):
-        self.targetSRS = QgsCoordinateReferenceSystem(5179)   # Naver 5179
+    if layerType.name.startswith('Naver'):   # Naver 5179
+        self.targetSRS = QgsCoordinateReferenceSystem(5179)
         if mapCanvas.layerCount() == 0:
             mapCanvas.setExtent(QgsRectangle(90112, 1192896, 1990673, 2761664))
+    elif layerType.name.startswith('Olleh'):   # Olleh 5179
+        self.targetSRS = QgsCoordinateReferenceSystem(5179)
+        if mapCanvas.layerCount() == 0:
+            mapCanvas.setExtent(QgsRectangle(171162, 1214781, 1744026, 2787645))
+    elif layerType.name.startswith('Nate'):  # Nate TM128(KATECH)
+        katec_def = "+proj=tmerc +lat_0=38 +lon_0=128 +k=0.9999 +x_0=400000 +y_0=600000 +ellps=bessel +units=m +no_defs +towgs84=-146.43,507.89,681.46"
+        self.targetSRS.createFromProj4(katec_def)
+        if mapCanvas.layerCount() == 0:
+            mapCanvas.setExtent(QgsRectangle(-400000, -100000, 1000000, 1300000))
     else:
         if mapCanvas.layerCount() == 0:
             mapCanvas.setExtent(QgsRectangle(-30000, -60000, 494288, 988576))
@@ -198,13 +214,24 @@ class OpenlayersPlugin:
       mapCanvas.mapRenderer().setDestinationCrs(self.targetSRS)
     else:
       mapCanvas.mapRenderer().setDestinationSrs(self.targetSRS)
+<<<<<<< HEAD
     mapCanvas.setMapUnits(self.targetSRS.mapUnits())
     
     # On the fly    
+=======
+      
+    mapCanvas.setMapUnits(self.targetSRS.mapUnits())
+    
+     # On the fly
+>>>>>>> Added Olleh KT(Street, Satellite, Hybrid) layers
     if QGis.QGIS_VERSION_INT >= 10900:
       theCoodRS = mapCanvas.mapRenderer().destinationCrs()
     else:
       theCoodRS = mapCanvas.mapRenderer().destinationSrs()
+<<<<<<< HEAD
+=======
+      
+>>>>>>> Added Olleh KT(Street, Satellite, Hybrid) layers
     if theCoodRS != self.targetSRS:
       coodTrans = QgsCoordinateTransform(theCoodRS, self.targetSRS)
       extMap = mapCanvas.extent()
@@ -240,10 +267,18 @@ class OpenlayersPlugin:
 
   def removeLayer(self, layerId):
     layerToRemove = None
+<<<<<<< HEAD
+=======
+    
+>>>>>>> Added Olleh KT(Street, Satellite, Hybrid) layers
     if QGis.QGIS_VERSION_INT >= 10900:
       currentLayerId = self.layer.id()
     else:
       currentLayerId = self.layer.getLayerID()
+<<<<<<< HEAD
+=======
+      
+>>>>>>> Added Olleh KT(Street, Satellite, Hybrid) layers
     if self.layer != None and currentLayerId == layerId:
       self.layer = None
       # TODO: switch to next available OpenLayers layer?
@@ -255,8 +290,13 @@ class OpenlayersPlugin:
     else:
       created = self.targetSRS.createFromEpsg(5181)
     if not created:
+<<<<<<< HEAD
       google_proj_def = "+proj=tmerc +lat_0=38 +lon_0=127 +k=1 +x_0=200000 +y_0=500000 +ellps=GRS80 +towgs84=0,0,0,0,0,0,0 +units=m +no_defs"
       isOk = self.targetSRS.createFromProj4(google_proj_def)
+=======
+      proj_def = "+proj=tmerc +lat_0=38 +lon_0=127 +k=1 +x_0=200000 +y_0=500000 +ellps=GRS80 +towgs84=0,0,0,0,0,0,0 +units=m +no_defs"
+      isOk = self.targetSRS.createFromProj4(proj_def)
+>>>>>>> Added Olleh KT(Street, Satellite, Hybrid) layers
       if isOk:
         return True
       else:
