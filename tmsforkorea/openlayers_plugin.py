@@ -4,7 +4,7 @@
 TMS for Korea
 A QGIS plugin
 
-                             -------------------
+                             ------------------- 
 begin                : 2009-11-30
 copyright            : (C) 2009 by Pirmin Kalberer, Sourcepole
 email                : pka at sourcepole.ch
