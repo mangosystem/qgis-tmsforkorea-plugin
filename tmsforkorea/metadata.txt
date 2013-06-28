@@ -1,42 +1,1 @@
-# This file contains metadata for your plugin. Beginning
-# with version 1.8 this is the preferred way to supply information about a
-# plugin. The current method of embedding metadata in __init__.py will
-# be supported until version 2.0
-
-# This file should be included when you package your plugin.
-
-# Mandatory items:
-
-[general]
-name=TMS for Korea
-qgisMinimumVersion=1.8
-description=QGIS plugin. Daum, Naver, Olleh Map Layers for Korean users
-version=0.3.0
-
-# end of mandatory metadata
-
-# Optional items:
-
-# Uncomment the following line and add your changelog entries:
-changelog=
-   0.1.0 -Added Daum(Street, Satellite), Naver(Street, Satellite, Hybrid, Cadstral)
-   0.2.0 -Added Daum(Hybrid, Physical), Fixed some bugs
-   0.3.0 -Added Olleh KT(Street, Satellite, Hybrid) layers
-
-# tags are comma separated with spaces allowed
-tags=openlayers, daum, naver, olleh
-
-homepage=http://www.onspatial.com/2013/02/qgis-tms-for-korean-users-plugin.html
-tracker=http://hub.qgis.org/projects/tmsforkorea
-repository=https://github.com/MapPlus/qgis-tmsforkorea-plugin.git
-icon=openlayers.png
-
-# experimental flag
-experimental=True
-
-# deprecated flag (applies to the whole plugin, not just a single version
-deprecated=False
-
-# Author contact information
-author=Minpa Lee
-email=mapplus@gmail.com
+# This file contains metadata for your plugin. Beginning# with version 1.8 this is the preferred way to supply information about a# plugin. The current method of embedding metadata in __init__.py will# be supported until version 2.0# This file should be included when you package your plugin.# Mandatory items:[general]name=TMS for KoreaqgisMinimumVersion=2.0description=QGIS plugin. Daum, Naver, Olleh, VWorld Map Layers for Korean usersversion=0.5.1# end of mandatory metadata# Optional items:# Uncomment the following line and add your changelog entries:changelog=   0.1.0 -Added Daum(Street, Satellite), Naver(Street, Satellite, Hybrid, Cadstral) layers   0.2.0 -Added Daum(Hybrid, Physical) layers, Fixed some bugs   0.3.0 -Added Olleh KT(Street, Satellite, Hybrid) layers   0.4.0 -Added VWorld(Street) layers   0.4.1 -Added VWorld(Satellite, Hybrid) layers   0.5.0 -Support for QGIS 2.0. This is the first release of the QGIS 2.x series.   0.5.1 -Added VWorld(Satellite, Hybrid) layers   # tags are comma separated with spaces allowedtags=openlayers, daum, naver, olleh, vworldhomepage=http://www.onspatial.com/2013/02/qgis-tms-for-korean-users-plugin.htmltracker=http://hub.qgis.org/projects/tmsforkorearepository=https://github.com/MapPlus/qgis-tmsforkorea-plugin.giticon=openlayers.png# experimental flagexperimental=False# deprecated flag (applies to the whole plugin, not just a single versiondeprecated=False# Author contact informationauthor=Minpa Leeemail=mapplus@gmail.com

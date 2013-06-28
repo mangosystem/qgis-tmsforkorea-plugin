@@ -26,11 +26,10 @@ def getProxy():
     proxy = None
     settings = QSettings()
     settings.beginGroup("proxy")
-    if settings.value("/proxyEnabled").toBool():
+    if settings.value("/proxyEnabled"):
         proxy = QNetworkProxy()
-        proxyType = settings.value( "/proxyType", QVariant(0)).toString()
+        proxyType = settings.value("/proxyType")
         
-        #if len(args)>0 and settings.value("/proxyExcludedUrls").toString().contains(args[0]):
         #  proxyType = "NoProxy"
         if proxyType in ["1","Socks5Proxy"]: 
             proxy.setType(QNetworkProxy.Socks5Proxy)
@@ -45,10 +44,13 @@ def getProxy():
         else: 
             proxy.setType(QNetworkProxy.DefaultProxy)
             
-        proxy.setHostName(settings.value("/proxyHost").toString())
-        proxy.setPort(settings.value("/proxyPort").toUInt()[0])
-        proxy.setUser(settings.value("/proxyUser").toString())
-        proxy.setPassword(settings.value("/proxyPassword").toString())
+        proxy.setHostName(settings.value("/proxyHost"))
+        proxy_port = settings.value("/proxyPort")
+        if proxy_port.isdigit():
+            proxy.setPort(int(proxy_port))
+        
+        proxy.setUser(settings.value("/proxyUser"))
+        proxy.setPassword(settings.value("/proxyPassword"))
         
     settings.endGroup()
     return proxy

@@ -11,10 +11,10 @@ OpenLayers.Layer.NaverHybrid = OpenLayers.Class(OpenLayers.Layer.XYZ, {
     
     name: "NaverHybridMap",
     url: [
-		"http://onetile1.map.naver.net/get/18/0/0/${z}/${x}/${y}/bl_st_bg/ol_st_rd/ol_st_an",
-		"http://onetile2.map.naver.net/get/18/0/0/${z}/${x}/${y}/bl_st_bg/ol_st_rd/ol_st_an",
-		"http://onetile3.map.naver.net/get/18/0/0/${z}/${x}/${y}/bl_st_bg/ol_st_rd/ol_st_an",
-		"http://onetile4.map.naver.net/get/18/0/0/${z}/${x}/${y}/bl_st_bg/ol_st_rd/ol_st_an"
+		"http://onetile1.map.naver.net/get/29/0/0/${z}/${x}/${y}/bl_st_bg/ol_st_rd/ol_st_an",
+		"http://onetile2.map.naver.net/get/29/0/0/${z}/${x}/${y}/bl_st_bg/ol_st_rd/ol_st_an",
+		"http://onetile3.map.naver.net/get/29/0/0/${z}/${x}/${y}/bl_st_bg/ol_st_rd/ol_st_an",
+		"http://onetile4.map.naver.net/get/29/0/0/${z}/${x}/${y}/bl_st_bg/ol_st_rd/ol_st_an"
     ],
 	resolutions: [2048, 1024, 512, 256, 128, 64, 32, 16, 8, 4, 2, 1, 0.5, 0.25],
 	attribution: '<a href="http://www.nhncorp.com" target="_blank" style="text-decoration: none !important;">© <span style="display: inline; font-family: Tahoma,sans-serif !important; font-size: 9px !important; font-weight: bold !important; font-style: normal !important; color: #009BC8 !important; text-decoration: none !important;">'
@@ -24,7 +24,7 @@ OpenLayers.Layer.NaverHybrid = OpenLayers.Class(OpenLayers.Layer.XYZ, {
 	transitionEffect: "resize",
 	buffer: 0,
 	numZoomLevels: 14,
-	minResolution: 0.5,
+	minResolution: 0.25,
 	maxResolution: 2048,
 	units: "m",
 	projection: new OpenLayers.Projection("EPSG:5179"),

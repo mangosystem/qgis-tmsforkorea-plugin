@@ -5,6 +5,7 @@
 
 /**
  * @requires OpenLayers/Layer/XYZ.js
+ * http://s3.maps.daum-img.net/L2/3939/1723.jpg?v=090323
  */
 
 OpenLayers.Layer.DaumSatellite = OpenLayers.Class(OpenLayers.Layer.XYZ, {

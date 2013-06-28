@@ -34,13 +34,13 @@ def name():
     return "TMS for Korea"
   
 def description():
-    return "Daum, Naver layers"
+    return "Daum, Naver, Olleh, VWorld Map Layers for Korean users"
   
 def version():
-    return "0.3.0"
+    return "0.5.1"
   
 def qgisMinimumVersion():
-    return "1.8"
+    return "2.0"
   
 def authorName():
     return "Minpa Lee"

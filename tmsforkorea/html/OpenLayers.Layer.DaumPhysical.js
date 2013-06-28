@@ -5,6 +5,7 @@
 
 /**
  * @requires OpenLayers/Layer/XYZ.js
+ * http://sr3.maps.daum-img.net/map/image/G03/sr/1.00/L7/121/55.png
  */
 
 OpenLayers.Layer.DaumPhysical = OpenLayers.Class(OpenLayers.Layer.XYZ, {
