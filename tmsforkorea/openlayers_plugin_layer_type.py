@@ -8,7 +8,6 @@ A QGIS plugin
 begin                : 2010-02-03
 copyright            : (C) 2010 by Pirmin Kalberer, Sourcepole
 email                : pka at sourcepole.ch
-modified             : (C) 2013 by Minpa Lee, mapplus@gmail.com
  ***************************************************************************/
 
 /***************************************************************************
@@ -20,23 +19,22 @@ modified             : (C) 2013 by Minpa Lee, mapplus@gmail.com
  *                                                                         *
  ***************************************************************************/
 """
-from PyQt4.QtCore import *
-from PyQt4.QtGui import *
-from PyQt4.QtWebKit import *
-from qgis.core import *
-
+from qgis.core import QgsPluginLayerType
 from openlayers_layer import OpenlayersLayer
 
+
 class OpenlayersPluginLayerType(QgsPluginLayerType):
-    
-    def __init__(self, iface, add_callback, targetSRS, olLayerTypeRegistry):
+
+    def __init__(self, iface, add_callback, olLayerTypeRegistry):
         QgsPluginLayerType.__init__(self, OpenlayersLayer.LAYER_TYPE)
         self.iface = iface
         self.add_callback = add_callback
-        self.targetSRS = targetSRS
         self.olLayerTypeRegistry = olLayerTypeRegistry
-        
+
     def createLayer(self):
-        layer = OpenlayersLayer(self.iface, self.targetSRS, self.olLayerTypeRegistry)
+        layer = OpenlayersLayer(self.iface, self.olLayerTypeRegistry)
         self.add_callback(layer)
         return layer
+
+    def showLayerProperties(self, layer):
+        return False

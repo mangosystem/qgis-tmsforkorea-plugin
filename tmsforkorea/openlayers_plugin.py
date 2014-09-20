@@ -1,14 +1,14 @@
 # -*- coding: utf-8 -*-
 """
 /***************************************************************************
-TMS for Korea
+OpenLayers Plugin
 A QGIS plugin
 
                              -------------------
 begin                : 2009-11-30
 copyright            : (C) 2009 by Pirmin Kalberer, Sourcepole
 email                : pka at sourcepole.ch
-modified             : (C) 2013 by Minpa Lee, mapplus@gmail.com
+modified             : 2014-09-19 by Minpa Lee, mapplus at gmail.com
  ***************************************************************************/
 
 /***************************************************************************
@@ -20,295 +20,201 @@ modified             : (C) 2013 by Minpa Lee, mapplus@gmail.com
  *                                                                         *
  ***************************************************************************/
 """
-
-import os.path
-
+# Import the PyQt and QGIS libraries
 from PyQt4.QtCore import *
 from PyQt4.QtGui import *
-from PyQt4.QtWebKit import *
 from qgis.core import *
-
 import resources_rc
-import math
-
+from about_dialog import AboutDialog
+from openlayers_overview import OLOverview
 from openlayers_layer import OpenlayersLayer
 from openlayers_plugin_layer_type import OpenlayersPluginLayerType
-from openlayers_ovwidget import OpenLayersOverviewWidget
+from weblayers.weblayer_registry import WebLayerTypeRegistry
+# from weblayers.google_maps import OlGooglePhysicalLayer, OlGoogleStreetsLayer, OlGoogleHybridLayer, OlGoogleSatelliteLayer
+# from weblayers.osm import OlOpenStreetMapLayer, OlOpenCycleMapLayer, OlOCMLandscapeLayer, OlOCMPublicTransportLayer
+# from weblayers.yahoo_maps import OlYahooStreetLayer, OlYahooHybridLayer, OlYahooSatelliteLayer
+# from weblayers.bing_maps import OlBingRoadLayer, OlBingAerialLayer, OlBingAerialLabelledLayer
+# from weblayers.apple_maps import OlAppleiPhotoMapLayer
+# from weblayers.osm_stamen import OlOSMStamenTonerLayer, OlOSMStamenWatercolorLayer, OlOSMStamenTerrainLayer
+import os.path
 
-class OlLayerType:
+# TMS for Korea 2014-09-19
+from weblayers.vworld_maps import OlVWorldStreetLayer, OlVWorldHybridLayer, OlVWorldSatelliteLayer
+from weblayers.daum_maps import OlDaumStreetLayer, OlDaumHybridLayer, OlDaumSatelliteLayer, OlDaumPhysicalLayer
+from weblayers.naver_maps import OlNaverStreetLayer, OlNaverHybridLayer, OlNaverSatelliteLayer, OlNaverPhysicalLayer, OlNaverCadastralLayer
+from weblayers.olleh_maps import OlOllehStreetLayer, OlOllehHybridLayer, OlOllehSatelliteLayer, OlOllehPhysicalLayer
 
-  def __init__(self, plugin, name, icon, html, emitsLoadEnd = False):
-    self.__plugin = plugin
-    self.name = name
-    self.icon = icon
-    self.html = html
-    self.emitsLoadEnd = emitsLoadEnd
-    self.id = None
-
-  def addLayer(self):
-    self.__plugin.addLayer(self)
-
-
-class OlLayerTypeRegistry:
-
-  def __init__(self):
-    self.__olLayerTypes = {}
-    self.__layerTypeId = 0
-
-  def add(self, layerType):
-    layerType.id = self.__layerTypeId
-    self.__olLayerTypes[self.__layerTypeId] = layerType
-    self.__layerTypeId += 1
-
-  def types(self):
-    return self.__olLayerTypes.values()
-
-  def getById(self, id):
-    return self.__olLayerTypes[id]
-
-
-class OLOverview(object):
-
-  def __init__(self, iface, olLayerTypeRegistry):
-    self.__iface = iface
-    self.__olLayerTypeRegistry = olLayerTypeRegistry
-    self.__dockwidget = None
-    self.__oloWidget = None
-
-  # Private
-  def __setDocWidget(self):
-    self.__dockwidget = QDockWidget(QApplication.translate("OpenLayersOverviewWidget", "Overview"), self.__iface.mainWindow() )
-    self.__dockwidget.setObjectName("dwOpenlayersOverview")
-    self.__oloWidget = OpenLayersOverviewWidget(self.__iface, self.__dockwidget, self.__olLayerTypeRegistry)
-    self.__dockwidget.setWidget(self.__oloWidget)
-
-  def __initGui(self):
-    self.__setDocWidget()
-    self.__iface.addDockWidget( Qt.LeftDockWidgetArea, self.__dockwidget)
-
-  def __unload(self):
-    self.__dockwidget.close()
-    self.__iface.removeDockWidget( self.__dockwidget )
-    del self.__oloWidget
-    self.__dockwidget = None
-
-  # Public
-  def setVisible(self, visible):
-    if visible:
-      if self.__dockwidget is None:
-        self.__initGui()
-    else:
-      if not self.__dockwidget is None:
-        self.__unload()
- 
 
 class OpenlayersPlugin:
-  name = "TMS for Korea"
-  targetSRS = QgsCoordinateReferenceSystem()
 
-  def __init__(self, iface):
-    # Save reference to the QGIS interface
-    self.iface = iface
+    def __init__(self, iface):
+        # Save reference to the QGIS interface
+        self.iface = iface
+        # initialize plugin directory
+        self.plugin_dir = os.path.dirname(__file__)
+        # initialize locale
+        locale = QSettings().value("locale/userLocale")[0:2]
+        localePath = os.path.join(self.plugin_dir, "i18n", "openlayers_{}.qm".format(locale))
 
-    # setup locale
-    pluginDir = os.path.dirname( __file__ )
-    localePath = ""
-    locale = QSettings().value("locale/userLocale")[0:2]
-    if QFileInfo(pluginDir).exists():
-      localePath = pluginDir + "/i18n/openlayers_" + locale + ".qm"
-      
-    if QFileInfo(localePath).exists():
-      self.translator = QTranslator()
-      self.translator.load(localePath)
-      if qVersion() > '4.3.3':
-        QCoreApplication.installTranslator(self.translator)
+        if os.path.exists(localePath):
+            self.translator = QTranslator()
+            self.translator.load(localePath)
 
-    # Layers
-    self.olLayerTypeRegistry = OlLayerTypeRegistry()
-    self.olLayerTypeRegistry.add( OlLayerType(self, 'Daum Street', 'daum_icon.png', 'daum_street.html', False) )
-    self.olLayerTypeRegistry.add( OlLayerType(self, 'Daum Satellite', 'daum_icon.png', 'daum_satellite.html', False) )
-    self.olLayerTypeRegistry.add( OlLayerType(self, 'Daum Hybrid', 'daum_icon.png', 'daum_hybrid.html', False) )
-    self.olLayerTypeRegistry.add( OlLayerType(self, 'Daum Physical', 'daum_icon.png', 'daum_physical.html', False) )
-    
-    self.olLayerTypeRegistry.add( OlLayerType(self, 'Naver Street', 'naver_icon.png', 'naver_street.html', False) )
-    self.olLayerTypeRegistry.add( OlLayerType(self, 'Naver Satellite', 'naver_icon.png', 'naver_satellite.html', False) )
-    self.olLayerTypeRegistry.add( OlLayerType(self, 'Naver Hybrid', 'naver_icon.png', 'naver_hybrid.html', False) )
-    self.olLayerTypeRegistry.add( OlLayerType(self, 'Naver Physical', 'naver_icon.png', 'naver_physical.html', False) )
-    self.olLayerTypeRegistry.add( OlLayerType(self, 'Naver Cadstral', 'naver_icon.png', 'naver_cadastral.html', False) )
-    
-    self.olLayerTypeRegistry.add( OlLayerType(self, 'Olleh Street', 'olleh_icon.png', 'olleh_street.html', False) )
-    self.olLayerTypeRegistry.add( OlLayerType(self, 'Olleh Satellite', 'olleh_icon.png', 'olleh_satellite.html', False) )
-    self.olLayerTypeRegistry.add( OlLayerType(self, 'Olleh Hybrid', 'olleh_icon.png', 'olleh_hybrid.html', False) )
-    self.olLayerTypeRegistry.add( OlLayerType(self, 'Olleh Physical', 'olleh_icon.png', 'olleh_physical.html', False) )
-    
-    self.olLayerTypeRegistry.add( OlLayerType(self, 'VWorld Street', 'vworld_icon.png', 'vworld_street.html', False) )
-    self.olLayerTypeRegistry.add( OlLayerType(self, 'VWorld Satellite', 'vworld_icon.png', 'vworld_satellite.html', False) )
-    self.olLayerTypeRegistry.add( OlLayerType(self, 'VWorld Hybrid', 'vworld_icon.png', 'vworld_hybrid.html', False) )
-    
-    # Overview
-    self.olOverview = OLOverview( iface, self.olLayerTypeRegistry )
+            if qVersion() > '4.3.3':
+                QCoreApplication.installTranslator(self.translator)
 
-  def initGui(self):
-    # Overview
-    self.overviewAddAction = QAction(QApplication.translate("OpenlayersPlugin", "Overview"), self.iface.mainWindow())
-    self.overviewAddAction.setCheckable(True)
-    self.overviewAddAction.setChecked(False)
-    QObject.connect(self.overviewAddAction, SIGNAL("toggled(bool)"), self.olOverview.setVisible )
-    self.iface.addPluginToMenu(self.name, self.overviewAddAction)
-    
-    # Layers
-    self.layerAddActions = []
-    pathPlugin = "%s%s%%s" % ( os.path.dirname( __file__ ), os.path.sep )
-    for layerType in self.olLayerTypeRegistry.types():
-      # Create actions for adding layers
-      action = QAction(QIcon(pathPlugin % layerType.icon), "Add " + layerType.name, self.iface.mainWindow())
-      self.layerAddActions.append(action)
-      QObject.connect(action, SIGNAL("triggered()"), layerType.addLayer)
-      # Add toolbar button and menu item
-      self.iface.addPluginToMenu(self.name, action)
-      
-    
-    if not self.setDefaultSRS():
-      QMessageBox.critical(self.iface.mainWindow(), self.name, QApplication.translate(self.name, "Could not set Korean projection!"))
-      return
+        self._olLayerTypeRegistry = WebLayerTypeRegistry(self)
+        self.olOverview = OLOverview(iface, self._olLayerTypeRegistry)
+        self.dlgAbout = AboutDialog()
 
-    # Register plugin layer type
-    QgsPluginLayerRegistry.instance().addPluginLayerType(OpenlayersPluginLayerType(self.iface, self.setReferenceLayer, self.targetSRS, self.olLayerTypeRegistry))
+    def initGui(self):
+        self._olMenu = QMenu("TMS for Korea")
+        self._olMenu.setIcon(QIcon(":/plugins/tmsforkorea/openlayers.png"))
 
-    self.layer = None
-    QObject.connect(QgsMapLayerRegistry.instance(), SIGNAL("layerWillBeRemoved(QString)"), self.removeLayer)
-  
-  def unload(self):
-    # Remove the plugin menu item and icon
-    for action in self.layerAddActions:
-      self.iface.removePluginMenu(self.name, action)
+        # Overview
+        self.overviewAddAction = QAction(QApplication.translate("OpenlayersPlugin", "OpenLayers Overview"), self.iface.mainWindow())
+        self.overviewAddAction.setCheckable(True)
+        self.overviewAddAction.setChecked(False)
+        QObject.connect(self.overviewAddAction, SIGNAL("toggled(bool)"), self.olOverview.setVisible)
+        self._olMenu.addAction(self.overviewAddAction)
 
-    self.iface.removePluginMenu(self.name, self.overviewAddAction)  
+        # Terms of Service
+        self._actionAbout = QAction(QApplication.translate("OpenlayersPlugin", "Terms of Service / About"), self.iface.mainWindow())
+        QObject.connect(self._actionAbout, SIGNAL("triggered()"), self.dlgAbout, SLOT("show()"))
+        #? self._actionAbout.triggered.connect(self.dlgAbout, SLOT("show()"))
+        self._olMenu.addAction(self._actionAbout)
 
-    # Unregister plugin layer type
-    QgsPluginLayerRegistry.instance().removePluginLayerType(OpenlayersLayer.LAYER_TYPE)
+        # OpenLayers plugin layers
+        """
+        self._olLayerTypeRegistry.register(OlGooglePhysicalLayer())
+        self._olLayerTypeRegistry.register(OlGoogleStreetsLayer())
+        self._olLayerTypeRegistry.register(OlGoogleHybridLayer())
+        self._olLayerTypeRegistry.register(OlGoogleSatelliteLayer())
 
-    QObject.disconnect(QgsMapLayerRegistry.instance(), SIGNAL("layerWillBeRemoved(QString)"), self.removeLayer)
-    
-    self.olOverview.setVisible( False )
-    del self.olOverview
+        self._olLayerTypeRegistry.register(OlOpenStreetMapLayer())
+        self._olLayerTypeRegistry.register(OlOpenCycleMapLayer())
+        self._olLayerTypeRegistry.register(OlOCMLandscapeLayer())
+        self._olLayerTypeRegistry.register(OlOCMPublicTransportLayer())
 
-  def addLayer(self, layerType):
-    # check layers
-    mapCanvas = self.iface.mapCanvas()
-    mapCanvas.mapRenderer().setProjectionsEnabled(True) 
-    
-    self.targetSRS = QgsCoordinateReferenceSystem(5181)   # Daum 5181
-    if layerType.name.startswith('Naver'):   # Naver 5179
-        self.targetSRS = QgsCoordinateReferenceSystem(5179)
-        if mapCanvas.layerCount() == 0:
-            mapCanvas.setExtent(QgsRectangle(90112, 1192896, 1990673, 2761664))
-    elif layerType.name.startswith('Olleh'):   # Olleh 5179
-        self.targetSRS = QgsCoordinateReferenceSystem(5179)
-        if mapCanvas.layerCount() == 0:
-            mapCanvas.setExtent(QgsRectangle(171162, 1214781, 1744026, 2787645))
-    elif layerType.name.startswith('Nate'):  # Nate TM128(KATECH) 
-        katec_def = "+proj=tmerc +lat_0=38 +lon_0=128 +k=0.9999 +x_0=400000 +y_0=600000 +ellps=bessel +units=m +no_defs +towgs84=-146.43,507.89,681.46"
-        self.targetSRS.createFromProj4(katec_def)
-        if mapCanvas.layerCount() == 0:
-            mapCanvas.setExtent(QgsRectangle(-400000, -100000, 1000000, 1300000))
-    elif layerType.name.startswith('VWorld'):   # VWorld 3857
-        self.targetSRS = QgsCoordinateReferenceSystem(3857)
-        if mapCanvas.layerCount() == 0:
-            mapCanvas.setExtent(QgsRectangle(14035757.363, 4081783.959, 14353251.206, 4558581.730))
-    elif layerType.name.startswith('MapBox'):   # MapBox 3857
-        self.targetSRS = QgsCoordinateReferenceSystem(3857)
-        if mapCanvas.layerCount() == 0:
-            mapCanvas.setExtent(QgsRectangle(-20037508.34, -20037508.34, 20037508.34, 20037508.34))
-    elif layerType.name.startswith('Mango'):   # Mango 3857
-        self.targetSRS = QgsCoordinateReferenceSystem(3857)
-        if mapCanvas.layerCount() == 0:
-            mapCanvas.setExtent(QgsRectangle(-20037508.34, -20037508.34, 20037508.34, 20037508.34))
-    elif layerType.name.startswith('Google'):   # Google 3857
-        self.targetSRS = QgsCoordinateReferenceSystem(3857)
-        if mapCanvas.layerCount() == 0:
-            mapCanvas.setExtent(QgsRectangle(-20037508.34, -20037508.34, 20037508.34, 20037508.34))
-    else:
-        if mapCanvas.layerCount() == 0:
-            mapCanvas.setExtent(QgsRectangle(-30000, -60000, 494288, 988576))
+        self._olLayerTypeRegistry.register(OlYahooStreetLayer())
+        self._olLayerTypeRegistry.register(OlYahooHybridLayer())
+        self._olLayerTypeRegistry.register(OlYahooSatelliteLayer())
+
+        self._olLayerTypeRegistry.register(OlBingRoadLayer())
+        self._olLayerTypeRegistry.register(OlBingAerialLayer())
+        self._olLayerTypeRegistry.register(OlBingAerialLabelledLayer())
+
+        self._olLayerTypeRegistry.register(OlOSMStamenTonerLayer())
+        self._olLayerTypeRegistry.register(OlOSMStamenWatercolorLayer())
+        self._olLayerTypeRegistry.register(OlOSMStamenTerrainLayer())
+
+        self._olLayerTypeRegistry.register(OlAppleiPhotoMapLayer())
+        """
         
-    if QGis.QGIS_VERSION_INT >= 10900:
-      mapCanvas.mapRenderer().setDestinationCrs(self.targetSRS)
-    else:
-      mapCanvas.mapRenderer().setDestinationSrs(self.targetSRS)
-      
-    mapCanvas.setMapUnits(self.targetSRS.mapUnits())
-    
-    # On the fly
-    mapCanvas.setMapUnits(self.targetSRS.mapUnits())
-    
-    if QGis.QGIS_VERSION_INT >= 10900:
-      theCoodRS = mapCanvas.mapRenderer().destinationCrs()
-    else:
-      theCoodRS = mapCanvas.mapRenderer().destinationSrs()
-      
-    if theCoodRS != self.targetSRS:
-      coodTrans = QgsCoordinateTransform(theCoodRS, self.targetSRS)
-      extMap = mapCanvas.extent()
-      extMap = coodTrans.transform(extMap, QgsCoordinateTransform.ForwardTransform)
-      if QGis.QGIS_VERSION_INT >= 10900:
-        mapCanvas.mapRenderer().setDestinationCrs(self.targetSRS)
-      else:
-        mapCanvas.mapRenderer().setDestinationSrs(self.targetSRS)
-      mapCanvas.freeze(False)
-      mapCanvas.setMapUnits(self.targetSRS.mapUnits())
-      mapCanvas.setExtent(extMap)
-      
-    layer = OpenlayersLayer(self.iface, self.targetSRS, self.olLayerTypeRegistry)
-    layer.setLayerName(layerType.name)
-    layer.setLayerType(layerType)
-    if layer.isValid():
-      if QGis.QGIS_VERSION_INT >= 10900:
-        QgsMapLayerRegistry.instance().addMapLayers([layer])
-      else:
-        QgsMapLayerRegistry.instance().addMapLayer(layer)
+        # TMS for Korea 2014-09-19
+        self._olLayerTypeRegistry.register(OlDaumStreetLayer())
+        self._olLayerTypeRegistry.register(OlDaumHybridLayer())
+        self._olLayerTypeRegistry.register(OlDaumSatelliteLayer())
+        self._olLayerTypeRegistry.register(OlDaumPhysicalLayer())
+        
+        self._olLayerTypeRegistry.register(OlNaverStreetLayer())
+        self._olLayerTypeRegistry.register(OlNaverHybridLayer())
+        self._olLayerTypeRegistry.register(OlNaverSatelliteLayer())
+        self._olLayerTypeRegistry.register(OlNaverPhysicalLayer())
+        self._olLayerTypeRegistry.register(OlNaverCadastralLayer())
+        
+        self._olLayerTypeRegistry.register(OlOllehStreetLayer())
+        self._olLayerTypeRegistry.register(OlOllehHybridLayer())
+        self._olLayerTypeRegistry.register(OlOllehSatelliteLayer())
+        self._olLayerTypeRegistry.register(OlOllehPhysicalLayer())
+        
+        self._olLayerTypeRegistry.register(OlVWorldStreetLayer())
+        self._olLayerTypeRegistry.register(OlVWorldHybridLayer())
+        self._olLayerTypeRegistry.register(OlVWorldSatelliteLayer())
 
-      # last added layer is new reference
-      self.setReferenceLayer(layer)
-    
-    if QgsMapLayerRegistry.instance().count() == 1:
-      mapCanvas = self.iface.mapCanvas()
-      mapCanvas.setDirty(True)
-      mapCanvas.refresh()
+        for group in self._olLayerTypeRegistry.groups():
+            groupMenu = group.menu()
+            for layer in self._olLayerTypeRegistry.groupLayerTypes(group):
+                layer.addMenuEntry(groupMenu, self.iface.mainWindow())
+            self._olMenu.addMenu(groupMenu)
 
-  def setReferenceLayer(self, layer):
-    self.layer = layer
-    # TODO: update initial scale
+        #Create Web menu, if it doesn't exist yet
+        self.iface.addPluginToWebMenu("_tmp", self._actionAbout)
+        self._menu = self.iface.webMenu()
+        self._menu.addMenu(self._olMenu)
+        self.iface.removePluginWebMenu("_tmp", self._actionAbout)
 
-  def removeLayer(self, layerId):
-    layerToRemove = None
-    
-    if self.layer == None:
-      return
-    
-    if QGis.QGIS_VERSION_INT >= 10900:
-      currentLayerId = self.layer.id()
-    else:
-      currentLayerId = self.layer.getLayerID()
-      
-    if self.layer != None and currentLayerId == layerId:
-      self.layer = None
-      # TODO: switch to next available OpenLayers layer?
+        # Register plugin layer type
+        pluginLayerType = OpenlayersPluginLayerType(self.iface, self.setReferenceLayer,
+                                                    self._olLayerTypeRegistry)
+        QgsPluginLayerRegistry.instance().addPluginLayerType(pluginLayerType)
 
-  def setDefaultSRS(self):
-    # Daum = default srs
-    if QGis.QGIS_VERSION_INT >= 10900:
-      created = self.targetSRS.createFromOgcWmsCrs('EPSG:5181')
-    else:
-      created = self.targetSRS.createFromEpsg(5181)
-    if not created:
-      google_proj_def = "+proj=tmerc +lat_0=38 +lon_0=127 +k=1 +x_0=200000 +y_0=500000 +ellps=GRS80 +towgs84=0,0,0,0,0,0,0 +units=m +no_defs"
-      isOk = self.targetSRS.createFromProj4(google_proj_def)
-      proj_def = "+proj=tmerc +lat_0=38 +lon_0=127 +k=1 +x_0=200000 +y_0=500000 +ellps=GRS80 +towgs84=0,0,0,0,0,0,0 +units=m +no_defs"
-      isOk = self.targetSRS.createFromProj4(proj_def)
-      if isOk:
-        return True
-      else:
-        return False
-    else:
-      return True
+    def unload(self):
+        self.iface.webMenu().removeAction(self._olMenu.menuAction())
+
+        self.olOverview.setVisible(False)
+        del self.olOverview
+
+        # Unregister plugin layer type
+        QgsPluginLayerRegistry.instance().removePluginLayerType(OpenlayersLayer.LAYER_TYPE)
+
+    def addLayer(self, layerType):
+        layer = OpenlayersLayer(self.iface, self._olLayerTypeRegistry)
+        layer.setLayerName(layerType.displayName)
+        layer.setLayerType(layerType)
+        if layer.isValid():
+            coordRefSys = layerType.coordRefSys(self.canvasCrs())
+            self.setMapCrs(coordRefSys)
+            QgsMapLayerRegistry.instance().addMapLayer(layer)
+
+            # last added layer is new reference
+            self.setReferenceLayer(layer)
+
+    def setReferenceLayer(self, layer):
+        self.layer = layer
+
+    def removeLayer(self, layerId):
+        if self.layer is not None:
+            if QGis.QGIS_VERSION_INT >= 10900:
+                if self.layer.id() == layerId:
+                    self.layer = None
+            else:
+                if self.layer.getLayerID() == layerId:
+                    self.layer = None
+            # TODO: switch to next available OpenLayers layer?
+
+    def canvasCrs(self):
+        mapCanvas = self.iface.mapCanvas()
+        if QGis.QGIS_VERSION_INT >= 20300:
+            #crs = mapCanvas.mapRenderer().destinationCrs()
+            crs = mapCanvas.mapSettings().destinationCrs()
+        elif QGis.QGIS_VERSION_INT >= 10900:
+            crs = mapCanvas.mapRenderer().destinationCrs()
+        else:
+            crs = mapCanvas.mapRenderer().destinationSrs()
+        return crs
+
+    def setMapCrs(self, coordRefSys):
+        mapCanvas = self.iface.mapCanvas()
+        # On the fly
+        if QGis.QGIS_VERSION_INT >= 20300:
+            mapCanvas.mapSettings().setCrsTransformEnabled(True)
+        else:
+            mapCanvas.mapRenderer().setProjectionsEnabled(True)
+        canvasCrs = self.canvasCrs()
+        if canvasCrs != coordRefSys:
+            if QGis.QGIS_VERSION_INT >= 20300:
+                mapCanvas.setDestinationCrs(coordRefSys)
+            elif QGis.QGIS_VERSION_INT >= 10900:
+                mapCanvas.mapRenderer().setDestinationCrs(coordRefSys)
+            else:
+                mapCanvas.mapRenderer().setDestinationSrs(coordRefSys)
+            mapCanvas.freeze(False)
+            mapCanvas.setMapUnits(coordRefSys.mapUnits())
+            try:
+                coodTrans = QgsCoordinateTransform(canvasCrs, coordRefSys)
+                extMap = mapCanvas.extent()
+                extMap = coodTrans.transform(extMap, QgsCoordinateTransform.ForwardTransform)
+                mapCanvas.setExtent(extMap)
+            except:
+                pass

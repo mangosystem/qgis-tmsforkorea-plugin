@@ -5,10 +5,10 @@ OpenLayers Plugin
 A QGIS plugin
 
                              -------------------
-begin                : 2010-02-03
+begin                : 2009-11-30
 copyright            : (C) 2009 by Pirmin Kalberer, Sourcepole
 email                : pka at sourcepole.ch
-modified             : (C) 2014-09-19 by Minpa Lee, mapplus@gmail.com
+modified             : (C) 2014-09-19 by Minpa Lee, mapplus at gmail.com
  ***************************************************************************/
 
 /***************************************************************************
@@ -23,5 +23,5 @@ modified             : (C) 2014-09-19 by Minpa Lee, mapplus@gmail.com
 """
 
 def classFactory(iface):
-    from openlayers_plugin import OpenlayersPlugin
-    return OpenlayersPlugin(iface)
+  from openlayers_plugin import OpenlayersPlugin
+  return OpenlayersPlugin(iface)
