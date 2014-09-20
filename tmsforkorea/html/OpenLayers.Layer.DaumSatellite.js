@@ -5,23 +5,23 @@
 
 /**
  * @requires OpenLayers/Layer/XYZ.js
- * http://s3.maps.daum-img.net/L2/3939/1723.jpg?v=090323
+ * http://s2.maps.daum-img.net/L4/985/430.jpg?v=140830
  */
 
 OpenLayers.Layer.DaumSatellite = OpenLayers.Class(OpenLayers.Layer.XYZ, {
 
-    name: "DaumSatelliteMap",
+    name: "DaumSatelliteMap", 
     url: [
-		"http://s0.maps.daum-img.net/L${z}/${y}/${x}.jpg",
-		"http://s1.maps.daum-img.net/L${z}/${y}/${x}.jpg",
-		"http://s2.maps.daum-img.net/L${z}/${y}/${x}.jpg",
-		"http://s3.maps.daum-img.net/L${z}/${y}/${x}.jpg"
+		"http://s0.maps.daum-img.net/L${z}/${y}/${x}.jpg?v=140830",
+		"http://s1.maps.daum-img.net/L${z}/${y}/${x}.jpg?v=140830",
+		"http://s2.maps.daum-img.net/L${z}/${y}/${x}.jpg?v=140830",
+		"http://s3.maps.daum-img.net/L${z}/${y}/${x}.jpg?v=140830"
     ],
 	resolutions: [2048, 1024, 512, 256, 128, 64, 32, 16, 8, 4, 2, 1, 0.5, 0.25],
 	attribution: '<a target="_blank" href="http://local.daum.net/map/index.jsp" '
 		+ 'style="float: left; width: 38px; height: 17px; cursor: pointer; background-image: url(http://i1.daumcdn.net/localimg/localimages/07/2008/map/n_local_img_03_b.png); background-repeat: no-repeat no-repeat; " '
 		+ 'title="Daum 지도로 보시려면 클릭하세요."></a>' 
-		+ 'ⓒ 2013 Daum',
+		+ 'ⓒ Daum, Samah',
 	sphericalMercator: false,
 	transitionEffect: "resize",
 	buffer: 1,

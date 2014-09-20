@@ -5,17 +5,17 @@
 
 /**
  * @requires OpenLayers/Layer/XYZ.js
- * http://onetile1.map.naver.net/get/80/0/1/5/29/23/bl_st_bg
+ * http://onetile2.map.naver.net/get/80/0/0/5/30/23/bl_tn_bg/ol_vc_bg/ol_vc_an
  */
 
-OpenLayers.Layer.NaverSatellite = OpenLayers.Class(OpenLayers.Layer.XYZ, {
-    
-    name: "NaverSatelliteMap",
+OpenLayers.Layer.NaverPhysical = OpenLayers.Class(OpenLayers.Layer.XYZ, {
+
+    name: "NaverPhysicalMap", 
     url: [
-		"http://onetile1.map.naver.net/get/80/0/0/${z}/${x}/${y}/bl_st_bg/ol_st_an",
-		"http://onetile2.map.naver.net/get/80/0/0/${z}/${x}/${y}/bl_st_bg/ol_st_an",
-		"http://onetile3.map.naver.net/get/80/0/0/${z}/${x}/${y}/bl_st_bg/ol_st_an",
-		"http://onetile4.map.naver.net/get/80/0/0/${z}/${x}/${y}/bl_st_bg/ol_st_an"
+		"http://onetile1.map.naver.net/get/80/0/0/${z}/${x}/${y}/bl_tn_bg/ol_vc_bg/ol_vc_an",
+		"http://onetile2.map.naver.net/get/80/0/0/${z}/${x}/${y}/bl_tn_bg/ol_vc_bg/ol_vc_an",
+		"http://onetile3.map.naver.net/get/80/0/0/${z}/${x}/${y}/bl_tn_bg/ol_vc_bg/ol_vc_an",
+		"http://onetile4.map.naver.net/get/80/0/0/${z}/${x}/${y}/bl_tn_bg/ol_vc_bg/ol_vc_an"
     ],
 	resolutions: [2048, 1024, 512, 256, 128, 64, 32, 16, 8, 4, 2, 1, 0.5, 0.25],
 	attribution: '<a href="http://www.nhncorp.com" target="_blank" style="text-decoration: none !important;">© <span style="display: inline; font-family: Tahoma,sans-serif !important; font-size: 9px !important; font-weight: bold !important; font-style: normal !important; color: #009BC8 !important; text-decoration: none !important;">'
@@ -38,7 +38,7 @@ OpenLayers.Layer.NaverSatellite = OpenLayers.Class(OpenLayers.Layer.XYZ, {
     },
     clone: function(obj) {
         if (obj == null) {
-            obj = new OpenLayers.Layer.NaverSatellite(
+            obj = new OpenLayers.Layer.NaverPhysical(
                 this.name, this.getOptions());
         }
         obj = OpenLayers.Layer.XYZ.prototype.clone.apply(this, [obj]);
@@ -47,10 +47,8 @@ OpenLayers.Layer.NaverSatellite = OpenLayers.Class(OpenLayers.Layer.XYZ, {
 
 	getXYZ: function(bounds) {
         var res = this.getServerResolution();
-        var x = Math.round((bounds.left - this.maxExtent.left) /
-            (res * this.tileSize.w));
-        var y = Math.round((bounds.bottom - this.maxExtent.bottom) /
-            (res * this.tileSize.h));
+        var x = Math.round((bounds.left - this.maxExtent.left) / (res * this.tileSize.w));
+        var y = Math.round((bounds.bottom - this.maxExtent.bottom) / (res * this.tileSize.h));
         var z = this.getServerZoom() + 1;
 
         if (this.wrapDateLine) {
@@ -61,5 +59,5 @@ OpenLayers.Layer.NaverSatellite = OpenLayers.Class(OpenLayers.Layer.XYZ, {
         return {'x': x, 'y': y, 'z': z};
     },
 	
-    CLASS_NAME: "OpenLayers.Layer.NaverSatellite"
+    CLASS_NAME: "OpenLayers.Layer.NaverPhysical"
 });
