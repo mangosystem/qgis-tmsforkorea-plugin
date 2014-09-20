@@ -1,8 +1,15 @@
 qgis-tmsforkorea-plugin
 =======================
 
-QGIS Plugins
- - Daum(Street, Satellite, Hybrid, Physical)
- - Naver(Street, Satellite, Hybrid, Cadstral)
- - Olleh(Street, Satellite, Hybrid)
- - VWorld(Street, Satellite, Hybrid) Map layers for Korean users
+
+QGIS Plugins for Korean users
+------------------------------
+ - Daum(Street, Satellite, Hybrid, Physical) Maps
+ - Naver(Street, Satellite, Hybrid, Physical, Cadstral) Maps
+ - Olleh(Street, Satellite, Hybrid, Physical) Maps
+ - VWorld(Street, Satellite, Hybrid) Maps
+
+
+License
+----------
+ - ported from qgis-openlayers-plugin[https://github.com/sourcepole/qgis-openlayers-plugin]
