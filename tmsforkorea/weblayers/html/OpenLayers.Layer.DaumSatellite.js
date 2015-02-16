@@ -5,17 +5,17 @@
 
 /**
  * @requires OpenLayers/Layer/XYZ.js
- * http://s2.maps.daum-img.net/L4/985/430.jpg?v=140830
+ * http://s2.maps.daum-img.net/L4/985/430.jpg?v=141021
  */
 
 OpenLayers.Layer.DaumSatellite = OpenLayers.Class(OpenLayers.Layer.XYZ, {
 
     name: "DaumSatelliteMap", 
     url: [
-		"http://s0.maps.daum-img.net/L${z}/${y}/${x}.jpg?v=140830",
-		"http://s1.maps.daum-img.net/L${z}/${y}/${x}.jpg?v=140830",
-		"http://s2.maps.daum-img.net/L${z}/${y}/${x}.jpg?v=140830",
-		"http://s3.maps.daum-img.net/L${z}/${y}/${x}.jpg?v=140830"
+		"http://s0.maps.daum-img.net/L${z}/${y}/${x}.jpg?v=141021",
+		"http://s1.maps.daum-img.net/L${z}/${y}/${x}.jpg?v=141021",
+		"http://s2.maps.daum-img.net/L${z}/${y}/${x}.jpg?v=141021",
+		"http://s3.maps.daum-img.net/L${z}/${y}/${x}.jpg?v=141021"
     ],
 	resolutions: [2048, 1024, 512, 256, 128, 64, 32, 16, 8, 4, 2, 1, 0.5, 0.25],
 	attribution: '<a target="_blank" href="http://local.daum.net/map/index.jsp" '

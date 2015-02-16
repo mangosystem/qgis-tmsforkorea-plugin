@@ -5,17 +5,17 @@
 
 /**
  * @requires OpenLayers/Layer/XYZ.js
- * http://h3.maps.daum-img.net/map/image/G03/h/2200keery/L1/7877/3439.png
+ * http://h3.maps.daum-img.net/map/image/G03/h/2015sheep/L1/7877/3439.png
  */
 
 OpenLayers.Layer.DaumHybrid = OpenLayers.Class(OpenLayers.Layer.XYZ, {
 
     name: "DaumHybridMap",
-    url: [
-		"http://h0.maps.daum-img.net/map/image/G03/h/2200keery/L${z}/${y}/${x}.png",
-		"http://h1.maps.daum-img.net/map/image/G03/h/2200keery/L${z}/${y}/${x}.png",
-		"http://h2.maps.daum-img.net/map/image/G03/h/2200keery/L${z}/${y}/${x}.png",
-		"http://h3.maps.daum-img.net/map/image/G03/h/2200keery/L${z}/${y}/${x}.png"
+    url: [ 
+		"http://h0.maps.daum-img.net/map/image/G03/h/2015sheep/L${z}/${y}/${x}.png",
+		"http://h1.maps.daum-img.net/map/image/G03/h/2015sheep/L${z}/${y}/${x}.png",
+		"http://h2.maps.daum-img.net/map/image/G03/h/2015sheep/L${z}/${y}/${x}.png",
+		"http://h3.maps.daum-img.net/map/image/G03/h/2015sheep/L${z}/${y}/${x}.png"
     ],
 	resolutions: [2048, 1024, 512, 256, 128, 64, 32, 16, 8, 4, 2, 1, 0.5, 0.25],
 	sphericalMercator: false,
