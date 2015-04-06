@@ -29,7 +29,7 @@ class WebLayerDaum5181(WebLayer):
 
     epsgList = [5181]
     
-    fullExtent = [-30000, -60000, 494288, 988576]
+    fullExtent = [-30000, -60000, 494288, 464288]
 
     MAX_ZOOM_LEVEL = 14
     SCALE_ON_MAX_ZOOM = 13540  # QGIS scale for 72 dpi

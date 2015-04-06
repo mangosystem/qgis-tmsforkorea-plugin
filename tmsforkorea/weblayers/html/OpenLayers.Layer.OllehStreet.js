@@ -5,14 +5,13 @@
 
 /**
  * @requires OpenLayers/Layer/XYZ.js
- * http://map.ktgis.com/BaseMap/olleh4.05.1_0626/layers/_alllayers/l12/r000019b8/c0000178a.png
  */
 
 OpenLayers.Layer.OllehStreet = OpenLayers.Class(OpenLayers.Layer.XYZ, {
 
     name: "OllehStreetMap",
     url: [
-        "http://map.ktgis.com/BaseMap/olleh4.12.1_1222/layers/_alllayers/l${z}/r${y}/c${x}.png"
+        "http://map.ktgis.com/BaseMap/olleh5.02.1_0311/layers/_alllayers/l${z}/r${y}/c${x}.png"
     ],
     
     resolutions: [2048, 1024, 512, 256, 128, 64, 32, 16, 8, 4, 2, 1, 0.5],

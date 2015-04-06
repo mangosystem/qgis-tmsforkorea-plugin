@@ -8,7 +8,6 @@ A QGIS plugin
 begin                : 2010-02-03
 copyright            : (C) 2010 by Pirmin Kalberer, Sourcepole
 email                : pka at sourcepole.ch
-modified             : 2014-09-19 by Minpa Lee, mapplus at gmail.com
  ***************************************************************************/
 
 /***************************************************************************
@@ -25,6 +24,7 @@ from PyQt4.QtGui import *
 from PyQt4.QtWebKit import *
 from PyQt4.QtNetwork import *
 from qgis.core import *
+from qgis.gui import *
 
 from tools_network import getProxy
 
@@ -106,7 +106,7 @@ class OpenlayersController(QObject):
 
         self.timerMax = QTimer()
         self.timerMax.setSingleShot(True)
-        self.timerMax.setInterval(1500)  # TODO: different timeouts for map types
+        self.timerMax.setInterval(5000)  # TODO: different timeouts for map types
         self.timerMax.timeout.connect(self.mapTimeout)
 
     @pyqtSlot()
@@ -217,7 +217,6 @@ class OpenlayersController(QObject):
     def checkMapUpdate(self):
         if self.layerType.emitsLoadEnd:
             # wait for OpenLayers to finish loading
-            # NOTE: does not work with Google and Yahoo layers as they do not emit loadstart and loadend events
             loadEndOL = self.page.mainFrame().evaluateJavaScript("loadEnd")
             debug("waiting for loadEnd: renderingStopped=%r loadEndOL=%r" % (
                   self.context.renderingStopped(), loadEndOL), 4)
@@ -327,7 +326,7 @@ class OpenlayersLayer(QgsPluginLayer):
         self.olLayerTypeRegistry = olLayerTypeRegistry
         self.layerType = None
 
-        #self.iface = iface
+        self.iface = iface
         self.olWebPage = OLWebPage(self)
 
     def readXml(self, node):
@@ -356,11 +355,17 @@ class OpenlayersLayer(QgsPluginLayer):
     def createMapRenderer(self, context):
         ol_layer_type_name = self.customProperty(OpenlayersLayer.LAYER_PROPERTY, "")
         if ol_layer_type_name != "":
-            self.setLayerType(self.olLayerTypeRegistry.getByName(ol_layer_type_name))
+            ol_layer_type = self.olLayerTypeRegistry.getByName(ol_layer_type_name)
+            if ol_layer_type is not None:
+                self.setLayerType(ol_layer_type)
         elif self.layerType is not None:  # Set from layer type ID from old project files
             self.setLayerType(self.layerType)
         if self.layerType is None:
             #Set default layer type
-            self.setLayerType(self.olLayerTypeRegistry.getByName("Google Physical"))
+            self.setLayerType(self.olLayerTypeRegistry.getByName("OpenStreetMap"))
+            if QGis.QGIS_VERSION_INT >= 20300:
+                msg = "Obsolete or unknown layer type '%s', using OpenStreetMap instead" % ol_layer_type_name
+                self.iface.messageBar().pushMessage("OpenLayers Plugin", msg, level=QgsMessageBar.WARNING)
+                QgsMessageLog.logMessage(msg, "OpenLayers Plugin", QgsMessageLog.WARNING)
 
         return OpenlayersRenderer(self, context, self.olWebPage, self.layerType)

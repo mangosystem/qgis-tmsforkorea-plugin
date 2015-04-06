@@ -5,35 +5,34 @@
 
 /**
  * @requires OpenLayers/Layer/XYZ.js
- * http://i2.maps.daum-img.net/map/image/G03/i/2200keery/L2/3938/1718.png
- */
+ */ 
 
 OpenLayers.Layer.DaumStreet = OpenLayers.Class(OpenLayers.Layer.XYZ, {
 
     name: "Daum Street Map",
     url: [
-		"http://i0.maps.daum-img.net/map/image/G03/i/2015sheep/L${z}/${y}/${x}.png",
-		"http://i1.maps.daum-img.net/map/image/G03/i/2015sheep/L${z}/${y}/${x}.png",
-		"http://i2.maps.daum-img.net/map/image/G03/i/2015sheep/L${z}/${y}/${x}.png",
-		"http://i3.maps.daum-img.net/map/image/G03/i/2015sheep/L${z}/${y}/${x}.png"
+    "http://i0.maps.daum-img.net/map/image/G03/i/2015munich/L${z}/${y}/${x}.png",
+    "http://i1.maps.daum-img.net/map/image/G03/i/2015munich/L${z}/${y}/${x}.png",
+    "http://i2.maps.daum-img.net/map/image/G03/i/2015munich/L${z}/${y}/${x}.png",
+    "http://i3.maps.daum-img.net/map/image/G03/i/2015munich/L${z}/${y}/${x}.png"
     ],
-	resolutions: [2048, 1024, 512, 256, 128, 64, 32, 16, 8, 4, 2, 1, 0.5, 0.25],
-	attribution: '<a target="_blank" href="http://local.daum.net/map/index.jsp" '
-		+ 'style="float: left; width: 38px; height: 17px; cursor: pointer; background-image: url(http://i1.daumcdn.net/localimg/localimages/07/2008/map/n_local_img_03_b.png); background-repeat: no-repeat no-repeat; " '
-		+ 'title="Daum 지도로 보시려면 클릭하세요."></a>' 
-		+ 'ⓒ Daum',
-	sphericalMercator: false,
-	buffer: 1,
-	numZoomLevels: 14,
-	minResolution: 0.25,
-	maxResolution: 2048,
-	units: "m",
-	projection: new OpenLayers.Projection("EPSG:5181"),
-	displayOutsideMaxExtent: true,
-	maxExtent: new OpenLayers.Bounds(-30000, -60000, 494288, 988576),
+  resolutions: [2048, 1024, 512, 256, 128, 64, 32, 16, 8, 4, 2, 1, 0.5, 0.25],
+  attribution: '<a target="_blank" href="http://local.daum.net/map/index.jsp" '
+    + 'style="float: left; width: 38px; height: 17px; cursor: pointer; background-image: url(http://i1.daumcdn.net/localimg/localimages/07/2008/map/n_local_img_03_b.png); background-repeat: no-repeat no-repeat; " '
+    + 'title="Daum 지도로 보시려면 클릭하세요."></a>' 
+    + 'ⓒ Daum',
+  sphericalMercator: false,
+  buffer: 1,
+  numZoomLevels: 14,
+  minResolution: 0.25,
+  maxResolution: 2048,
+  units: "m",
+  projection: new OpenLayers.Projection("EPSG:5181"),
+  displayOutsideMaxExtent: true,
+  maxExtent: new OpenLayers.Bounds(-30000, -60000, 494288, 464288),
     initialize: function(name, options) {
-		if (!options) options = {resolutions: [2048, 1024, 512, 256, 128, 64, 32, 16, 8, 4, 2, 1, 0.5, 0.25]};
-		else if (!options.resolutions) options.resolutions = [2048, 1024, 512, 256, 128, 64, 32, 16, 8, 4, 2, 1, 0.5, 0.25];
+    if (!options) options = {resolutions: [2048, 1024, 512, 256, 128, 64, 32, 16, 8, 4, 2, 1, 0.5, 0.25]};
+    else if (!options.resolutions) options.resolutions = [2048, 1024, 512, 256, 128, 64, 32, 16, 8, 4, 2, 1, 0.5, 0.25];
         var newArgs = [name, null, options];
         OpenLayers.Layer.XYZ.prototype.initialize.apply(this, newArgs);
     },
@@ -46,7 +45,7 @@ OpenLayers.Layer.DaumStreet = OpenLayers.Class(OpenLayers.Layer.XYZ, {
         return obj;
     },
 
-	getXYZ: function(bounds) {
+  getXYZ: function(bounds) {
         var res = this.getServerResolution();
         var x = Math.round((bounds.left - this.maxExtent.left) / (res * this.tileSize.w));
         var y = Math.round((bounds.bottom - this.maxExtent.bottom) / (res * this.tileSize.h));
@@ -59,6 +58,6 @@ OpenLayers.Layer.DaumStreet = OpenLayers.Class(OpenLayers.Layer.XYZ, {
 
         return {'x': x, 'y': y, 'z': z};
     },
-	
+  
     CLASS_NAME: "OpenLayers.Layer.DaumStreet"
 });

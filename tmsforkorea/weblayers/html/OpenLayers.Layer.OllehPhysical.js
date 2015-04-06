@@ -5,7 +5,6 @@
 
 /**
  * @requires OpenLayers/Layer/XYZ.js
- * http://map.ktgis.com/HybridMap/3d130924/layers/_alllayers/l03/r0000000d/c0000000d.png
  */
 
 OpenLayers.Layer.OllehPhysical = OpenLayers.Class(OpenLayers.Layer.XYZ, {

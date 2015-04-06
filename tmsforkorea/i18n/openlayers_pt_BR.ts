@@ -1,41 +1,42 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE TS><TS version="1.1" language="en">
+<!DOCTYPE TS>
+<TS version="2.0" language="pt_BR">
 <context>
     <name>Form</name>
     <message>
-        <location filename="ui_openlayers_ovwidget.py" line="72"/>
+        <location filename="openlayers_ovwidgetbase.py" line="72"/>
         <source>Form</source>
-        <translation>Form</translation>
+        <translation>Formulário</translation>
     </message>
     <message>
-        <location filename="ui_openlayers_ovwidget.py" line="73"/>
+        <location filename="openlayers_ovwidgetbase.py" line="73"/>
         <source>Enable map</source>
-        <translation>Enable map</translation>
+        <translation>Habilitar mapa</translation>
     </message>
     <message>
-        <location filename="ui_openlayers_ovwidget.py" line="74"/>
+        <location filename="openlayers_ovwidgetbase.py" line="74"/>
         <source>Add map</source>
-        <translation>Add map</translation>
+        <translation>Adicionar mapa</translation>
     </message>
     <message>
-        <location filename="ui_openlayers_ovwidget.py" line="75"/>
+        <location filename="openlayers_ovwidgetbase.py" line="75"/>
         <source>Hide cross in map</source>
-        <translation>Hide cross in map</translation>
+        <translation>Esconder indicador no mapa</translation>
     </message>
     <message>
-        <location filename="ui_openlayers_ovwidget.py" line="76"/>
+        <location filename="openlayers_ovwidgetbase.py" line="76"/>
         <source>Refresh map</source>
-        <translation>Refresh map</translation>
+        <translation>Atualizar mapa</translation>
     </message>
     <message>
-        <location filename="ui_openlayers_ovwidget.py" line="77"/>
+        <location filename="openlayers_ovwidgetbase.py" line="77"/>
         <source>Save this image</source>
-        <translation>Save this image</translation>
+        <translation>Salvar esta imagem</translation>
     </message>
     <message>
-        <location filename="ui_openlayers_ovwidget.py" line="78"/>
+        <location filename="openlayers_ovwidgetbase.py" line="78"/>
         <source>Copy rectangle (KML) of map to clipboard</source>
-        <translation>Copy rectangle (KML) of map to clipboard</translation>
+        <translation>Copiar retângulo (KML) do mapa para a área de transferência</translation>
     </message>
 </context>
 <context>
@@ -43,32 +44,32 @@
     <message>
         <location filename="openlayers_ovwidget.py" line="235"/>
         <source>Save image</source>
-        <translation>Save image</translation>
+        <translation>Salvar imagem</translation>
     </message>
     <message>
         <location filename="openlayers_ovwidget.py" line="235"/>
         <source>Image(*.jpg)</source>
-        <translation>Image(*.jpg)</translation>
+        <translation>Imagem(*.jpg)</translation>
     </message>
     <message>
         <location filename="openlayers_ovwidget.py" line="248"/>
         <source>OpenLayers Overview</source>
-        <translation>OpenLayers Overview</translation>
+        <translation>Visão Geral do OpenLayers</translation>
     </message>
     <message>
         <location filename="openlayers_ovwidget.py" line="158"/>
         <source>At least one layer in map canvas required</source>
-        <translation>At least one layer in map canvas required</translation>
+        <translation>Pelo menos uma camada no mapa é necessária</translation>
     </message>
     <message>
         <location filename="openlayers_ovwidget.py" line="248"/>
         <source>Error loading page!</source>
-        <translation>Error loading page!</translation>
+        <translation>Erro carregando página!</translation>
     </message>
     <message>
         <location filename="openlayers_ovwidget.py" line="258"/>
         <source>Loading %1...</source>
-        <translation>Loading %1...</translation>
+        <translation>Carregando %1...</translation>
     </message>
 </context>
 <context>
@@ -76,17 +77,17 @@
     <message>
         <location filename="openlayers_plugin.py" line="144"/>
         <source>OpenLayers Overview</source>
-        <translation>OpenLayers Overview</translation>
+        <translation>Visão Geral do OpenLayers</translation>
     </message>
     <message>
         <location filename="openlayers_plugin.py" line="154"/>
         <source>Add %1 layer</source>
-        <translation>Add %1 layer</translation>
+        <translation>Adicionar %1 camada</translation>
     </message>
     <message>
         <location filename="openlayers_plugin.py" line="161"/>
         <source>Could not set Google projection!</source>
-        <translation>Could not set Google projection!</translation>
+        <translation>Não é possível definir a projeção do Google!</translation>
     </message>
 </context>
 </TS>

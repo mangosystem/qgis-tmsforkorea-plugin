@@ -8,7 +8,6 @@ A QGIS plugin
 begin                : 2009-11-30
 copyright            : (C) 2009 by Pirmin Kalberer, Sourcepole
 email                : pka at sourcepole.ch
-modified             : 2014-09-19 by Minpa Lee, mapplus at gmail.com
  ***************************************************************************/
 
 /***************************************************************************
@@ -30,19 +29,13 @@ from openlayers_overview import OLOverview
 from openlayers_layer import OpenlayersLayer
 from openlayers_plugin_layer_type import OpenlayersPluginLayerType
 from weblayers.weblayer_registry import WebLayerTypeRegistry
-# from weblayers.google_maps import OlGooglePhysicalLayer, OlGoogleStreetsLayer, OlGoogleHybridLayer, OlGoogleSatelliteLayer
-# from weblayers.osm import OlOpenStreetMapLayer, OlOpenCycleMapLayer, OlOCMLandscapeLayer, OlOCMPublicTransportLayer
-# from weblayers.yahoo_maps import OlYahooStreetLayer, OlYahooHybridLayer, OlYahooSatelliteLayer
-# from weblayers.bing_maps import OlBingRoadLayer, OlBingAerialLayer, OlBingAerialLabelledLayer
-# from weblayers.apple_maps import OlAppleiPhotoMapLayer
-# from weblayers.osm_stamen import OlOSMStamenTonerLayer, OlOSMStamenWatercolorLayer, OlOSMStamenTerrainLayer
+from weblayers.google_maps import OlGooglePhysicalLayer, OlGoogleStreetsLayer, OlGoogleHybridLayer, OlGoogleSatelliteLayer
+from weblayers.osm import OlOpenStreetMapLayer, OlOpenCycleMapLayer, OlOCMLandscapeLayer, OlOCMPublicTransportLayer, OlOSMHumanitarianDataModelLayer
+from weblayers.bing_maps import OlBingRoadLayer, OlBingAerialLayer, OlBingAerialLabelledLayer
+from weblayers.apple_maps import OlAppleiPhotoMapLayer
+from weblayers.osm_stamen import OlOSMStamenTonerLayer, OlOSMStamenWatercolorLayer, OlOSMStamenTerrainLayer
+from weblayers.map_quest import OlMapQuestOSMLayer, OlMapQuestOpenAerialLayer
 import os.path
-
-# TMS for Korea 2014-09-19
-from weblayers.vworld_maps import OlVWorldStreetLayer, OlVWorldHybridLayer, OlVWorldSatelliteLayer
-from weblayers.daum_maps import OlDaumStreetLayer, OlDaumHybridLayer, OlDaumSatelliteLayer, OlDaumPhysicalLayer
-from weblayers.naver_maps import OlNaverStreetLayer, OlNaverHybridLayer, OlNaverSatelliteLayer, OlNaverPhysicalLayer, OlNaverCadastralLayer
-from weblayers.olleh_maps import OlOllehStreetLayer, OlOllehHybridLayer, OlOllehSatelliteLayer, OlOllehPhysicalLayer
 
 
 class OpenlayersPlugin:
@@ -68,8 +61,8 @@ class OpenlayersPlugin:
         self.dlgAbout = AboutDialog()
 
     def initGui(self):
-        self._olMenu = QMenu("TMS for Korea")
-        self._olMenu.setIcon(QIcon(":/plugins/tmsforkorea/openlayers.png"))
+        self._olMenu = QMenu("OpenLayers plugin")
+        self._olMenu.setIcon(QIcon(":/plugins/openlayers/openlayers.png"))
 
         # Overview
         self.overviewAddAction = QAction(QApplication.translate("OpenlayersPlugin", "OpenLayers Overview"), self.iface.mainWindow())
@@ -78,14 +71,11 @@ class OpenlayersPlugin:
         QObject.connect(self.overviewAddAction, SIGNAL("toggled(bool)"), self.olOverview.setVisible)
         self._olMenu.addAction(self.overviewAddAction)
 
-        # Terms of Service
-        self._actionAbout = QAction(QApplication.translate("OpenlayersPlugin", "Terms of Service / About"), self.iface.mainWindow())
+        self._actionAbout = QAction("Terms of Service / About", self.iface.mainWindow())
         QObject.connect(self._actionAbout, SIGNAL("triggered()"), self.dlgAbout, SLOT("show()"))
         #? self._actionAbout.triggered.connect(self.dlgAbout, SLOT("show()"))
         self._olMenu.addAction(self._actionAbout)
 
-        # OpenLayers plugin layers
-        """
         self._olLayerTypeRegistry.register(OlGooglePhysicalLayer())
         self._olLayerTypeRegistry.register(OlGoogleStreetsLayer())
         self._olLayerTypeRegistry.register(OlGoogleHybridLayer())
@@ -95,10 +85,7 @@ class OpenlayersPlugin:
         self._olLayerTypeRegistry.register(OlOpenCycleMapLayer())
         self._olLayerTypeRegistry.register(OlOCMLandscapeLayer())
         self._olLayerTypeRegistry.register(OlOCMPublicTransportLayer())
-
-        self._olLayerTypeRegistry.register(OlYahooStreetLayer())
-        self._olLayerTypeRegistry.register(OlYahooHybridLayer())
-        self._olLayerTypeRegistry.register(OlYahooSatelliteLayer())
+        self._olLayerTypeRegistry.register(OlOSMHumanitarianDataModelLayer())
 
         self._olLayerTypeRegistry.register(OlBingRoadLayer())
         self._olLayerTypeRegistry.register(OlBingAerialLayer())
@@ -108,29 +95,10 @@ class OpenlayersPlugin:
         self._olLayerTypeRegistry.register(OlOSMStamenWatercolorLayer())
         self._olLayerTypeRegistry.register(OlOSMStamenTerrainLayer())
 
+        self._olLayerTypeRegistry.register(OlMapQuestOSMLayer())
+        self._olLayerTypeRegistry.register(OlMapQuestOpenAerialLayer())
+
         self._olLayerTypeRegistry.register(OlAppleiPhotoMapLayer())
-        """
-        
-        # TMS for Korea 2014-09-19
-        self._olLayerTypeRegistry.register(OlDaumStreetLayer())
-        self._olLayerTypeRegistry.register(OlDaumHybridLayer())
-        self._olLayerTypeRegistry.register(OlDaumSatelliteLayer())
-        self._olLayerTypeRegistry.register(OlDaumPhysicalLayer())
-        
-        self._olLayerTypeRegistry.register(OlNaverStreetLayer())
-        self._olLayerTypeRegistry.register(OlNaverHybridLayer())
-        self._olLayerTypeRegistry.register(OlNaverSatelliteLayer())
-        self._olLayerTypeRegistry.register(OlNaverPhysicalLayer())
-        self._olLayerTypeRegistry.register(OlNaverCadastralLayer())
-        
-        self._olLayerTypeRegistry.register(OlOllehStreetLayer())
-        self._olLayerTypeRegistry.register(OlOllehHybridLayer())
-        self._olLayerTypeRegistry.register(OlOllehSatelliteLayer())
-        self._olLayerTypeRegistry.register(OlOllehPhysicalLayer())
-        
-        self._olLayerTypeRegistry.register(OlVWorldStreetLayer())
-        self._olLayerTypeRegistry.register(OlVWorldHybridLayer())
-        self._olLayerTypeRegistry.register(OlVWorldSatelliteLayer())
 
         for group in self._olLayerTypeRegistry.groups():
             groupMenu = group.menu()
@@ -145,9 +113,9 @@ class OpenlayersPlugin:
         self.iface.removePluginWebMenu("_tmp", self._actionAbout)
 
         # Register plugin layer type
-        pluginLayerType = OpenlayersPluginLayerType(self.iface, self.setReferenceLayer,
+        self.pluginLayerType = OpenlayersPluginLayerType(self.iface, self.setReferenceLayer,
                                                     self._olLayerTypeRegistry)
-        QgsPluginLayerRegistry.instance().addPluginLayerType(pluginLayerType)
+        QgsPluginLayerRegistry.instance().addPluginLayerType(self.pluginLayerType)
 
     def unload(self):
         self.iface.webMenu().removeAction(self._olMenu.menuAction())
@@ -198,11 +166,14 @@ class OpenlayersPlugin:
         mapCanvas = self.iface.mapCanvas()
         # On the fly
         if QGis.QGIS_VERSION_INT >= 20300:
-            mapCanvas.mapSettings().setCrsTransformEnabled(True)
+            mapCanvas.setCrsTransformEnabled(True)
         else:
             mapCanvas.mapRenderer().setProjectionsEnabled(True)
         canvasCrs = self.canvasCrs()
         if canvasCrs != coordRefSys:
+            coordTrans = QgsCoordinateTransform(canvasCrs, coordRefSys)
+            extMap = mapCanvas.extent()
+            extMap = coordTrans.transform(extMap, QgsCoordinateTransform.ForwardTransform)
             if QGis.QGIS_VERSION_INT >= 20300:
                 mapCanvas.setDestinationCrs(coordRefSys)
             elif QGis.QGIS_VERSION_INT >= 10900:
@@ -211,10 +182,4 @@ class OpenlayersPlugin:
                 mapCanvas.mapRenderer().setDestinationSrs(coordRefSys)
             mapCanvas.freeze(False)
             mapCanvas.setMapUnits(coordRefSys.mapUnits())
-            try:
-                coodTrans = QgsCoordinateTransform(canvasCrs, coordRefSys)
-                extMap = mapCanvas.extent()
-                extMap = coodTrans.transform(extMap, QgsCoordinateTransform.ForwardTransform)
-                mapCanvas.setExtent(extMap)
-            except:
-                pass
+            mapCanvas.setExtent(extMap)

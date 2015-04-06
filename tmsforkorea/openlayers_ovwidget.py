@@ -72,11 +72,8 @@ class MarkerCursor(QObject):
     pointCenter = core.QgsRectangle(core.QgsPoint(left, top), core.QgsPoint(right, bottom)).center()
     crsCanvas = self.__canvas.mapRenderer().destinationCrs()
     if self.__srsOL != crsCanvas:
-        try:
-            coodTrans = core.QgsCoordinateTransform(self.__srsOL, crsCanvas)
-            pointCenter = coodTrans.transform(pointCenter, core.QgsCoordinateTransform.ForwardTransform)
-        except:
-            pass
+      coodTrans = core.QgsCoordinateTransform(self.__srsOL, crsCanvas)
+      pointCenter = coodTrans.transform(pointCenter, core.QgsCoordinateTransform.ForwardTransform)
     self.__refresh(pointCenter)
 
 class OpenLayersOverviewWidget(QWidget,Ui_Form):

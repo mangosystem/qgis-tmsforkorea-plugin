@@ -23,28 +23,22 @@ email                : pka at sourcepole.ch
 from weblayer import WebLayer3857
 
 
-class OlYahooMapsLayer(WebLayer3857):
+class OlMapQuestLayer(WebLayer3857):
 
-    emitsLoadEnd = False
+    emitsLoadEnd = True
 
     def __init__(self, name, html):
-        WebLayer3857.__init__(self, groupName="Yahoo Maps", groupIcon="yahoo_icon.png",
+        WebLayer3857.__init__(self, groupName="MapQuest", groupIcon="map_quest_icon.png",
                               name=name, html=html)
 
 
-class OlYahooStreetLayer(OlYahooMapsLayer):
+class OlMapQuestOSMLayer(OlMapQuestLayer):
 
     def __init__(self):
-        OlYahooMapsLayer.__init__(self, name='Yahoo Street', html='yahoo_street.html')
+        OlMapQuestLayer.__init__(self, name='MapQuest-OSM', html='map_quest_osm.html')
 
 
-class OlYahooHybridLayer(OlYahooMapsLayer):
-
-    def __init__(self):
-        OlYahooMapsLayer.__init__(self, name='Yahoo Hybrid', html='yahoo_hybrid.html')
-
-
-class OlYahooSatelliteLayer(OlYahooMapsLayer):
+class OlMapQuestOpenAerialLayer(OlMapQuestLayer):
 
     def __init__(self):
-        OlYahooMapsLayer.__init__(self, name='Yahoo Satellite', html='yahoo_satellite.html')
+        OlMapQuestLayer.__init__(self, name='MapQuest Open Aerial', html='map_quest_open_aerial.html')

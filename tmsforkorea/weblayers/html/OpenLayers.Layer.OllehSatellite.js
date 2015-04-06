@@ -5,7 +5,6 @@
 
 /**
  * @requires OpenLayers/Layer/XYZ.js
- * http://map.ktgis.com/ServiceAir/version20110705/l12/r000019b7/c0000178c.jpg
  */
 
 OpenLayers.Layer.OllehSatellite = OpenLayers.Class(OpenLayers.Layer.XYZ, {
