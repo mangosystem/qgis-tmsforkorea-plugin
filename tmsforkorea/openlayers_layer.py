@@ -8,6 +8,7 @@ A QGIS plugin
 begin                : 2010-02-03
 copyright            : (C) 2010 by Pirmin Kalberer, Sourcepole
 email                : pka at sourcepole.ch
+modified             : 2014-09-19 by Minpa Lee, mapplus at gmail.com
  ***************************************************************************/
 
 /***************************************************************************
@@ -106,7 +107,7 @@ class OpenlayersController(QObject):
 
         self.timerMax = QTimer()
         self.timerMax.setSingleShot(True)
-        self.timerMax.setInterval(5000)  # TODO: different timeouts for map types
+        self.timerMax.setInterval(1500)  # TODO: different timeouts for map types
         self.timerMax.timeout.connect(self.mapTimeout)
 
     @pyqtSlot()

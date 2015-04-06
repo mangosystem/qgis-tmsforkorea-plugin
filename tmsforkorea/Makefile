@@ -30,8 +30,7 @@ SOURCES = openlayers_plugin.py \
           openlayers_ovwidgetbase.py
 TRANSLATIONS = i18n/openlayers_de.ts \
                i18n/openlayers_en.ts \
-               i18n/openlayers_fr.ts \
-               i18n/openlayers_pt_BR.ts
+               i18n/openlayers_fr.ts
 
 # global
 

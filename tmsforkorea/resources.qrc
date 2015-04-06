@@ -1,11 +1,10 @@
 <RCC>
-  <qresource prefix="/plugins/openlayers" >
+  <qresource prefix="/plugins/tmsforkorea" >
     <file>openlayers.png</file>
-    <file>weblayers/icons/apple_icon.png</file>
-    <file>weblayers/icons/bing_icon.png</file>
-    <file>weblayers/icons/google_icon.png</file>
-    <file>weblayers/icons/map_quest_icon.png</file>
-    <file>weblayers/icons/osm_icon.png</file>
-    <file>weblayers/icons/stamen_icon.png</file>
+    <file>weblayers/icons/kml.png</file>
+    <file>weblayers/icons/daum_icon.png</file>
+    <file>weblayers/icons/naver_icon.png</file>
+    <file>weblayers/icons/olleh_icon.png</file>
+    <file>weblayers/icons/vworld_icon.png</file>
   </qresource>
 </RCC>

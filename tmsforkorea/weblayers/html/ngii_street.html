@@ -1,0 +1,98 @@
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <title>OpenLayers NgiiStreet Layer</title>
+    <link rel="stylesheet" href="qgis.css" type="text/css">
+    <script src="OpenLayers.js"></script>
+    <!--script type="text/javascript" src="OpenLayers.Layer.NgiiStreet.js"></script-->
+    <script src="OlOverviewMarker.js"></script>
+    <script type="text/javascript">
+        var mapMinZoom = 7;
+        var mapMaxZoom = 19;
+        var maxZoom = 0;
+        
+        var map;
+        var loadEnd;
+        var oloMarker; // OpenLayer Overview Marker
+        function init() {
+            map = new OpenLayers.Map('map', {
+              theme: null,
+              controls: [
+                new OpenLayers.Control.Attribution(),
+                new OpenLayers.Control.Navigation({
+                  dragPanOptions: {
+                    enableKinetic: true
+                  }
+                })
+              ],
+              projection: new OpenLayers.Projection("EPSG:5174"),
+              displayProjection : new OpenLayers.Projection("EPSG:4326"),
+              units: "m",
+              maxResolution: 1954.597389,
+              numZoomLevels: 14,
+              maxExtent: new OpenLayers.Bounds(-200000.0, -28024123.62 , 31824123.62, 4000000.0),
+              isValidZoomLevel : function(zoomLevel) {
+                return ((zoomLevel != null) && (zoomLevel >= maxZoom) && (zoomLevel < this.getNumZoomLevels()));
+              }
+            });
+            
+            map.getMinZoom = function() {
+              return maxZoom;
+            };
+
+            loadEnd = false;
+            function layerLoadStart(event)
+            {
+              loadEnd = false;
+            }
+            
+            function layerLoadEnd(event)
+            {
+              loadEnd = true;
+            }
+                        
+            var koreanlayer = new OpenLayers.Layer.TMS("NGII Street",
+              ['http://emap.ngii.go.kr:8082/proxy/proxy.jsp?url=http://210.117.198.62:8081/korean_map_tile/'], 
+            {
+              serviceVersion: '.', 
+              layername: 'KOREAN', 
+              alpha: true,
+              type: 'png', 
+              getURL: overlay_getTileURL,
+              'buffer': 4
+            }); 
+            
+            map.addLayer(koreanlayer);
+            map.setCenter(new OpenLayers.LonLat(200000, 500000), 1); // Zoom level
+            
+            oloMarker = new OlOverviewMarker(map, getPathUpper(document.URL) + '/x.png');
+        }
+        
+                
+        function overlay_getTileURL(bounds) {
+          var res = this.map.getResolution(); 
+          var x = Math.round((bounds.left - this.maxExtent.left) / (res * this.tileSize.w)); 
+          var y = Math.round((bounds.bottom - this.maxExtent.bottom) / (res * this.tileSize.h)); 
+          var z = this.map.getZoom() + 6; 
+
+          z = "L" + fillzero(z, 2);
+          return this.url + z + "/" + x + "/" + y + "." + this.type; 
+        } 
+
+        function fillzero(n, digits) { 
+          var zero = '';
+          n = n.toString();
+          if (digits > n.length) {
+            for (var i = 0; digits - n.length > i; i++) {
+              zero += '0';
+            }
+          }
+          return zero + n;
+        }
+
+    </script>
+  </head>
+  <body onload="init()">
+    <div id="map"></div>
+  </body>
+</html>
