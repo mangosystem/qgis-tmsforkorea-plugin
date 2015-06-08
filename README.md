@@ -15,6 +15,12 @@ Plugins Repository
 http://plugins.qgis.org/plugins/tmsforkorea/
 
 
+Gallery
+---------
+
+![screenshot](https://github.com/mapplus/qgis-tmsforkorea-plugin/blob/master/images/tmsforkorea_overview.png?width=800)
+
+
 License
 ----------
  - ported from qgis-openlayers-plugin[https://github.com/sourcepole/qgis-openlayers-plugin]
