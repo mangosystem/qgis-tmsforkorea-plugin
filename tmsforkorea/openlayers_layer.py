@@ -350,8 +350,12 @@ class OpenlayersLayer(QgsPluginLayer):
         self.setCustomProperty(OpenlayersLayer.LAYER_PROPERTY, layerType.layerTypeName)
         coordRefSys = self.layerType.coordRefSys(None)  # FIXME
         self.setCrs(coordRefSys)
-        #TODO: get extent from layer type
-        self.setExtent(QgsRectangle(-20037508.34, -20037508.34, 20037508.34, 20037508.34))
+        
+        #TODO: get extent from layer type fullExtent = [-180.0, -90.0, 180.0, 90.0]
+        ext = self.layerType.fullExtent
+        # QgsRectangle (double xmin=0, double ymin=0, double xmax=0, double ymax=0)
+        #self.setExtent(QgsRectangle(-20037508.34, -20037508.34, 20037508.34, 20037508.34))
+        self.setExtent(QgsRectangle(ext[0], ext[1], ext[2], ext[3]))
 
     def createMapRenderer(self, context):
         ol_layer_type_name = self.customProperty(OpenlayersLayer.LAYER_PROPERTY, "")

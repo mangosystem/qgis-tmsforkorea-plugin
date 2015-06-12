@@ -276,7 +276,10 @@ class OpenLayersOverviewWidget(QWidget,Ui_Form):
     if ok == False:
       QMessageBox.warning(self, QApplication.translate("OpenLayersOverviewWidget", "OpenLayers Overview"), QApplication.translate("OpenLayersOverviewWidget", "Error loading page!"))
     else:
-      self.__refreshMapOL()
+      try:
+        self.__refreshMapOL()
+      except:
+        pass
     self.lbStatusRead.setVisible( False )
     self.webViewMap.setVisible( True )
     self.disconnect(self.webViewMap.page().mainFrame(), SIGNAL("loadFinished (bool)"),

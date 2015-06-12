@@ -9,7 +9,7 @@
 
 OpenLayers.Layer.DaumSatellite = OpenLayers.Class(OpenLayers.Layer.XYZ, {
 
-    name: "DaumSatelliteMap", 
+    name: "DaumSatelliteMap",
     url: [
     "http://s0.maps.daum-img.net/L${z}/${y}/${x}.jpg?v=141021",
     "http://s1.maps.daum-img.net/L${z}/${y}/${x}.jpg?v=141021",

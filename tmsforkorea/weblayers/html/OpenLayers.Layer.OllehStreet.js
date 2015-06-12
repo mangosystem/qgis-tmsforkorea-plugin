@@ -9,16 +9,16 @@
 
 OpenLayers.Layer.OllehStreet = OpenLayers.Class(OpenLayers.Layer.XYZ, {
 
-    name: "OllehStreetMap",
+    name: "OllehStreetMap", 
     url: [
-        "http://map.ktgis.com/BaseMap/olleh5.02.1_0311/layers/_alllayers/l${z}/r${y}/c${x}.png"
+        "http://map.ktgis.com/BaseMap/olleh5.04.1_0511/layers/_alllayers/l${z}/r${y}/c${x}.png"
     ],
     
     resolutions: [2048, 1024, 512, 256, 128, 64, 32, 16, 8, 4, 2, 1, 0.5],
     attribution: '<a target="_blank" href="http://map.olleh.com" '
         + 'style="float: left; width: 45px; height: 16px; cursor: pointer; background-image: url(http://i.kthimg.com/TOP/svc/map/v3_olleh/js/kmap/images/2D_BI_olleh.png); background-repeat: no-repeat no-repeat; " '
         + 'title="Olleh 지도로 보시려면 클릭하세요."></a>' 
-        + '© KT corp.',
+        + '©Olleh',
     sphericalMercator: false,
     buffer: 0,
     numZoomLevels: 13,
