@@ -52,3 +52,9 @@ class OlVWorldSatelliteLayer(OlVWorldMapsLayer):
 
     def __init__(self):
         OlVWorldMapsLayer.__init__(self, name='VWorld Satellite', html='vworld_satellite.html')
+
+
+class OlVWorldGrayLayer(OlVWorldMapsLayer):
+
+    def __init__(self):
+        OlVWorldMapsLayer.__init__(self, name='VWorld Gray', html='vworld_gray.html')

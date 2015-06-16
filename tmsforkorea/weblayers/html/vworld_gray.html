@@ -1,7 +1,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-    <title>OpenLayers VWorldHybrid Layer</title>
+    <title>OpenLayers VWorldGray Layer</title>
     <link rel="stylesheet" href="qgis.css" type="text/css">
     <script src="OpenLayers.js"></script>
     <script src="OlOverviewMarker.js"></script>
@@ -39,28 +39,11 @@
               loadEnd = true;
             }
             
-            // http://xdworld.vworld.kr:8080/2d/Hybrid/201411/15/27938/12698.png
-            var vWorldHybrid = new OpenLayers.Layer.XYZ(
-                "VWorld Hybrid Map",
+            // http://xdworld.vworld.kr:8080/2d/gray/201411/13/6984/3174.png
+            var vWorldStreet = new OpenLayers.Layer.XYZ(
+                "VWorld Street Map",
                 [
-                    "http://xdworld.vworld.kr:8080/2d/Hybrid/201411/${z}/${x}/${y}.png"
-                ], {
-                    sphericalMercator: true,
-                    wrapDateLine: true,
-                    numZoomLevels: 19,
-                    isBaseLayer: false,
-                    eventListeners: {
-                      "loadstart": layerLoadStart,
-                      "loadend": layerLoadEnd
-                   }
-                }
-            );
-            
-            // http://xdworld.vworld.kr:8080/2d/Satellite/201301/15/27936/12699.jpeg
-            var vWorldSatellite = new OpenLayers.Layer.XYZ(
-                "VWorld Satellite Map",
-                [
-                    "http://xdworld.vworld.kr:8080/2d/Satellite/201301/${z}/${x}/${y}.jpeg"
+                    "http://xdworld.vworld.kr:8080/2d/gray/201411/${z}/${x}/${y}.png"
                 ], {
                     attribution: '<a target="_blank" href="http://map.vworld.kr/" '
         + 'style="float: left; width: 353px; height: 29px; cursor: pointer; background-image: url(http://map.vworld.kr/images/maps/logo_openplatform.png); background-repeat: no-repeat no-repeat; " '
@@ -69,11 +52,14 @@
                     sphericalMercator: true,
                     wrapDateLine: true,
                     numZoomLevels: 19,
-                    isBaseLayer: true
+                    eventListeners: {
+                      "loadstart": layerLoadStart,
+                      "loadend": layerLoadEnd
+                   }
                 }
             );
             
-            map.addLayers([vWorldSatellite, vWorldHybrid]);
+            map.addLayers([vWorldStreet]);
             map.setCenter(new OpenLayers.LonLat(14243425.793355, 4302305.8698004), 7); // Zoom level
             
             oloMarker = new OlOverviewMarker(map, getPathUpper(document.URL) + '/x.png');

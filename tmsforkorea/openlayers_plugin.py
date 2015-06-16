@@ -39,7 +39,7 @@ from weblayers.weblayer_registry import WebLayerTypeRegistry
 import os.path
 
 # TMS for Korea 2014-09-19
-from weblayers.vworld_maps import OlVWorldStreetLayer, OlVWorldHybridLayer, OlVWorldSatelliteLayer
+from weblayers.vworld_maps import OlVWorldStreetLayer, OlVWorldGrayLayer, OlVWorldHybridLayer, OlVWorldSatelliteLayer
 from weblayers.daum_maps import OlDaumStreetLayer, OlDaumHybridLayer, OlDaumSatelliteLayer, OlDaumPhysicalLayer
 from weblayers.naver_maps import OlNaverStreetLayer, OlNaverHybridLayer, OlNaverSatelliteLayer, OlNaverPhysicalLayer, OlNaverCadastralLayer
 from weblayers.olleh_maps import OlOllehStreetLayer, OlOllehHybridLayer, OlOllehSatelliteLayer, OlOllehPhysicalLayer
@@ -129,6 +129,7 @@ class OpenlayersPlugin:
         self._olLayerTypeRegistry.register(OlOllehPhysicalLayer())
         
         self._olLayerTypeRegistry.register(OlVWorldStreetLayer())
+        self._olLayerTypeRegistry.register(OlVWorldGrayLayer())
         self._olLayerTypeRegistry.register(OlVWorldHybridLayer())
         self._olLayerTypeRegistry.register(OlVWorldSatelliteLayer())
 
