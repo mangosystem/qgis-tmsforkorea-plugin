@@ -29,7 +29,7 @@ OpenLayers.Layer.DaumStreet = OpenLayers.Class(OpenLayers.Layer.XYZ, {
   units: "m",
   projection: new OpenLayers.Projection("EPSG:5181"),
   displayOutsideMaxExtent: true,
-  maxExtent: new OpenLayers.Bounds(-30000, -60000, 494288, 464288),
+  maxExtent: new OpenLayers.Bounds(-30000, -60000, 494288, 988576),
     initialize: function(name, options) {
     if (!options) options = {resolutions: [2048, 1024, 512, 256, 128, 64, 32, 16, 8, 4, 2, 1, 0.5, 0.25]};
     else if (!options.resolutions) options.resolutions = [2048, 1024, 512, 256, 128, 64, 32, 16, 8, 4, 2, 1, 0.5, 0.25];
