@@ -10,8 +10,9 @@
 [general]
 name=TMS for Korea
 qgisMinimumVersion=2.3
-description=QGIS plugin. Daum, Naver, Olleh, VWorld Map Layers for Korean users
-version=1.2.2
+description=QGIS plugin. Daum, Naver, Olleh, VWorld, NGII Map Layers for Korean users
+about=QGIS plugin. Daum, Naver, Olleh, VWorld, NGII Map Layers for Korean users
+version=1.4.0
 
 # end of mandatory metadata
 
@@ -34,11 +35,12 @@ changelog=
    1.1.0 -Update Daum, Naver, Olleh Maps
    1.2.0 -Update Daum, Naver, Olleh Maps
    1.2.1 -Update VWorld Maps
-   1.2.2 -Update VWorld Maps
+   1.3.0 -Update Daum Maps
+   1.4.0 -Added NGII(Street, Blank, Color-Blind, High-Density, English Version) layers
    
 
 # tags are comma separated with spaces allowed
-tags=openlayers, daum, naver, olleh, vworld
+tags=openlayers, daum, naver, olleh, vworld, ngii
 
 homepage=http://www.onspatial.com/2013/02/qgis-tms-for-korean-users-plugin.html
 tracker=http://hub.qgis.org/projects/tmsforkorea

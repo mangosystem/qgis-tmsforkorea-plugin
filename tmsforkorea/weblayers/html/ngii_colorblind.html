@@ -50,11 +50,11 @@
               loadEnd = true;
             }
                         
-            var koreanlayer = new OpenLayers.Layer.TMS("NGII Street",
-              ['http://emap.ngii.go.kr:8082/proxy/proxy.jsp?url=http://210.117.198.62:8081/korean_map_tile/'], 
+            var koreanlayer = new OpenLayers.Layer.TMS("NGII Color Blind",
+              ['http://emap.ngii.go.kr:8082/proxy/proxy.jsp?url=http://210.117.198.63:8081/color_map_tile/'], 
             {
               serviceVersion: '.', 
-              layername: 'KOREAN', 
+              layername: 'COLOR', 
               alpha: true,
               type: 'png', 
               getURL: overlay_getTileURL,

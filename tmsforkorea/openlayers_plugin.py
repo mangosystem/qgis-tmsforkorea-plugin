@@ -43,6 +43,7 @@ from weblayers.vworld_maps import OlVWorldStreetLayer, OlVWorldGrayLayer, OlVWor
 from weblayers.daum_maps import OlDaumStreetLayer, OlDaumHybridLayer, OlDaumSatelliteLayer, OlDaumPhysicalLayer
 from weblayers.naver_maps import OlNaverStreetLayer, OlNaverHybridLayer, OlNaverSatelliteLayer, OlNaverPhysicalLayer, OlNaverCadastralLayer
 from weblayers.olleh_maps import OlOllehStreetLayer, OlOllehHybridLayer, OlOllehSatelliteLayer, OlOllehPhysicalLayer
+from weblayers.ngii_maps import OlNgiiStreetLayer, OlNgiiBlankLayer, OlNgiiEnglishLayer, OlNgiiHighDensityLayer, OlNgiiColorBlindLayer
 
 
 class OpenlayersPlugin:
@@ -132,6 +133,12 @@ class OpenlayersPlugin:
         self._olLayerTypeRegistry.register(OlVWorldGrayLayer())
         self._olLayerTypeRegistry.register(OlVWorldHybridLayer())
         self._olLayerTypeRegistry.register(OlVWorldSatelliteLayer())
+        
+        self._olLayerTypeRegistry.register(OlNgiiStreetLayer())
+        self._olLayerTypeRegistry.register(OlNgiiBlankLayer())
+        self._olLayerTypeRegistry.register(OlNgiiEnglishLayer())
+        self._olLayerTypeRegistry.register(OlNgiiHighDensityLayer())
+        self._olLayerTypeRegistry.register(OlNgiiColorBlindLayer())
 
         for group in self._olLayerTypeRegistry.groups():
             groupMenu = group.menu()

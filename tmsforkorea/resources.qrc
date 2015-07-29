@@ -6,5 +6,6 @@
     <file>weblayers/icons/naver_icon.png</file>
     <file>weblayers/icons/olleh_icon.png</file>
     <file>weblayers/icons/vworld_icon.png</file>
+    <file>weblayers/icons/ngii_icon.png</file>
   </qresource>
 </RCC>

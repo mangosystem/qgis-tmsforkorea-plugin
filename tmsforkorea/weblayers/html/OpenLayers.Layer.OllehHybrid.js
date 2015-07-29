@@ -11,7 +11,7 @@ OpenLayers.Layer.OllehHybrid = OpenLayers.Class(OpenLayers.Layer.XYZ, {
 
     name: "OllehHybridMap",
     url: [
-        "http://map.ktgis.com/HybridMap/olleh5.02.1_0311_hyb/layers/_alllayers/l${z}/r${y}/c${x}.png"
+        "http://map.ktgis.com/HybridMap/olleh5.04.1_0511_hyb/layers/_alllayers/l${z}/r${y}/c${x}.png"
     ],
     
     resolutions: [2048, 1024, 512, 256, 128, 64, 32, 16, 8, 4, 2, 1, 0.5],
