@@ -8,6 +8,7 @@ QGIS Plugins for Korean users
  - Naver(Street, Satellite, Hybrid, Physical, Cadstral) Maps
  - Olleh(Street, Satellite, Hybrid, Physical) Maps
  - VWorld(Street, Satellite, Hybrid) Maps
+ - NGII(Street, Blank, Color-Blind, High-Density, English Version)
 
 
 Plugins Repository
