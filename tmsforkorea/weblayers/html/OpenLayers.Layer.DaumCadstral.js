@@ -5,18 +5,22 @@
 
 /**
  * @requires OpenLayers/Layer/XYZ.js
- */
+ */ 
 
-OpenLayers.Layer.DaumHybrid = OpenLayers.Class(OpenLayers.Layer.XYZ, {
+OpenLayers.Layer.DaumCadstral = OpenLayers.Class(OpenLayers.Layer.XYZ, {
 
-    name: "DaumHybridMap",
-    url: [ 
-    "http://h0.maps.daum-img.net/map/image/G03/h/var2201/L${z}/${y}/${x}.png",
-    "http://h1.maps.daum-img.net/map/image/G03/h/var2201/L${z}/${y}/${x}.png",
-    "http://h2.maps.daum-img.net/map/image/G03/h/var2201/L${z}/${y}/${x}.png",
-    "http://h3.maps.daum-img.net/map/image/G03/h/var2201/L${z}/${y}/${x}.png"
+    name: "Daum Cadstral Map", 
+    url: [
+    "http://map0.daumcdn.net/map_usedistrict/var2201/L${z}/${y}/${x}.png",
+    "http://map1.daumcdn.net/map_usedistrict/var2201/L${z}/${y}/${x}.png",
+    "http://map2.daumcdn.net/map_usedistrict/var2201/L${z}/${y}/${x}.png",
+    "http://map3.daumcdn.net/map_usedistrict/var2201/L${z}/${y}/${x}.png"
     ],
   resolutions: [2048, 1024, 512, 256, 128, 64, 32, 16, 8, 4, 2, 1, 0.5, 0.25],
+  attribution: '<a target="_blank" href="http://local.daum.net/map/index.jsp" '
+    + 'style="float: left; width: 38px; height: 17px; cursor: pointer; background-image: url(http://i1.daumcdn.net/localimg/localimages/07/2008/map/n_local_img_03_b.png); background-repeat: no-repeat no-repeat; " '
+    + 'title="Daum 지도로 보시려면 클릭하세요."></a>' 
+    + 'ⓒ Daum',
   sphericalMercator: false,
   buffer: 1,
   numZoomLevels: 14,
@@ -34,7 +38,7 @@ OpenLayers.Layer.DaumHybrid = OpenLayers.Class(OpenLayers.Layer.XYZ, {
     },
     clone: function(obj) {
         if (obj == null) {
-            obj = new OpenLayers.Layer.DaumHybrid(
+            obj = new OpenLayers.Layer.DaumCadstral(
                 this.name, this.getOptions());
         }
         obj = OpenLayers.Layer.XYZ.prototype.clone.apply(this, [obj]);
@@ -43,10 +47,8 @@ OpenLayers.Layer.DaumHybrid = OpenLayers.Class(OpenLayers.Layer.XYZ, {
 
   getXYZ: function(bounds) {
         var res = this.getServerResolution();
-        var x = Math.round((bounds.left - this.maxExtent.left) /
-            (res * this.tileSize.w));
-        var y = Math.round((bounds.bottom - this.maxExtent.bottom) /
-            (res * this.tileSize.h));
+        var x = Math.round((bounds.left - this.maxExtent.left) / (res * this.tileSize.w));
+        var y = Math.round((bounds.bottom - this.maxExtent.bottom) / (res * this.tileSize.h));
         var z = this.numZoomLevels - this.getServerZoom();
 
         if (this.wrapDateLine) {
@@ -57,5 +59,5 @@ OpenLayers.Layer.DaumHybrid = OpenLayers.Class(OpenLayers.Layer.XYZ, {
         return {'x': x, 'y': y, 'z': z};
     },
   
-    CLASS_NAME: "OpenLayers.Layer.DaumHybrid"
+    CLASS_NAME: "OpenLayers.Layer.DaumCadstral"
 });

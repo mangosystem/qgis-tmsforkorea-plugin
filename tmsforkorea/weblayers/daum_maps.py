@@ -83,3 +83,9 @@ class OlDaumPhysicalLayer(OlDaumMapsLayer):
 
     def __init__(self):
         OlDaumMapsLayer.__init__(self, name='Daum Physical', html='daum_physical.html')
+
+
+class OlDaumCadstralLayer(OlDaumMapsLayer):
+
+    def __init__(self):
+        OlDaumMapsLayer.__init__(self, name='Daum Cadstral', html='daum_cadastral.html')

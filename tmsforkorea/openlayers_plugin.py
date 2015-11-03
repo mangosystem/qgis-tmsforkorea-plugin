@@ -40,9 +40,9 @@ import os.path
 
 # TMS for Korea 2014-09-19
 from weblayers.vworld_maps import OlVWorldStreetLayer, OlVWorldGrayLayer, OlVWorldHybridLayer, OlVWorldSatelliteLayer
-from weblayers.daum_maps import OlDaumStreetLayer, OlDaumHybridLayer, OlDaumSatelliteLayer, OlDaumPhysicalLayer
+from weblayers.daum_maps import OlDaumStreetLayer, OlDaumHybridLayer, OlDaumSatelliteLayer, OlDaumPhysicalLayer, OlDaumCadstralLayer
 from weblayers.naver_maps import OlNaverStreetLayer, OlNaverHybridLayer, OlNaverSatelliteLayer, OlNaverPhysicalLayer, OlNaverCadastralLayer
-from weblayers.olleh_maps import OlOllehStreetLayer, OlOllehHybridLayer, OlOllehSatelliteLayer, OlOllehPhysicalLayer
+from weblayers.olleh_maps import OlOllehStreetLayer, OlOllehHybridLayer, OlOllehSatelliteLayer, OlOllehPhysicalLayer, OlOllehCadstralLayer
 from weblayers.ngii_maps import OlNgiiStreetLayer, OlNgiiBlankLayer, OlNgiiEnglishLayer, OlNgiiHighDensityLayer, OlNgiiColorBlindLayer
 
 
@@ -117,6 +117,7 @@ class OpenlayersPlugin:
         self._olLayerTypeRegistry.register(OlDaumHybridLayer())
         self._olLayerTypeRegistry.register(OlDaumSatelliteLayer())
         self._olLayerTypeRegistry.register(OlDaumPhysicalLayer())
+        self._olLayerTypeRegistry.register(OlDaumCadstralLayer())
         
         self._olLayerTypeRegistry.register(OlNaverStreetLayer())
         self._olLayerTypeRegistry.register(OlNaverHybridLayer())
@@ -128,6 +129,7 @@ class OpenlayersPlugin:
         self._olLayerTypeRegistry.register(OlOllehHybridLayer())
         self._olLayerTypeRegistry.register(OlOllehSatelliteLayer())
         self._olLayerTypeRegistry.register(OlOllehPhysicalLayer())
+        self._olLayerTypeRegistry.register(OlOllehCadstralLayer())
         
         self._olLayerTypeRegistry.register(OlVWorldStreetLayer())
         self._olLayerTypeRegistry.register(OlVWorldGrayLayer())
