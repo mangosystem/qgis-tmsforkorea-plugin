@@ -4,10 +4,10 @@ qgis-tmsforkorea-plugin
 
 QGIS Plugins for Korean users
 ------------------------------
- - Daum(Street, Satellite, Hybrid, Physical) Maps
+ - Daum(Street, Satellite, Hybrid, Physical, Cadstral) Maps
  - Naver(Street, Satellite, Hybrid, Physical, Cadstral) Maps
- - Olleh(Street, Satellite, Hybrid, Physical) Maps
- - VWorld(Street, Satellite, Hybrid) Maps
+ - Olleh(Street, Satellite, Hybrid, Physical, Cadstral) Maps
+ - VWorld(Street, Gray, Satellite, Hybrid) Maps
  - NGII(Street, Blank, Color-Blind, High-Density, English Version)
 
 
