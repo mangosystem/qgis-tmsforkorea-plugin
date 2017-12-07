@@ -8,7 +8,7 @@
  */
 
 OpenLayers.Layer.OllehSatellite = OpenLayers.Class(OpenLayers.Layer.XYZ, {
-
+  
     name: "OllehSatelliteMap",
     url: [
         "http://map.ktgis.com/ServiceAir/version20110705/l${z}/r${y}/c${x}.jpg"

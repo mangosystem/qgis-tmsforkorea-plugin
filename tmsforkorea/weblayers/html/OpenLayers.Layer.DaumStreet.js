@@ -8,13 +8,13 @@
  */ 
 
 OpenLayers.Layer.DaumStreet = OpenLayers.Class(OpenLayers.Layer.XYZ, {
-
+  
     name: "Daum Street Map", 
     url: [
-    "http://i0.maps.daum-img.net/map/image/G03/i/var2201/L${z}/${y}/${x}.png",
-    "http://i1.maps.daum-img.net/map/image/G03/i/var2201/L${z}/${y}/${x}.png",
-    "http://i2.maps.daum-img.net/map/image/G03/i/var2201/L${z}/${y}/${x}.png",
-    "http://i3.maps.daum-img.net/map/image/G03/i/var2201/L${z}/${y}/${x}.png"
+    "http://map0.daumcdn.net/map_2d/1711nov/L${z}/${y}/${x}.png",
+    "http://map1.daumcdn.net/map_2d/1711nov/L${z}/${y}/${x}.png",
+    "http://map2.daumcdn.net/map_2d/1711nov/L${z}/${y}/${x}.png",
+    "http://map3.daumcdn.net/map_2d/1711nov/L${z}/${y}/${x}.png"
     ],
   resolutions: [2048, 1024, 512, 256, 128, 64, 32, 16, 8, 4, 2, 1, 0.5, 0.25],
   attribution: '<a target="_blank" href="http://local.daum.net/map/index.jsp" '

@@ -39,16 +39,15 @@
               loadEnd = true;
             }
             
-            // http://xdworld.vworld.kr:8080/2d/gray/201411/13/6984/3174.png
             var vWorldStreet = new OpenLayers.Layer.XYZ(
                 "VWorld Gray Map",
                 [
-                    "http://xdworld.vworld.kr:8080/2d/gray/201411/${z}/${x}/${y}.png"
+                    "http://xdworld.vworld.kr:8080/2d/gray/201612/${z}/${x}/${y}.png"
                 ], {
                     attribution: '<a target="_blank" href="http://map.vworld.kr/" '
-        + 'style="float: left; width: 353px; height: 29px; cursor: pointer; background-image: url(http://map.vworld.kr/images/maps/logo_openplatform.png); background-repeat: no-repeat no-repeat; " '
-        + 'title="VWorld 지도로 보시려면 클릭하세요."></a>' 
-        + '',
+                        + 'style="float: left; width: 353px; height: 29px; cursor: pointer; background-image: url(http://map.vworld.kr/images/maps/logo_openplatform.png); background-repeat: no-repeat no-repeat; " '
+                        + 'title="VWorld 지도로 보시려면 클릭하세요."></a>' 
+                        + '',
                     sphericalMercator: true,
                     wrapDateLine: true,
                     numZoomLevels: 19,

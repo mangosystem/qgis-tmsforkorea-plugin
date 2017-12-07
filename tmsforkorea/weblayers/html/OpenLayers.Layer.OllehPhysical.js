@@ -8,7 +8,7 @@
  */
 
 OpenLayers.Layer.OllehPhysical = OpenLayers.Class(OpenLayers.Layer.XYZ, {
-
+  
     name: "OllehPhysicalMap",
     url: [
         "http://map.ktgis.com/HybridMap/3d130924/layers/_alllayers/l${z}/r${y}/c${x}.png"

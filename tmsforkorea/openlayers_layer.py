@@ -107,7 +107,7 @@ class OpenlayersController(QObject):
 
         self.timerMax = QTimer()
         self.timerMax.setSingleShot(True)
-        self.timerMax.setInterval(1500)  # TODO: different timeouts for map types
+        self.timerMax.setInterval(2000)  # TODO: different timeouts for map types
         self.timerMax.timeout.connect(self.mapTimeout)
 
     @pyqtSlot()

@@ -8,10 +8,10 @@
  */
 
 OpenLayers.Layer.OllehStreet = OpenLayers.Class(OpenLayers.Layer.XYZ, {
-
+  
     name: "OllehStreetMap",
     url: [
-        "http://map.ktgis.com/BaseMap/olleh5.08.1_0827/layers/_alllayers/l${z}/r${y}/c${x}.png"
+        "http://map.ktgis.com/BaseMap/olleh7.10.1_1027/layers/_alllayers/l${z}/r${y}/c${x}.png"
     ],
     
     resolutions: [2048, 1024, 512, 256, 128, 64, 32, 16, 8, 4, 2, 1, 0.5],

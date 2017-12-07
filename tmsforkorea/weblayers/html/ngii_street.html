@@ -29,7 +29,7 @@
               units: "m",
               maxResolution: 1954.597389,
               numZoomLevels: 14,
-              maxExtent: new OpenLayers.Bounds(-200000.0, -28024123.62 , 31824123.62, 4000000.0),
+              maxExtent: new OpenLayers.Bounds(-200000.0, -28024123.62, 31824123.62, 4000000.0),
               isValidZoomLevel : function(zoomLevel) {
                 return ((zoomLevel != null) && (zoomLevel >= logical_min_zoom) && (zoomLevel < this.getNumZoomLevels()));
               }
@@ -51,7 +51,7 @@
             }
                         
             var koreanlayer = new OpenLayers.Layer.TMS("NGII Street",
-              ['http://emap.ngii.go.kr:8082/proxy/proxy.jsp?url=http://210.117.198.62:8081/korean_map_tile/'], 
+              ['http://emap.ngii.go.kr/proxy/proxyTile.jsp?URL=http://210.117.198.62:8081/2015_map/korean_map_tile/'], 
             {
               serviceVersion: '.', 
               layername: 'KOREAN', 

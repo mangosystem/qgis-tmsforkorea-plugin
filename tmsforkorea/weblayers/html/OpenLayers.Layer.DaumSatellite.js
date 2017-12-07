@@ -9,12 +9,12 @@
 
 OpenLayers.Layer.DaumSatellite = OpenLayers.Class(OpenLayers.Layer.XYZ, {
 
-    name: "DaumSatelliteMap",
+    name: "Daum Satellite Map",
     url: [
-    "http://s0.maps.daum-img.net/L${z}/${y}/${x}.jpg?v=141021",
-    "http://s1.maps.daum-img.net/L${z}/${y}/${x}.jpg?v=141021",
-    "http://s2.maps.daum-img.net/L${z}/${y}/${x}.jpg?v=141021",
-    "http://s3.maps.daum-img.net/L${z}/${y}/${x}.jpg?v=141021"
+    "http://map0.daumcdn.net/map_skyview/L${z}/${y}/${x}.jpg?v=160107",
+    "http://map1.daumcdn.net/map_skyview/L${z}/${y}/${x}.jpg?v=160107",
+    "http://map2.daumcdn.net/map_skyview/L${z}/${y}/${x}.jpg?v=160107",
+    "http://map3.daumcdn.net/map_skyview/L${z}/${y}/${x}.jpg?v=160107"
     ],
   resolutions: [2048, 1024, 512, 256, 128, 64, 32, 16, 8, 4, 2, 1, 0.5, 0.25],
   attribution: '<a target="_blank" href="http://local.daum.net/map/index.jsp" '
