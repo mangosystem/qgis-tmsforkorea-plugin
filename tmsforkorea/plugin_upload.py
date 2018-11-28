@@ -8,9 +8,9 @@ import getpass
 from optparse import OptionParser
 
 # Configuration
-PROTOCOL='http'
+PROTOCOL='https'
 SERVER='plugins.qgis.org'
-PORT='80'
+PORT='443'
 ENDPOINT='/plugins/RPC2/'
 VERBOSE=False
 
@@ -18,9 +18,9 @@ def main(options, args):
     address = "%s://%s:%s@%s:%s%s" % (PROTOCOL, options.username, options.password,
             options.server, options.port, ENDPOINT)
     print "Connecting to: %s" % hidepassword(address)
-    
+
     server = xmlrpclib.ServerProxy(address, verbose=VERBOSE)
-    
+
     try:
         plugin_id, version_id = server.plugin.upload(xmlrpclib.Binary(open(args[0]).read()))
         print "Plugin ID: %s" % plugin_id
@@ -75,4 +75,3 @@ if __name__ == "__main__":
         # interactive mode
         options.password = getpass.getpass()
     main(options, args)
-

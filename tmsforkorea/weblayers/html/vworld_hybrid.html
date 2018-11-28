@@ -42,7 +42,7 @@
             var vWorldHybrid = new OpenLayers.Layer.XYZ(
                 "VWorld Hybrid Map",
                 [
-                    "http://xdworld.vworld.kr:8080/2d/Hybrid/201710/${z}/${x}/${y}.png"
+                    "http://xdworld.vworld.kr:8080/2d/Hybrid/service/${z}/${x}/${y}.png"
                 ], {
                     sphericalMercator: true,
                     wrapDateLine: true,
@@ -58,7 +58,7 @@
             var vWorldSatellite = new OpenLayers.Layer.XYZ(
                 "VWorld Satellite Map",
                 [
-                    "http://xdworld.vworld.kr:8080/2d/Satellite/201710/${z}/${x}/${y}.jpeg"
+                    "http://xdworld.vworld.kr:8080/2d/Satellite/service/${z}/${x}/${y}.jpeg"
                 ], {
                     attribution: '<a target="_blank" href="http://map.vworld.kr/" '
                         + 'style="float: left; width: 353px; height: 29px; cursor: pointer; background-image: url(http://map.vworld.kr/images/maps/logo_openplatform.png); background-repeat: no-repeat no-repeat; " '

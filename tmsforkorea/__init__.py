@@ -8,7 +8,6 @@ A QGIS plugin
 begin                : 2009-11-30
 copyright            : (C) 2009 by Pirmin Kalberer, Sourcepole
 email                : pka at sourcepole.ch
-modified             : (C) 2014-09-19 by Minpa Lee, mapplus at gmail.com
  ***************************************************************************/
 
 /***************************************************************************
@@ -22,6 +21,7 @@ modified             : (C) 2014-09-19 by Minpa Lee, mapplus at gmail.com
  This script initializes the plugin, making it known to QGIS.
 """
 
+
 def classFactory(iface):
-  from openlayers_plugin import OpenlayersPlugin
-  return OpenlayersPlugin(iface)
+    from .openlayers_plugin import OpenlayersPlugin
+    return OpenlayersPlugin(iface)

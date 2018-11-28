@@ -1,7 +1,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-    <title>OpenLayers VWorldStreet Layer</title>
+    <title>Mango BaseMap HiDPI Layer</title>
     <link rel="stylesheet" href="qgis.css" type="text/css">
     <script src="OpenLayers.js"></script>
     <script src="OlOverviewMarker.js"></script>
@@ -40,14 +40,11 @@
             }
             
             var vWorldStreet = new OpenLayers.Layer.XYZ(
-                "VWorld Street Map",
+                "VWorld Gray Map",
                 [
-                    "http://xdworld.vworld.kr:8080/2d/Base/service/${z}/${x}/${y}.png"
+                    "http://mango.iptime.org:8996/v.1.0.0/${z}/${x}/${y}.png?gray=false"
                 ], {
-                    attribution: '<a target="_blank" href="http://map.vworld.kr/" '
-                        + 'style="float: left; width: 353px; height: 29px; cursor: pointer; background-image: url(http://map.vworld.kr/images/maps/logo_openplatform.png); background-repeat: no-repeat no-repeat; " '
-                        + 'title="VWorld 지도로 보시려면 클릭하세요."></a>' 
-                        + '',
+                    attribution: '&copy; <a href="http://mangosystem.com">Mango</a> & <a href="http://www.openstreetmap.org/copyright">OSM</a> contributors',
                     sphericalMercator: true,
                     wrapDateLine: true,
                     numZoomLevels: 19,

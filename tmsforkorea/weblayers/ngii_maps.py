@@ -5,10 +5,9 @@ OpenLayers Plugin
 A QGIS plugin
 
                              -------------------
-begin                : 2009-11-30
-copyright            : (C) 2009 by Pirmin Kalberer, Sourcepole
-email                : pka at sourcepole.ch
-modified             : 2014-09-19 by Minpa Lee, mapplus at gmail.com
+begin                : 2018-11-23
+copyright            : (C) 2009 by Minpa Lee, MangoSystem
+email                : mapplus at gmail.com
  ***************************************************************************/
 
 /***************************************************************************
@@ -21,23 +20,25 @@ modified             : 2014-09-19 by Minpa Lee, mapplus at gmail.com
  ***************************************************************************/
 """
 
-from qgis.core import QGis, QgsCoordinateReferenceSystem
-from weblayer import WebLayer
+from qgis.core import (Qgis, QgsCoordinateReferenceSystem)
+from .weblayer import WebLayer
 
 
 class WebLayerNgii5179(WebLayer):
 
-    epsgList = [5179] 
+    # QGIS scale for 72 dpi
+    SCALE_ON_MAX_ZOOM = 13540
     
-    fullExtent = [-200000.0, 1139355.62 , 2140685, 2970242] 
-
-    MAX_ZOOM_LEVEL = 14
-    SCALE_ON_MAX_ZOOM = 13540  # QGIS scale for 72 dpi
-
+    emitsLoadEnd = False
+    
+    def __init__(self, groupName, groupIcon, name, html, xyzUrl=None):
+        WebLayer.__init__(self, groupName=groupName, groupIcon=groupIcon,
+                              name=name, html=html, xyzUrl=xyzUrl)
+                              
     def coordRefSys(self, mapCoordSys):
         epsg = self.epsgList[0]
         coordRefSys = QgsCoordinateReferenceSystem()
-        if QGis.QGIS_VERSION_INT >= 10900:
+        if Qgis.QGIS_VERSION_INT >= 10900:
             idEpsgRSGoogle = "EPSG:%d" % epsg
             createCrs = coordRefSys.createFromOgcWmsCrs(idEpsgRSGoogle)
         else:
@@ -54,38 +55,52 @@ class WebLayerNgii5179(WebLayer):
 
 class OlNgiiMapsLayer(WebLayerNgii5179):
 
-    emitsLoadEnd = False
+    # Group in menu
+    groupName = 'NGII Maps'
+    
+    # Group icon in menu
+    groupIcon = 'ngii_icon.png'
+    
+    # Supported EPSG projections, ordered by preference
+    epsgList = [5179]
+    
+    # EPSG 5179 bounds
+    fullExtent = [-200000.0, 1139355.62 , 2140685, 2970242] 
+    
+    MIN_ZOOM_LEVEL = 0
 
-    def __init__(self, name, html):
-        WebLayerNgii5179.__init__(self, groupName="NGII Maps", groupIcon="ngii_icon.png",
-                              name=name, html=html)
+    MAX_ZOOM_LEVEL = 14
+
+    def __init__(self, name, html, xyzUrl=None):
+        WebLayerNgii5179.__init__(self, groupName=self.groupName, groupIcon=self.groupIcon,
+                              name=name, html=html, xyzUrl=xyzUrl)
 
 
 class OlNgiiStreetLayer(OlNgiiMapsLayer):
 
     def __init__(self):
-        OlNgiiMapsLayer.__init__(self, name='NGII Street', html='ngii_street.html')
+        OlNgiiMapsLayer.__init__(self, name='NGII Street', html='ngii_street.html', xyzUrl=None)
 
 
 class OlNgiiBlankLayer(OlNgiiMapsLayer):
 
     def __init__(self):
-        OlNgiiMapsLayer.__init__(self, name='NGII Blank', html='ngii_white.html')
+        OlNgiiMapsLayer.__init__(self, name='NGII White', html='ngii_white.html', xyzUrl=None)
 
 
 class OlNgiiEnglishLayer(OlNgiiMapsLayer):
 
     def __init__(self):
-        OlNgiiMapsLayer.__init__(self, name='NGII English', html='ngii_english.html')
+        OlNgiiMapsLayer.__init__(self, name='NGII English', html='ngii_english.html', xyzUrl=None)
 
 
 class OlNgiiHighDensityLayer(OlNgiiMapsLayer):
 
     def __init__(self):
-        OlNgiiMapsLayer.__init__(self, name='NGII High-Density', html='ngii_highdensity.html')
+        OlNgiiMapsLayer.__init__(self, name='NGII High-Density', html='ngii_highdensity.html', xyzUrl=None)
 
 
 class OlNgiiColorBlindLayer(OlNgiiMapsLayer):
 
     def __init__(self):
-        OlNgiiMapsLayer.__init__(self, name='NGII Color-Blind', html='ngii_colorblind.html')
+        OlNgiiMapsLayer.__init__(self, name='NGII Color-Blind', html='ngii_colorblind.html', xyzUrl=None)

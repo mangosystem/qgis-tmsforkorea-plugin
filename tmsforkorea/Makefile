@@ -26,11 +26,15 @@ QGISDIR=.qgis2
 
 # translation
 SOURCES = openlayers_plugin.py \
+          ui_about_dialog.py \
           openlayers_ovwidget.py \
-          openlayers_ovwidgetbase.py
+          ui_openlayers_ovwidget.py
+
 TRANSLATIONS = i18n/openlayers_de.ts \
                i18n/openlayers_en.ts \
-               i18n/openlayers_fr.ts
+               i18n/openlayers_fr.ts \
+               i18n/openlayers_pt_BR.ts \
+               i18n/openlayers_es.ts
 
 # global
 
@@ -57,7 +61,7 @@ compile: $(UI_FILES) $(RESOURCE_FILES)
 	pyuic4 -o $@ $<
 
 %.qm : %.ts
-	lrelease $<
+	/usr/lib/x86_64-linux-gnu/qt4/bin/lrelease $<
 
 # The deploy  target only works on unix like operating system where
 # the Python plugin directory is located at:

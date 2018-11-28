@@ -5,10 +5,9 @@ OpenLayers Plugin
 A QGIS plugin
 
                              -------------------
-begin                : 2009-11-30
-copyright            : (C) 2009 by Pirmin Kalberer, Sourcepole
-email                : pka at sourcepole.ch
-modified             : 2014-09-19 by Minpa Lee, mapplus at gmail.com
+begin                : 2018-11-23
+copyright            : (C) 2009 by Minpa Lee, MangoSystem
+email                : mapplus at gmail.com
  ***************************************************************************/
 
 /***************************************************************************
@@ -21,23 +20,25 @@ modified             : 2014-09-19 by Minpa Lee, mapplus at gmail.com
  ***************************************************************************/
 """
 
-from qgis.core import QGis, QgsCoordinateReferenceSystem
-from weblayer import WebLayer
+from qgis.core import (Qgis, QgsCoordinateReferenceSystem)
+from .weblayer import WebLayer
 
 
 class WebLayerNaver5179(WebLayer):
 
-    epsgList = [5179] 
+    # QGIS scale for 72 dpi
+    SCALE_ON_MAX_ZOOM = 13540
     
-    fullExtent = [90112, 1192896, 1990673, 2761664]
-
-    MAX_ZOOM_LEVEL = 14
-    SCALE_ON_MAX_ZOOM = 13540  # QGIS scale for 72 dpi
+    emitsLoadEnd = False
+    
+    def __init__(self, groupName, groupIcon, name, html, xyzUrl=None):
+        WebLayer.__init__(self, groupName=groupName, groupIcon=groupIcon,
+                              name=name, html=html, xyzUrl=xyzUrl)
 
     def coordRefSys(self, mapCoordSys):
         epsg = self.epsgList[0]
         coordRefSys = QgsCoordinateReferenceSystem()
-        if QGis.QGIS_VERSION_INT >= 10900:
+        if Qgis.QGIS_VERSION_INT >= 10900:
             idEpsgRSGoogle = "EPSG:%d" % epsg
             createCrs = coordRefSys.createFromOgcWmsCrs(idEpsgRSGoogle)
         else:
@@ -54,38 +55,52 @@ class WebLayerNaver5179(WebLayer):
 
 class OlNaverMapsLayer(WebLayerNaver5179):
 
-    emitsLoadEnd = False
+    # Group in menu
+    groupName = 'Naver Maps'
+    
+    # Group icon in menu
+    groupIcon = 'naver_icon.png'
+    
+    # Supported EPSG projections, ordered by preference
+    epsgList = [5179]
+    
+    # EPSG 5179 bounds
+    fullExtent = [90112, 1192896, 1990673, 2761664]
+    
+    MIN_ZOOM_LEVEL = 0
 
-    def __init__(self, name, html):
-        WebLayerNaver5179.__init__(self, groupName="Naver Maps", groupIcon="naver_icon.png",
-                              name=name, html=html)
+    MAX_ZOOM_LEVEL = 14
+
+    def __init__(self, name, html, xyzUrl=None):
+        WebLayerNaver5179.__init__(self, groupName=self.groupName, groupIcon=self.groupIcon,
+                              name=name, html=html, xyzUrl=xyzUrl)
 
 
 class OlNaverStreetLayer(OlNaverMapsLayer):
 
     def __init__(self):
-        OlNaverMapsLayer.__init__(self, name='Naver Street', html='naver_street.html')
+        OlNaverMapsLayer.__init__(self, name='Naver Street', html='naver_street.html', xyzUrl=None)
 
 
 class OlNaverHybridLayer(OlNaverMapsLayer):
 
     def __init__(self):
-        OlNaverMapsLayer.__init__(self, name='Naver Hybrid', html='naver_hybrid.html')
+        OlNaverMapsLayer.__init__(self, name='Naver Hybrid', html='naver_hybrid.html', xyzUrl=None)
 
 
 class OlNaverSatelliteLayer(OlNaverMapsLayer):
 
     def __init__(self):
-        OlNaverMapsLayer.__init__(self, name='Naver Satellite', html='naver_satellite.html')
+        OlNaverMapsLayer.__init__(self, name='Naver Satellite', html='naver_satellite.html', xyzUrl=None)
 
 
 class OlNaverPhysicalLayer(OlNaverMapsLayer):
 
     def __init__(self):
-        OlNaverMapsLayer.__init__(self, name='Naver Physical', html='naver_physical.html')
+        OlNaverMapsLayer.__init__(self, name='Naver Physical', html='naver_physical.html', xyzUrl=None)
 
 
 class OlNaverCadastralLayer(OlNaverMapsLayer):
 
     def __init__(self):
-        OlNaverMapsLayer.__init__(self, name='Naver Cadastral', html='naver_cadastral.html')
+        OlNaverMapsLayer.__init__(self, name='Naver Cadastral', html='naver_cadastral.html', xyzUrl=None)

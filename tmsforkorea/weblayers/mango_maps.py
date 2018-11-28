@@ -23,13 +23,13 @@ email                : mapplus at gmail.com
 from .weblayer import WebLayer3857
 
 
-class OlVWorldMapsLayer(WebLayer3857):
+class OlMangoMapsLayer(WebLayer3857):
 
     # Group in menu
-    groupName = 'VWorld Maps'
+    groupName = 'Mango Maps'
     
     # Group icon in menu
-    groupIcon = 'vworld_icon.png'
+    groupIcon = 'mango_icon.png'
     
     # Supported EPSG projections, ordered by preference
     epsgList = [3857]
@@ -37,9 +37,9 @@ class OlVWorldMapsLayer(WebLayer3857):
     # WGS84 bounds
     fullExtent = [124.41714675, 33.0022776231, 131.971482078, 38.6568782776]
     
-    MIN_ZOOM_LEVEL = 7
+    MIN_ZOOM_LEVEL = 6
 
-    MAX_ZOOM_LEVEL = 18
+    MAX_ZOOM_LEVEL = 17
     
     # QGIS scale for 72 dpi
     SCALE_ON_MAX_ZOOM = 13540
@@ -51,29 +51,29 @@ class OlVWorldMapsLayer(WebLayer3857):
                               name=name, html=html, xyzUrl=xyzUrl)
 
 
-class OlVWorldStreetLayer(OlVWorldMapsLayer):
+class OlMangoBaseMapLayer(OlMangoMapsLayer):
 
     def __init__(self):
-        tmsUrl = 'http://xdworld.vworld.kr:8080/2d/Base/service/{z}/{x}/{y}.png'
-        OlVWorldMapsLayer.__init__(self, name='VWorld Street', html='vworld_street.html', xyzUrl=tmsUrl)
+        tmsUrl = 'http://mango.iptime.org:8995/v.1.0.0/{z}/{x}/{y}.png?gray=false'
+        OlMangoMapsLayer.__init__(self, name='Mango BaseMap', html='mango_base.html', xyzUrl=tmsUrl)
 
 
-class OlVWorldHybridLayer(OlVWorldMapsLayer):
-
-    def __init__(self):
-        tmsUrl = 'http://xdworld.vworld.kr:8080/2d/Hybrid/service/{z}/{x}/{y}.png'
-        OlVWorldMapsLayer.__init__(self, name='VWorld Hybrid', html='vworld_hybrid.html', xyzUrl=tmsUrl)
-
-
-class OlVWorldSatelliteLayer(OlVWorldMapsLayer):
+class OlMangoBaseMapGrayLayer(OlMangoMapsLayer):
 
     def __init__(self):
-        tmsUrl = 'http://xdworld.vworld.kr:8080/2d/Satellite/service/{z}/{x}/{y}.jpeg'
-        OlVWorldMapsLayer.__init__(self, name='VWorld Satellite', html='vworld_satellite.html', xyzUrl=tmsUrl)
+        tmsUrl = 'http://mango.iptime.org:8995/v.1.0.0/{z}/{x}/{y}.png?gray=true'
+        OlMangoMapsLayer.__init__(self, name='Mango BaseMap Gray', html='mango_base_gray.html', xyzUrl=tmsUrl)
 
 
-class OlVWorldGrayLayer(OlVWorldMapsLayer):
+class OlMangoHiDPIMapLayer(OlMangoMapsLayer):
 
     def __init__(self):
-        tmsUrl = 'http://xdworld.vworld.kr:8080/2d/gray/service/{z}/{x}/{y}.png'
-        OlVWorldMapsLayer.__init__(self, name='VWorld Gray', html='vworld_gray.html', xyzUrl=tmsUrl)
+        tmsUrl = 'http://mango.iptime.org:8996/v.1.0.0/{z}/{x}/{y}.png?gray=false'
+        OlMangoMapsLayer.__init__(self, name='Mango BaseMap HiDPI', html='mango_hidpi.html', xyzUrl=tmsUrl)
+
+
+class OlMangoHiDPIMapGrayLayer(OlMangoMapsLayer):
+
+    def __init__(self):
+        tmsUrl = 'http://mango.iptime.org:8996/v.1.0.0/{z}/{x}/{y}.png?gray=true'
+        OlMangoMapsLayer.__init__(self, name='Mango BaseMap HiDPI Gray', html='mango_hidpi_gray.html', xyzUrl=tmsUrl)

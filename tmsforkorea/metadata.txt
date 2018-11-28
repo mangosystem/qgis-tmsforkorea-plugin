@@ -1,48 +1,12 @@
-# This file contains metadata for your plugin. Beginning
-# with version 1.8 this is the preferred way to supply information about a
-# plugin. The current method of embedding metadata in __init__.py will
-# be supported until version 2.0
-
-# This file should be included when you package your plugin.
-
-# Mandatory items:
-
 [general]
 name=TMS for Korea
-qgisMinimumVersion=2.3
-description=QGIS plugin. Daum, Naver, Olleh, VWorld, NGII Map Layers for Korean users
-about=QGIS plugin. Daum, Naver, Olleh, VWorld, NGII Map Layers for Korean users
-version=1.5.1
-
-# end of mandatory metadata
-
-# Optional items:
-
-# Uncomment the following line and add your changelog entries:
-changelog=
-   0.1.0 -Added Daum(Street, Satellite), Naver(Street, Satellite, Hybrid, Cadstral) layers
-   0.2.0 -Added Daum(Hybrid, Physical) layers, Fixed some bugs
-   0.3.0 -Added Olleh KT(Street, Satellite, Hybrid) layers
-   0.4.0 -Added VWorld(Street) layers
-   0.4.1 -Added VWorld(Satellite, Hybrid) layers
-   0.5.0 -Support for QGIS 2.0. This is the first release of the QGIS 2.x series.
-   0.5.1 -Added VWorld(Satellite, Hybrid) layers
-   0.5.2 -Final version for QGIS 2.2
-   1.0.0
-         -The first release of the QGIS 2.4 version.
-         -Ported from OpenLayers Plugin 1.3.3, Special thanks to Pirmin Kalberer, Sourcepole.
-   1.0.1 -Update Daum, Naver Maps
-   1.1.0 -Update Daum, Naver, Olleh Maps
-   1.2.0 -Update Daum, Naver, Olleh Maps
-   1.2.1 -Update VWorld Maps
-   1.3.0 -Update Daum Maps
-   1.4.0 -Added NGII(Street, Blank, Color-Blind, High-Density, English Version) layers
-   1.5.0 -Added Daum Cadstral & Olleh Cadstral layers
-   1.5.1 -Update Daum, Naver, VWorld, Olleh KT Maps
-   
+qgisMinimumVersion=3.0.1
+description=QGIS plugin. Daum, Naver, VWorld, NGII Map Layers for Korean users
+about=QGIS plugin. Daum, Naver, VWorld, NGII Map Layers for Korean users
+version=2.0.0
 
 # tags are comma separated with spaces allowed
-tags=openlayers, daum, naver, olleh, vworld, ngii
+tags=openlayers, daum, naver, vworld, ngii
 
 homepage=http://www.onspatial.com/2013/02/qgis-tms-for-korean-users-plugin.html
 tracker=http://hub.qgis.org/projects/tmsforkorea
@@ -50,7 +14,7 @@ repository=https://github.com/MapPlus/qgis-tmsforkorea-plugin.git
 icon=openlayers.png
 
 # experimental flag
-experimental=False
+experimental=True
 
 # deprecated flag (applies to the whole plugin, not just a single version
 deprecated=False
@@ -58,3 +22,44 @@ deprecated=False
 # Author contact information
 author=Minpa Lee
 email=mapplus@gmail.com
+
+# Uncomment the following line and add your changelog entries:
+changelog=
+    2.0.0
+        - The first release of the QGIS 3.4 version.
+        - Ported from OpenLayers Plugin 2.0.0, Special thanks to OpenLayers Plugin Team(Sourcepole and contributors).
+   1.5.1
+        - Update Daum, Naver, VWorld, Olleh KT Maps
+   1.5.0
+        - Added Daum Cadstral & Olleh Cadstral layers
+   1.4.0
+        - Added NGII(Street, Blank, Color-Blind, High-Density, English Version) layers
+   1.3.0
+        - Update Daum Maps
+   1.2.1
+        - Update VWorld Maps
+   1.2.0
+        - Update Daum, Naver, Olleh Maps
+   1.1.0
+        - Update Daum, Naver, Olleh Maps
+   1.0.1
+        - Update Daum, Naver Maps
+   1.0.0
+        - The first release of the QGIS 2.4 version.
+        - Ported from OpenLayers Plugin 1.3.3, Special thanks to Pirmin Kalberer, Sourcepole.
+   0.5.2
+        - Final version for QGIS 2.2
+   0.5.1
+        - Added VWorld(Satellite, Hybrid) layers
+   0.5.0
+        - Support for QGIS 2.0. This is the first release of the QGIS 2.x series.
+   0.4.1
+        - Added VWorld(Satellite, Hybrid) layers
+   0.4.0
+        - Added VWorld(Street) layers
+   0.3.0
+        - Added Olleh KT(Street, Satellite, Hybrid) layers
+   0.2.0
+        - Added Daum(Hybrid, Physical) layers, Fixed some bugs
+   0.1.0
+        - Added Daum(Street, Satellite), Naver(Street, Satellite, Hybrid, Cadstral) layers

@@ -8,7 +8,7 @@ A QGIS plugin
 begin                : 2010-02-03
 copyright            : (C) 2010 by Pirmin Kalberer, Sourcepole
 email                : pka at sourcepole.ch
-modified             : 2014-09-19 by Minpa Lee, mapplus at gmail.com
+modified             : 2018-11-23 by Minpa Lee, mapplus at gmail.com
  ***************************************************************************/
 
 /***************************************************************************
@@ -20,14 +20,13 @@ modified             : 2014-09-19 by Minpa Lee, mapplus at gmail.com
  *                                                                         *
  ***************************************************************************/
 """
-from PyQt4.QtCore import *
-from PyQt4.QtGui import *
-from PyQt4.QtWebKit import *
-from PyQt4.QtNetwork import *
-from qgis.core import *
-from qgis.gui import *
 
-from tools_network import getProxy
+from qgis.PyQt.QtCore import (QUrl, Qt, QMetaObject, QTimer, QEventLoop,
+                              QSize, QObject, pyqtSignal, qDebug, pyqtSlot)
+from qgis.PyQt.QtGui import QImage, QPainter
+from qgis.PyQt.QtWebKitWidgets import QWebPage
+from qgis.core import (QgsMapLayerRenderer, Qgis, QgsMessageLog,
+                       QgsPluginLayer, QgsRectangle)
 
 
 debuglevel = 4  # 0 (none) - 4 (all)
@@ -37,20 +36,13 @@ def debug(msg, verbosity=1):
     if debuglevel >= verbosity:
         try:
             qDebug(msg)
-        except:
+        except Exception:
             pass
 
 
 class OLWebPage(QWebPage):
     def __init__(self, parent=None):
         QWebPage.__init__(self, parent)
-        self.__manager = None  # Need persist for PROXY
-        # Set Proxy in webpage
-        proxy = getProxy()
-        if proxy is not None:
-            self.__manager = QNetworkAccessManager()
-            self.__manager.setProxy(proxy)
-            self.setNetworkAccessManager(self.__manager)
 
         self.loaded = False
 
@@ -66,7 +58,8 @@ class OLWebPage(QWebPage):
     def resolutions(self):
         if self.olResolutions is None:
             # get OpenLayers resolutions
-            jsResolutions = self.mainFrame().evaluateJavaScript("map.layers[0].resolutions")
+            jsResolutions = self.mainFrame().evaluateJavaScript(
+                "map.layers[0].resolutions")
             debug("Detected OpenLayers resolutions: %s" % jsResolutions)
             self.olResolutions = jsResolutions
         return self.olResolutions or []
@@ -78,7 +71,8 @@ class OLWebPage(QWebPage):
 class OpenlayersController(QObject):
     """
     Helper class that deals with QWebPage.
-    The object lives in GUI thread, its request() slot is asynchronously called from worker thread.
+    The object lives in GUI thread, its request() slot is asynchronously called
+    from worker thread.
     See https://github.com/wonder-sk/qgis-mtr-example-plugin for basic example
     1. Load Web Page with OpenLayers map
     2. Update OL map extend according to QGIS canvas extent
@@ -101,13 +95,19 @@ class OpenlayersController(QObject):
         # initial size for map
         self.page.setViewportSize(QSize(1, 1))
 
+        self.timerMapReady = QTimer()
+        self.timerMapReady.setSingleShot(True)
+        self.timerMapReady.setInterval(20)
+        self.timerMapReady.timeout.connect(self.checkMapReady)
+
         self.timer = QTimer()
         self.timer.setInterval(100)
         self.timer.timeout.connect(self.checkMapUpdate)
 
         self.timerMax = QTimer()
         self.timerMax.setSingleShot(True)
-        self.timerMax.setInterval(2000)  # TODO: different timeouts for map types
+        # TODO: different timeouts for map types
+        self.timerMax.setInterval(2500)
         self.timerMax.timeout.connect(self.mapTimeout)
 
     @pyqtSlot()
@@ -132,29 +132,53 @@ class OpenlayersController(QObject):
         if self.cancelled:
             self.emitErrorImage()
             return
-        self.page.loaded = True
-        self.setup_map()
+
+        # wait until OpenLayers map is ready
+        self.checkMapReady()
+
+    def checkMapReady(self):
+        debug("[GUI THREAD] checkMapReady", 3)
+        if self.page.mainFrame().evaluateJavaScript("map != undefined"):
+            # map ready
+            self.page.loaded = True
+            self.setup_map()
+        else:
+            # wait for map
+            self.timerMapReady.start()
 
     def setup_map(self):
         rendererContext = self.context
 
-        self.outputDpi = rendererContext.painter().device().logicalDpiX()  # FIXME: self.mapSettings.outputDpi()
+        # FIXME: self.mapSettings.outputDpi()
+        self.outputDpi = rendererContext.painter().device().logicalDpiX()
         debug(" extent: %s" % rendererContext.extent().toString(), 3)
-        debug(" center: %lf, %lf" % (rendererContext.extent().center().x(), rendererContext.extent().center().y()), 3)
-        debug(" size: %d, %d" % (rendererContext.painter().viewport().size().width(),
+        debug(" center: %lf, %lf" % (rendererContext.extent().center().x(),
+                                     rendererContext.extent().center().y()), 3)
+        debug(" size: %d, %d" % (
+            rendererContext.painter().viewport().size().width(),
               rendererContext.painter().viewport().size().height()), 3)
-        debug(" logicalDpiX: %d" % rendererContext.painter().device().logicalDpiX(), 3)
+        debug(" logicalDpiX: %d" % rendererContext.painter().
+              device().logicalDpiX(), 3)
         debug(" outputDpi: %lf" % self.outputDpi)
-        debug(" mapUnitsPerPixel: %f" % rendererContext.mapToPixel().mapUnitsPerPixel(), 3)
-        #debug(" rasterScaleFactor: %s" % str(rendererContext.rasterScaleFactor()), 3)
-        #debug(" outputSize: %d, %d" % (self.iface.mapCanvas().mapRenderer().outputSize().width(), self.iface.mapCanvas().mapRenderer().outputSize().height()), 3)
-        #debug(" scale: %lf" % self.iface.mapCanvas().mapRenderer().scale(), 3)
-
+        debug(" mapUnitsPerPixel: %f" % rendererContext.mapToPixel().
+              mapUnitsPerPixel(), 3)
+        # debug(" rasterScaleFactor: %s" % str(rendererContext.
+        #                                      rasterScaleFactor()), 3)
+        # debug(" outputSize: %d, %d" % (self.iface.mapCanvas().mapRenderer().
+        #                                outputSize().width(),
+        #                                self.iface.mapCanvas().mapRenderer().
+        #                                outputSize().height()), 3)
+        # debug(" scale: %lf" % self.iface.mapCanvas().mapRenderer().scale(),
+        #                                3)
+        #
         # if (self.page.lastExtent == rendererContext.extent()
-        #         and self.page.lastViewPortSize == rendererContext.painter().viewport().size()
-        #         and self.page.lastLogicalDpi == rendererContext.painter().device().logicalDpiX()
+        #         and self.page.lastViewPortSize == rendererContext.painter().
+        #         viewport().size()
+        #         and self.page.lastLogicalDpi == rendererContext.painter().
+        #         device().logicalDpiX()
         #         and self.page.lastOutputDpi == self.outputDpi
-        #         and self.page.lastMapUnitsPerPixel == rendererContext.mapToPixel().mapUnitsPerPixel()):
+        #         and self.page.lastMapUnitsPerPixel == rendererContext.
+        #         mapToPixel().mapUnitsPerPixel()):
         #     self.renderMap()
         #     self.finished.emit()
         #     return
@@ -163,9 +187,12 @@ class OpenlayersController(QObject):
         if rendererContext.painter().device().logicalDpiX() != int(self.outputDpi):
             # use screen dpi for printing
             sizeFact = self.outputDpi / 25.4 / rendererContext.mapToPixel().mapUnitsPerPixel()
-            self.targetSize.setWidth(rendererContext.extent().width() * sizeFact)
-            self.targetSize.setHeight(rendererContext.extent().height() * sizeFact)
-        debug(" targetSize: %d, %d" % (self.targetSize.width(), self.targetSize.height()), 3)
+            self.targetSize.setWidth(
+                rendererContext.extent().width() * sizeFact)
+            self.targetSize.setHeight(
+                rendererContext.extent().height() * sizeFact)
+        debug(" targetSize: %d, %d" % (
+            self.targetSize.width(), self.targetSize.height()), 3)
 
         # find matching OL resolution
         qgisRes = rendererContext.extent().width() / self.targetSize.width()
@@ -175,14 +202,17 @@ class OpenlayersController(QObject):
                 olRes = res
                 break
         if olRes is None:
-            debug("No matching OL resolution found (QGIS resolution: %f)" % qgisRes)
+            debug("No matching OL resolution found (QGIS resolution: %f)" %
+                  qgisRes)
             self.emitErrorImage()
             return
 
         # adjust OpenLayers viewport to match QGIS extent
         olWidth = rendererContext.extent().width() / olRes
         olHeight = rendererContext.extent().height() / olRes
-        debug("    adjust viewport: %f -> %f: %f x %f" % (qgisRes, olRes, olWidth, olHeight), 3)
+        debug("    adjust viewport: %f -> %f: %f x %f" % (qgisRes,
+                                                          olRes, olWidth,
+                                                          olHeight), 3)
         olSize = QSize(int(olWidth), int(olHeight))
         self.page.setViewportSize(olSize)
         self.page.mainFrame().evaluateJavaScript("map.updateSize();")
@@ -193,19 +223,21 @@ class OpenlayersController(QObject):
             self.page.extent.xMinimum(), self.page.extent.yMinimum(),
             self.page.extent.xMaximum(), self.page.extent.yMaximum()), 3)
         self.page.mainFrame().evaluateJavaScript(
-            "map.zoomToExtent(new OpenLayers.Bounds(%f, %f, %f, %f), true);" % (
-                self.page.extent.xMinimum(), self.page.extent.yMinimum(),
+            "map.zoomToExtent(new OpenLayers.Bounds(%f, %f, %f, %f), true);" %
+            (self.page.extent.xMinimum(), self.page.extent.yMinimum(),
                 self.page.extent.xMaximum(), self.page.extent.yMaximum()))
         olextent = self.page.mainFrame().evaluateJavaScript("map.getExtent();")
         debug("Resulting OL extent: %s" % olextent, 3)
         if olextent is None or not hasattr(olextent, '__getitem__'):
             debug("map.zoomToExtent failed")
-            #map.setCenter and other operations throw "undefined[0]: TypeError: 'null' is not an object" on first page load
-            #We ignore that and render the initial map with wrong extents
-            #self.emitErrorImage()
-            #return
+            # map.setCenter and other operations throw "undefined[0]:
+            # TypeError: 'null' is not an object" on first page load
+            # We ignore that and render the initial map with wrong extents
+            # self.emitErrorImage()
+            # return
         else:
-            reloffset = abs((self.page.extent.yMaximum()-olextent["top"])/self.page.extent.xMinimum())
+            reloffset = abs((self.page.extent.yMaximum()-olextent[
+                "top"])/self.page.extent.xMinimum())
             debug("relative offset yMaximum %f" % reloffset, 3)
             if reloffset > 0.1:
                 debug("OL extent shift failure: %s" % reloffset)
@@ -221,7 +253,7 @@ class OpenlayersController(QObject):
             loadEndOL = self.page.mainFrame().evaluateJavaScript("loadEnd")
             debug("waiting for loadEnd: renderingStopped=%r loadEndOL=%r" % (
                   self.context.renderingStopped(), loadEndOL), 4)
-            if not loadEndOL is None:
+            if loadEndOL is not None:
                 self.mapFinished = loadEndOL
             else:
                 debug("OpenlayersLayer Warning: Could not get loadEnd")
@@ -249,9 +281,12 @@ class OpenlayersController(QObject):
             targetWidth = self.targetSize.width()
             targetHeight = self.targetSize.height()
             # scale using QImage for better quality
-            debug("    scale image: %i x %i -> %i x %i" % (self.img.width(), self.img.height(),
+            debug("    scale image: %i x %i -> %i x %i" % (
+                self.img.width(), self.img.height(),
                   targetWidth, targetHeight), 3)
-            self.img = self.img.scaled(targetWidth, targetHeight, Qt.KeepAspectRatio, Qt.SmoothTransformation)
+            self.img = self.img.scaled(targetWidth, targetHeight,
+                                       Qt.KeepAspectRatio,
+                                       Qt.SmoothTransformation)
 
         # save current state
         self.page.lastExtent = rendererContext.extent()
@@ -263,7 +298,7 @@ class OpenlayersController(QObject):
     def mapTimeout(self):
         debug("mapTimeout reached")
         self.timer.stop()
-        #if not self.layerType.emitsLoadEnd:
+        # if not self.layerType.emitsLoadEnd:
         self.renderMap()
         self.finished.emit()
 
@@ -280,7 +315,8 @@ class OpenlayersRenderer(QgsMapLayerRenderer):
         """
         QgsMapLayerRenderer.__init__(self, layer.id())
         self.context = context
-        self.controller = OpenlayersController(None, context, webPage, layerType)
+        self.controller = OpenlayersController(None,
+                                               context, webPage, layerType)
         self.loop = None
 
     def render(self):
@@ -289,7 +325,8 @@ class OpenlayersRenderer(QgsMapLayerRenderer):
         debug("[WORKER THREAD] Calling request() asynchronously", 3)
         QMetaObject.invokeMethod(self.controller, "request")
 
-        # setup a timer that checks whether the rendering has not been stopped in the meanwhile
+        # setup a timer that checks whether the rendering has not been stopped
+        # in the meanwhile
         timer = QTimer()
         timer.setInterval(50)
         timer.timeout.connect(self.onTimeout)
@@ -321,7 +358,9 @@ class OpenlayersLayer(QgsPluginLayer):
     SCALE_ON_MAX_ZOOM = 13540  # QGIS scale for 72 dpi
 
     def __init__(self, iface, olLayerTypeRegistry):
-        QgsPluginLayer.__init__(self, OpenlayersLayer.LAYER_TYPE, "OpenLayers plugin layer")
+        QgsPluginLayer.__init__(self,
+                                OpenlayersLayer.LAYER_TYPE,
+                                "OpenLayers plugin layer")
         self.setValid(True)
 
         self.olLayerTypeRegistry = olLayerTypeRegistry
@@ -331,15 +370,44 @@ class OpenlayersLayer(QgsPluginLayer):
         self.olWebPage = OLWebPage(self)
 
     def readXml(self, node):
-        # handle ol_layer_type idx stored in layer node (OL plugin <= 1.1.2)
-        ol_layer_type_idx = int(node.toElement().attribute("ol_layer_type", "-1"))
-        if ol_layer_type_idx != -1:
-            self.layerType = self.olLayerTypeRegistry.getById(ol_layer_type_idx)
+        # early read of custom properties
+        self.readCustomProperties(node)
+
+        # get layer type
+        ol_layer_type = None
+        ol_layer_type_name = self.customProperty(
+            OpenlayersLayer.LAYER_PROPERTY, "")
+        if ol_layer_type_name != "":
+            ol_layer_type = self.olLayerTypeRegistry.getByName(
+                ol_layer_type_name)
+        else:
+            # handle ol_layer_type idx stored in layer node
+            # (OL plugin <= 1.1.2)
+            ol_layer_type_idx = int(node.toElement().attribute(
+                "ol_layer_type", "-1"))
+            if ol_layer_type_idx != -1:
+                ol_layer_type = self.olLayerTypeRegistry.getById(
+                    ol_layer_type_idx)
+
+        if ol_layer_type is not None:
+            self.setLayerType(ol_layer_type)
+        else:
+            # Set default layer type
+            self.setLayerType(
+                self.olLayerTypeRegistry.getByName("OpenStreetMap"))
+            msg = "Obsolete or unknown layer type '%s', using OpenStreetMap\
+             instead" % ol_layer_type_name
+            self.iface.messageBar().pushMessage("OpenLayers Plugin", msg,
+                                                level=Qgis.MessageLevel(1))
+            QgsMessageLog.logMessage(msg, "OpenLayers Plugin",
+                                     QgsMessageLog.WARNING)
+
         return True
 
     def writeXml(self, node, doc):
         element = node.toElement()
-        # write plugin layer type to project (essential to be read from project)
+        # write plugin layer type to project
+        # (essential to be read from project)
         element.setAttribute("type", "plugin")
         element.setAttribute("name", OpenlayersLayer.LAYER_TYPE)
         return True
@@ -347,7 +415,8 @@ class OpenlayersLayer(QgsPluginLayer):
     def setLayerType(self, layerType):
         qDebug(" setLayerType: %s" % layerType.layerTypeName)
         self.layerType = layerType
-        self.setCustomProperty(OpenlayersLayer.LAYER_PROPERTY, layerType.layerTypeName)
+        self.setCustomProperty(OpenlayersLayer.LAYER_PROPERTY,
+                               layerType.layerTypeName)
         coordRefSys = self.layerType.coordRefSys(None)  # FIXME
         self.setCrs(coordRefSys)
         
@@ -356,19 +425,5 @@ class OpenlayersLayer(QgsPluginLayer):
         self.setExtent(QgsRectangle(ext[0], ext[1], ext[2], ext[3]))
 
     def createMapRenderer(self, context):
-        ol_layer_type_name = self.customProperty(OpenlayersLayer.LAYER_PROPERTY, "")
-        if ol_layer_type_name != "":
-            ol_layer_type = self.olLayerTypeRegistry.getByName(ol_layer_type_name)
-            if ol_layer_type is not None:
-                self.setLayerType(ol_layer_type)
-        elif self.layerType is not None:  # Set from layer type ID from old project files
-            self.setLayerType(self.layerType)
-        if self.layerType is None:
-            #Set default layer type
-            self.setLayerType(self.olLayerTypeRegistry.getByName("OpenStreetMap"))
-            if QGis.QGIS_VERSION_INT >= 20300:
-                msg = "Obsolete or unknown layer type '%s', using OpenStreetMap instead" % ol_layer_type_name
-                self.iface.messageBar().pushMessage("OpenLayers Plugin", msg, level=QgsMessageBar.WARNING)
-                QgsMessageLog.logMessage(msg, "OpenLayers Plugin", QgsMessageLog.WARNING)
-
-        return OpenlayersRenderer(self, context, self.olWebPage, self.layerType)
+        return OpenlayersRenderer(self, context,
+                                  self.olWebPage, self.layerType)

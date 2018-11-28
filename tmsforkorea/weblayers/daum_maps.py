@@ -5,10 +5,9 @@ OpenLayers Plugin
 A QGIS plugin
 
                              -------------------
-begin                : 2009-11-30
-copyright            : (C) 2009 by Pirmin Kalberer, Sourcepole
-email                : pka at sourcepole.ch
-modified             : 2014-09-19 by Minpa Lee, mapplus at gmail.com
+begin                : 2018-11-23
+copyright            : (C) 2009 by Minpa Lee, MangoSystem
+email                : mapplus at gmail.com
  ***************************************************************************/
 
 /***************************************************************************
@@ -21,23 +20,25 @@ modified             : 2014-09-19 by Minpa Lee, mapplus at gmail.com
  ***************************************************************************/
 """
 
-from qgis.core import QGis, QgsCoordinateReferenceSystem
-from weblayer import WebLayer
+from qgis.core import (Qgis, QgsCoordinateReferenceSystem)
+from .weblayer import WebLayer
 
 
 class WebLayerDaum5181(WebLayer):
 
-    epsgList = [5181]
+    # QGIS scale for 72 dpi
+    SCALE_ON_MAX_ZOOM = 13540
     
-    fullExtent = [-30000, -60000, 494288, 988576]
-
-    MAX_ZOOM_LEVEL = 14
-    SCALE_ON_MAX_ZOOM = 13540  # QGIS scale for 72 dpi
+    emitsLoadEnd = False
+    
+    def __init__(self, groupName, groupIcon, name, html, xyzUrl=None):
+        WebLayer.__init__(self, groupName=groupName, groupIcon=groupIcon,
+                              name=name, html=html, xyzUrl=xyzUrl)
 
     def coordRefSys(self, mapCoordSys):
         epsg = self.epsgList[0]
         coordRefSys = QgsCoordinateReferenceSystem()
-        if QGis.QGIS_VERSION_INT >= 10900:
+        if Qgis.QGIS_VERSION_INT >= 10900:
             idEpsgRSGoogle = "EPSG:%d" % epsg
             createCrs = coordRefSys.createFromOgcWmsCrs(idEpsgRSGoogle)
         else:
@@ -54,38 +55,52 @@ class WebLayerDaum5181(WebLayer):
 
 class OlDaumMapsLayer(WebLayerDaum5181):
 
-    emitsLoadEnd = False
+    # Group in menu
+    groupName = 'Daum Maps'
+    
+    # Group icon in menu
+    groupIcon = 'daum_icon.png'
+    
+    # Supported EPSG projections, ordered by preference
+    epsgList = [5181]
+    
+    # EPSG 5181 bounds
+    fullExtent = [-30000, -60000, 494288, 988576]
+    
+    MIN_ZOOM_LEVEL = 0
 
-    def __init__(self, name, html):
-        WebLayerDaum5181.__init__(self, groupName="Daum Maps", groupIcon="daum_icon.png",
-                              name=name, html=html)
+    MAX_ZOOM_LEVEL = 14
+
+    def __init__(self, name, html, xyzUrl=None):
+        WebLayerDaum5181.__init__(self, groupName=self.groupName, groupIcon=self.groupIcon,
+                              name=name, html=html, xyzUrl=xyzUrl)
 
 
 class OlDaumStreetLayer(OlDaumMapsLayer):
 
     def __init__(self):
-        OlDaumMapsLayer.__init__(self, name='Daum Street', html='daum_street.html')
+        OlDaumMapsLayer.__init__(self, name='Daum Street', html='daum_street.html', xyzUrl=None)
 
 
 class OlDaumHybridLayer(OlDaumMapsLayer):
 
     def __init__(self):
-        OlDaumMapsLayer.__init__(self, name='Daum Hybrid', html='daum_hybrid.html')
+        OlDaumMapsLayer.__init__(self, name='Daum Hybrid', html='daum_hybrid.html', xyzUrl=None)
 
 
 class OlDaumSatelliteLayer(OlDaumMapsLayer):
 
     def __init__(self):
-        OlDaumMapsLayer.__init__(self, name='Daum Satellite', html='daum_satellite.html')
+        OlDaumMapsLayer.__init__(self, name='Daum Satellite', html='daum_satellite.html', xyzUrl=None)
 
 
 class OlDaumPhysicalLayer(OlDaumMapsLayer):
 
     def __init__(self):
-        OlDaumMapsLayer.__init__(self, name='Daum Physical', html='daum_physical.html')
+        OlDaumMapsLayer.__init__(self, name='Daum Physical', html='daum_physical.html', xyzUrl=None)
 
 
 class OlDaumCadstralLayer(OlDaumMapsLayer):
 
     def __init__(self):
-        OlDaumMapsLayer.__init__(self, name='Daum Cadstral', html='daum_cadastral.html')
+        OlDaumMapsLayer.__init__(self, name='Daum Cadstral', html='daum_cadastral.html', xyzUrl=None)

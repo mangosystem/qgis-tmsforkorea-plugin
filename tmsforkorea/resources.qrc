@@ -1,11 +1,13 @@
 <RCC>
   <qresource prefix="/plugins/tmsforkorea" >
     <file>openlayers.png</file>
+    <file>qgiscloud.png</file>
     <file>weblayers/icons/kml.png</file>
     <file>weblayers/icons/daum_icon.png</file>
     <file>weblayers/icons/naver_icon.png</file>
     <file>weblayers/icons/olleh_icon.png</file>
     <file>weblayers/icons/vworld_icon.png</file>
     <file>weblayers/icons/ngii_icon.png</file>
+    <file>weblayers/icons/mango_icon.png</file>
   </qresource>
 </RCC>
