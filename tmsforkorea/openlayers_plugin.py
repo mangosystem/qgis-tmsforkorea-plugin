@@ -137,10 +137,10 @@ class OpenlayersPlugin:
         self._olLayerTypeRegistry.register(OlNgiiColorBlindLayer())
         
         # Mango
-        self._olLayerTypeRegistry.register(OlMangoBaseMapLayer())
-        self._olLayerTypeRegistry.register(OlMangoBaseMapGrayLayer())
-        self._olLayerTypeRegistry.register(OlMangoHiDPIMapLayer())
-        self._olLayerTypeRegistry.register(OlMangoHiDPIMapGrayLayer())
+        #self._olLayerTypeRegistry.register(OlMangoBaseMapLayer())
+        #self._olLayerTypeRegistry.register(OlMangoBaseMapGrayLayer())
+        #self._olLayerTypeRegistry.register(OlMangoHiDPIMapLayer())
+        #self._olLayerTypeRegistry.register(OlMangoHiDPIMapGrayLayer())
         
         for group in self._olLayerTypeRegistry.groups():
             groupMenu = group.menu()
