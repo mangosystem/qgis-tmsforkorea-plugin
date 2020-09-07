@@ -29,7 +29,7 @@ from qgis.core import (QgsMapLayerRenderer, Qgis, QgsMessageLog,
                        QgsPluginLayer, QgsRectangle)
 
 
-debuglevel = 4  # 0 (none) - 4 (all)
+debuglevel = 0  # 0 (none) - 4 (all)
 
 
 def debug(msg, verbosity=1):
@@ -427,3 +427,7 @@ class OpenlayersLayer(QgsPluginLayer):
     def createMapRenderer(self, context):
         return OpenlayersRenderer(self, context,
                                   self.olWebPage, self.layerType)
+                                  
+    def setTransformContext(self, transformContext):
+        exta = 1
+        

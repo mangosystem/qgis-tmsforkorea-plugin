@@ -14,7 +14,7 @@ OpenLayers.Layer.NaverStreet = OpenLayers.Class(OpenLayers.Layer.XYZ, {
     "https://simg.pstatic.net/onetile/get/196/0/0/${z}/${x}/${y}/bl_vc_bg/ol_vc_an"
     ],
   resolutions: [2048, 1024, 512, 256, 128, 64, 32, 16, 8, 4, 2, 1, 0.5, 0.25],
-  attribution: '<a href="http://www.nhncorp.com" target="_blank" style="text-decoration: none !important;">© <span style="display: inline; font-family: Tahoma,sans-serif !important; font-size: 9px !important; font-weight: bold !important; font-style: normal !important; color: #009BC8 !important; text-decoration: none !important;">'
+  attribution: '<a href="https://www.naver.com/" target="_blank" style="text-decoration: none !important;">© <span style="display: inline; font-family: Tahoma,sans-serif !important; font-size: 9px !important; font-weight: bold !important; font-style: normal !important; color: #009BC8 !important; text-decoration: none !important;">'
     + 'NHN Corp.</span></a>'
     + '<img class="nmap_logo_map" src="http://static.naver.net/maps2/logo_naver_s.png" width="43" height="9" alt="NAVER">',
   sphericalMercator: false,

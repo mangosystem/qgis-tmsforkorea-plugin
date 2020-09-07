@@ -1,10 +1,9 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-    <title>OpenLayers NaverStreet Layer</title>
+    <title>Naver Street Layer</title>
     <link rel="stylesheet" href="qgis.css" type="text/css">
     <script src="OpenLayers.js"></script>
-    <script type="text/javascript" src="OpenLayers.Layer.NaverStreet.js"></script>
     <script src="OlOverviewMarker.js"></script>
     <script type="text/javascript">
         var map;
@@ -14,18 +13,19 @@
             map = new OpenLayers.Map('map', {
               theme: null,
               controls: [
-                new OpenLayers.Control.Attribution(),
-                new OpenLayers.Control.Navigation({
-                  dragPanOptions: {
-                    enableKinetic: true
-                  }
-                })
+                  new OpenLayers.Control.Attribution(),
+                  new OpenLayers.Control.Navigation({
+                      dragPanOptions: {
+                          enableKinetic: true
+                      }
+                  })
               ],
-              projection: new OpenLayers.Projection("EPSG:5179"),
+              sphericalMercator: true,
+              projection: new OpenLayers.Projection("EPSG:900913"),
               units: "m",
-              maxResolution: 2048,
-              numZoomLevels: 14,
-              maxExtent: new OpenLayers.Bounds(90112, 1192896, 1990673, 2761664)
+              numZoomLevels: 21,
+              maxResolution: 156543.0339,
+              maxExtent: new OpenLayers.Bounds(-20037508.34, -20037508.34, 20037508.34, 20037508.34),
             });
 
             loadEnd = false;
@@ -39,18 +39,43 @@
               loadEnd = true;
             }
             
-            var naverStreet = new OpenLayers.Layer.NaverStreet("NaverStreetMap",
-              {
-                sphericalMercator: false,
-                eventListeners: {
-                  "loadstart": layerLoadStart,
-                  "loadend": layerLoadEnd
+            var streetLayer = new OpenLayers.Layer.XYZ(
+                "Naver Street",
+                [
+                    "https://map.pstatic.net/nrb/styles/basic/1597915238/${z}/${x}/${y}@2x.png?mt=bg.ol.sw"
+                ], {
+                    attribution: '<a href="https://www.naver.com/" target="_blank" style="text-decoration: none !important;">© <span style="display: inline; font-family: Tahoma,sans-serif !important; font-size: 9px !important; font-weight: bold !important; font-style: normal !important; color: #009BC8 !important; text-decoration: none !important;">'
+                      + 'NHN Corp.</span></a>'
+                      + '<img class="nmap_logo_map" src="http://static.naver.net/maps2/logo_naver_s.png" width="43" height="9" alt="NAVER">',
+                    sphericalMercator: true,
+                    wrapDateLine: true,
+                    numZoomLevels: 19,
+                    isBaseLayer: true,
+                    eventListeners: {
+                      "loadstart": layerLoadStart,
+                      "loadend": layerLoadEnd
+                   }
                 }
-              }
             );
             
-            map.addLayer(naverStreet);
-            map.setCenter(new OpenLayers.LonLat(200000, 500000), 1); // Zoom level
+            var hybridLayer = new OpenLayers.Layer.XYZ(
+                "Naver Hybrid",
+                [
+                    "https://map.pstatic.net/ozone/raster/7492ec55-c5c8-4005-be56-7d0b7c771b35/${z}/${x}/${y}?mapType=NORMAL&pixelRatio=2&language=ko&layers=TRANSIT,POI"
+                ], {
+                    sphericalMercator: true,
+                    wrapDateLine: true,
+                    numZoomLevels: 19,
+                    isBaseLayer: false,
+                    eventListeners: {
+                      "loadstart": layerLoadStart,
+                      "loadend": layerLoadEnd
+                   }
+                }
+            );
+            
+            map.addLayers([streetLayer, hybridLayer]);
+            map.setCenter(new OpenLayers.LonLat(14243425.793355, 4302305.8698004), 7); // Zoom level
             
             oloMarker = new OlOverviewMarker(map, getPathUpper(document.URL) + '/x.png');
         }

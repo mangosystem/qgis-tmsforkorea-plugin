@@ -1,12 +1,12 @@
 [general]
 name=TMS for Korea
-qgisMinimumVersion=3.0.1
-description=QGIS plugin. Daum, Naver, VWorld, NGII Map Layers for Korean users
-about=QGIS plugin. Daum, Naver, VWorld, NGII Map Layers for Korean users
-version=2.0.0
+qgisMinimumVersion=3.10.0
+description=QGIS plugin. Kakao(Daum), Naver, VWorld, NGII Map Layers for Korean users
+about=QGIS plugin. Kakao(Daum), Naver, VWorld, NGII Map Layers for Korean users
+version=3.0.0
 
 # tags are comma separated with spaces allowed
-tags=openlayers, daum, naver, vworld, ngii
+tags=openlayers, kakao, naver, vworld, ngii
 
 homepage=http://www.onspatial.com/2013/02/qgis-tms-for-korean-users-plugin.html
 tracker=http://hub.qgis.org/projects/tmsforkorea
@@ -14,7 +14,7 @@ repository=https://github.com/MapPlus/qgis-tmsforkorea-plugin.git
 icon=openlayers.png
 
 # experimental flag
-experimental=True
+experimental=False
 
 # deprecated flag (applies to the whole plugin, not just a single version
 deprecated=False
@@ -25,6 +25,10 @@ email=mapplus@gmail.com
 
 # Uncomment the following line and add your changelog entries:
 changelog=
+    3.0.0
+        - The first release of the QGIS 3.10 version.
+        - Update Kakao(Daum), Naver, VWorld Maps
+        - Support Naver Maps v5
     2.0.0
         - The first release of the QGIS 3.4 version.
         - Ported from OpenLayers Plugin 2.0.0, Special thanks to OpenLayers Plugin Team(Sourcepole and contributors).

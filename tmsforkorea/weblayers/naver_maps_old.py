@@ -24,7 +24,7 @@ from qgis.core import (Qgis, QgsCoordinateReferenceSystem)
 from .weblayer import WebLayer
 
 
-class WebLayerDaum5181(WebLayer):
+class WebLayerNaver5179(WebLayer):
 
     # QGIS scale for 72 dpi
     SCALE_ON_MAX_ZOOM = 13540
@@ -45,7 +45,7 @@ class WebLayerDaum5181(WebLayer):
             idEpsgRSGoogle = epsg
             createCrs = coordRefSys.createFromEpsg(idEpsgRSGoogle)
         if not createCrs:
-            proj_def =  "+proj=tmerc +lat_0=38 +lon_0=127 +k=1 +x_0=200000 +y_0=500000 +ellps=GRS80 "
+            proj_def =  "+proj=tmerc +lat_0=38 +lon_0=127.5 +k=0.9996 +x_0=1000000 +y_0=2000000 +ellps=GRS80 "
             proj_def += "+towgs84=0,0,0,0,0,0,0 +units=m +no_defs"
             isOk = coordRefSys.createFromProj4(proj_def)
             if not isOk:
@@ -53,54 +53,54 @@ class WebLayerDaum5181(WebLayer):
         return coordRefSys
 
 
-class OlDaumMapsLayer(WebLayerDaum5181):
+class OlNaverMaps5179Layer(WebLayerNaver5179):
 
     # Group in menu
-    groupName = 'Kakao Maps'
+    groupName = 'Naver Maps v3'
     
     # Group icon in menu
-    groupIcon = 'daum_icon.png'
+    groupIcon = 'naver_icon.png'
     
     # Supported EPSG projections, ordered by preference
-    epsgList = [5181]
+    epsgList = [5179]
     
-    # EPSG 5181 bounds
-    fullExtent = [-30000, -60000, 494288, 988576]
+    # EPSG 5179 bounds
+    fullExtent = [90112, 1192896, 1990673, 2761664]
     
     MIN_ZOOM_LEVEL = 0
 
     MAX_ZOOM_LEVEL = 14
 
     def __init__(self, name, html, xyzUrl=None):
-        WebLayerDaum5181.__init__(self, groupName=self.groupName, groupIcon=self.groupIcon,
+        WebLayerNaver5179.__init__(self, groupName=self.groupName, groupIcon=self.groupIcon,
                               name=name, html=html, xyzUrl=xyzUrl)
 
 
-class OlDaumStreetLayer(OlDaumMapsLayer):
+class OlNaverStreet5179Layer(OlNaverMaps5179Layer):
 
     def __init__(self):
-        OlDaumMapsLayer.__init__(self, name='Kakao Street', html='daum_street.html', xyzUrl=None)
+        OlNaverMaps5179Layer.__init__(self, name='Naver Street - 5179', html='naver_street_5179.html', xyzUrl=None)
 
 
-class OlDaumHybridLayer(OlDaumMapsLayer):
-
-    def __init__(self):
-        OlDaumMapsLayer.__init__(self, name='Kakao Hybrid', html='daum_hybrid.html', xyzUrl=None)
-
-
-class OlDaumSatelliteLayer(OlDaumMapsLayer):
+class OlNaverHybrid5179Layer(OlNaverMaps5179Layer):
 
     def __init__(self):
-        OlDaumMapsLayer.__init__(self, name='Kakao Satellite', html='daum_satellite.html', xyzUrl=None)
+        OlNaverMaps5179Layer.__init__(self, name='Naver Hybrid - 5179', html='naver_hybrid_5179.html', xyzUrl=None)
 
 
-class OlDaumPhysicalLayer(OlDaumMapsLayer):
-
-    def __init__(self):
-        OlDaumMapsLayer.__init__(self, name='Kakao Physical', html='daum_physical.html', xyzUrl=None)
-
-
-class OlDaumCadstralLayer(OlDaumMapsLayer):
+class OlNaverSatellite5179Layer(OlNaverMaps5179Layer):
 
     def __init__(self):
-        OlDaumMapsLayer.__init__(self, name='Kakao Cadstral', html='daum_cadastral.html', xyzUrl=None)
+        OlNaverMaps5179Layer.__init__(self, name='Naver Satellite - 5179', html='naver_satellite_5179.html', xyzUrl=None)
+
+
+class OlNaverPhysical5179Layer(OlNaverMaps5179Layer):
+
+    def __init__(self):
+        OlNaverMaps5179Layer.__init__(self, name='Naver Physical - 5179', html='naver_physical_5179.html', xyzUrl=None)
+
+
+class OlNaverCadastral5179Layer(OlNaverMaps5179Layer):
+
+    def __init__(self):
+        OlNaverMaps5179Layer.__init__(self, name='Naver Cadastral - 5179', html='naver_cadastral_5179.html', xyzUrl=None)

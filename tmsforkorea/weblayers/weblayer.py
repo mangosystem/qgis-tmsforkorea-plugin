@@ -77,9 +77,12 @@ class WebLayer:
     fullExtent = [-180.0, -90.0, 180.0, 90.0]
     """WGS84 bounds"""
 
+    tilePixelRatio = 1
+    """Tile Resolution : 1 = 256, 2 = 512(HiDPI) """
+
     emitsLoadEnd = True
 
-    def __init__(self, groupName, groupIcon, name, html, xyzUrl=None):
+    def __init__(self, groupName, groupIcon, name, html, xyzUrl=None, tilePixelRatio=1):
         self.groupName = groupName
         self.groupIcon = groupIcon
         self.displayName = name
@@ -89,6 +92,7 @@ class WebLayer:
         # OpenlayersLayer
         # the OpenlayersLayer is still used in the OpenLayers Overview
         self._xyzUrl = xyzUrl
+        self.tilePixelRatio = tilePixelRatio
 
     def addMenuEntry(self, groupMenu, parent):
         self._actionAddLayer = QAction(self.displayName, parent)

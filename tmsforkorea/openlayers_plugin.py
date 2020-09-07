@@ -26,7 +26,7 @@ from qgis.PyQt.QtWidgets import (QApplication, QLineEdit, QInputDialog,
                                  QAction, QMenu)
 from qgis.PyQt.QtGui import QIcon
 from qgis.core import (QgsCoordinateTransform, Qgis, QgsProject,
-                       QgsPluginLayerRegistry, QgsLayerTree, QgsMapLayer,
+                       QgsPluginLayerRegistry, QgsLayerTree, QgsMapLayer, QgsLayerTreeLayer,
                        QgsRasterLayer, QgsMessageLog)
 
 from . import resources_rc
@@ -53,6 +53,12 @@ from .weblayers.naver_maps import (OlNaverStreetLayer,
                                    OlNaverPhysicalLayer,
                                    OlNaverCadastralLayer)
 
+from .weblayers.naver_maps_old import (OlNaverStreet5179Layer,
+                                   OlNaverHybrid5179Layer,
+                                   OlNaverSatellite5179Layer,
+                                   OlNaverPhysical5179Layer,
+                                   OlNaverCadastral5179Layer)
+
 from .weblayers.ngii_maps import (OlNgiiStreetLayer,
                                   OlNgiiBlankLayer,
                                   OlNgiiEnglishLayer,
@@ -66,6 +72,8 @@ from .weblayers.mango_maps import (OlMangoBaseMapLayer,
                                     
 import os.path
 import time
+import collections
+import requests
 
 
 class OpenlayersPlugin:
@@ -85,7 +93,7 @@ class OpenlayersPlugin:
             self.translator = QTranslator()
             self.translator.load(localePath)
             
-            if qVersion() > '4.3.3':
+            if qVersion() > "4.3.3":
                 QCoreApplication.installTranslator(self.translator)
 
         self._olLayerTypeRegistry = WebLayerTypeRegistry(self)
@@ -109,38 +117,45 @@ class OpenlayersPlugin:
         self._olMenu.addAction(self._actionAbout)
         self.dlgAbout.finished.connect(self._publicationInfoClosed)
         
-        # Daum
+        # Kakao Maps - 5181
         self._olLayerTypeRegistry.register(OlDaumStreetLayer())
         self._olLayerTypeRegistry.register(OlDaumHybridLayer())
         self._olLayerTypeRegistry.register(OlDaumSatelliteLayer())
         self._olLayerTypeRegistry.register(OlDaumPhysicalLayer())
         self._olLayerTypeRegistry.register(OlDaumCadstralLayer())
         
-        # Naver
+        # Naver Maps - 3857(New)
         self._olLayerTypeRegistry.register(OlNaverStreetLayer())
         self._olLayerTypeRegistry.register(OlNaverHybridLayer())
         self._olLayerTypeRegistry.register(OlNaverSatelliteLayer())
         self._olLayerTypeRegistry.register(OlNaverPhysicalLayer())
         self._olLayerTypeRegistry.register(OlNaverCadastralLayer())
         
-        # VWorld
+        # Naver Maps - 5179(Old)
+        self._olLayerTypeRegistry.register(OlNaverStreet5179Layer())
+        self._olLayerTypeRegistry.register(OlNaverHybrid5179Layer())
+        self._olLayerTypeRegistry.register(OlNaverSatellite5179Layer())
+        self._olLayerTypeRegistry.register(OlNaverPhysical5179Layer())
+        self._olLayerTypeRegistry.register(OlNaverCadastral5179Layer())
+        
+        # VWorld - 3857
         self._olLayerTypeRegistry.register(OlVWorldStreetLayer())
         self._olLayerTypeRegistry.register(OlVWorldSatelliteLayer())
         self._olLayerTypeRegistry.register(OlVWorldGrayLayer())
         self._olLayerTypeRegistry.register(OlVWorldHybridLayer())
         
-        # NGII
+        # NGII - 5179
         self._olLayerTypeRegistry.register(OlNgiiStreetLayer())
         self._olLayerTypeRegistry.register(OlNgiiBlankLayer())
         self._olLayerTypeRegistry.register(OlNgiiEnglishLayer())
         self._olLayerTypeRegistry.register(OlNgiiHighDensityLayer())
         self._olLayerTypeRegistry.register(OlNgiiColorBlindLayer())
         
-        # Mango
+        # Mango - 3857
         #self._olLayerTypeRegistry.register(OlMangoBaseMapLayer())
         #self._olLayerTypeRegistry.register(OlMangoBaseMapGrayLayer())
-        #self._olLayerTypeRegistry.register(OlMangoHiDPIMapLayer())
-        #self._olLayerTypeRegistry.register(OlMangoHiDPIMapGrayLayer())
+        self._olLayerTypeRegistry.register(OlMangoHiDPIMapLayer())
+        self._olLayerTypeRegistry.register(OlMangoHiDPIMapGrayLayer())
         
         for group in self._olLayerTypeRegistry.groups():
             groupMenu = group.menu()
@@ -188,39 +203,21 @@ class OpenlayersPlugin:
             layer.setName(layerType.displayName)
             layer.setLayerType(layerType)
 
-        if layer.isValid():
-            coordRefSys = layerType.coordRefSys(self.canvasCrs())
-            self.setMapCrs(coordRefSys)
-            QgsProject.instance().addMapLayer(layer)
+            if layer.isValid():
+                coordRefSys = layerType.coordRefSys(self.canvasCrs())
+                self.setMapCrs(coordRefSys)
+                QgsProject.instance().addMapLayer(layer)
 
-            # store xyz config into qgis settings
-            if layerType.hasXYZUrl():
-                settings = QSettings()
-                settings.beginGroup('qgis/connections-xyz')
-                settings.setValue("%s/authcfg" % (layer.name()), '')
-                settings.setValue("%s/password" % (layer.name()), '')
-                settings.setValue("%s/referer" % (layer.name()), '')
-                settings.setValue("%s/url" % (layer.name()), url)
-                settings.setValue("%s/username" % (layer.name()), '')
-                # specify max/min or else only a picture of the map is saved
-                # in settings
-                settings.setValue("%s/zmax" % (layer.name()), '18')
-                settings.setValue("%s/zmin" % (layer.name()), '0')
-                settings.endGroup()
-                # reload connections to update Browser Panel content
-                self.iface.reloadConnections()
+                self._ol_layers += [layer]
 
-            self._ol_layers += [layer]
+                # last added layer is new reference
+                self.setReferenceLayer(layer)
 
-            # last added layer is new reference
-            self.setReferenceLayer(layer)
-
-            if not layerType.hasXYZUrl():
-                msg = "Printing and rotating of Javascript API " \
-                      "based layers is currently not supported!"
-                self.iface.messageBar().pushMessage(
-                    "OpenLayers Plugin", msg, level=Qgis.MessageLevel(1),
-                    duration=5)
+        if not layerType.hasXYZUrl():
+            msg = "Printing and rotating of Javascript API " \
+                  "based layers is currently not supported!"
+            self.iface.messageBar().pushMessage(
+                "OpenLayers Plugin", msg, level=Qgis.MessageLevel(0), duration=3)
 
     def setReferenceLayer(self, layer):
         self.layer = layer
@@ -264,7 +261,7 @@ class OpenlayersPlugin:
 
     def _hasOlLayer(self):
         for layer in QgsProject.instance().mapLayers().values():
-            if layer.customProperty('ol_layer_type'):
+            if layer.customProperty("ol_layer_type"):
                 return True
         return False
 
@@ -295,12 +292,85 @@ class OpenlayersPlugin:
 
     def createXYZLayer(self, layerType, name):
         # create XYZ layer with tms url as uri
-        provider = 'wms'
-        url = "type=xyz&url=" + layerType.xyzUrlConfig()
-        layer = QgsRasterLayer(url, name, provider,
-                               QgsRasterLayer.LayerOptions())
-        layer.setCustomProperty('ol_layer_type', layerType.layerTypeName)
-        return layer, layerType.xyzUrlConfig()
+        provider = "wms"
+            
+        # isinstance(P, (list, tuple, np.ndarray))
+        xyzUrls = layerType.xyzUrlConfig()
+        layerName = name
+        tilePixelRatio = layerType.tilePixelRatio
+        
+        coordRefSys = layerType.coordRefSys(self.canvasCrs())
+        self.setMapCrs(coordRefSys)
+        
+        if isinstance(xyzUrls, (list)):
+            # create group layer
+            root = QgsProject.instance().layerTreeRoot()
+            layer = root.addGroup(layerType.groupName)
+            
+            i = 0
+            for xyzUrl in xyzUrls:
+                tmsLayerName = layerName;
+                
+                # https://github.com/qgis/QGIS/blob/master/src/providers/wms/qgsxyzconnectiondialog.cpp
+                
+                uri = "url=" + xyzUrl + "&zmax=18&zmin=0&type=xyz"
+                if (tilePixelRatio > 0):
+                    uri = uri + "&tilePixelRatio=" + str(tilePixelRatio)
+                
+                if i > 0:
+                    tmsLayerName = layerName + " Label"
+                
+                tmsLayer = QgsRasterLayer(uri, tmsLayerName, provider, QgsRasterLayer.LayerOptions())
+                tmsLayer.setCustomProperty("ol_layer_type", tmsLayerName)
+                
+                layer.insertChildNode(0, QgsLayerTreeLayer(tmsLayer))
+                i = i + 1
+
+                if tmsLayer.isValid():
+                    QgsProject.instance().addMapLayer(tmsLayer, False)
+                    self._ol_layers += [tmsLayer]
+
+                    # last added layer is new reference
+                    self.setReferenceLayer(tmsLayer)
+                    # add to XYT Tiles 
+                    self.addToXYZTiles(tmsLayerName, xyzUrl, tilePixelRatio)
+        else:
+            uri = "url=" + xyzUrls + "&zmax=18&zmin=0&type=xyz"
+            if (tilePixelRatio > 0):
+                uri = uri + "&tilePixelRatio=" + str(tilePixelRatio)
+            
+            layer = QgsRasterLayer(uri, layerName, provider, QgsRasterLayer.LayerOptions())
+            layer.setCustomProperty("ol_layer_type", layerName)
+
+            if layer.isValid():
+                QgsProject.instance().addMapLayer(layer)
+                self._ol_layers += [layer]
+
+                # last added layer is new reference
+                self.setReferenceLayer(layer)
+                # add to XYT Tiles 
+                self.addToXYZTiles(layerName, xyzUrls, tilePixelRatio)
+        
+        # reload connections to update Browser Panel content
+        self.iface.reloadConnections()
+        
+        return layer, xyzUrls
+
+    def addToXYZTiles(self, name, url, tilePixelRatio):
+        # store xyz config into qgis settings
+        settings = QSettings()
+        settings.beginGroup("qgis/connections-xyz")
+        settings.setValue("%s/authcfg" % (name), "")
+        settings.setValue("%s/password" % (name), "")
+        settings.setValue("%s/referer" % (name), "")
+        settings.setValue("%s/url" % (name), url)
+        settings.setValue("%s/username" % (name), "")
+        # specify max/min or else only a picture of the map is saved in settings
+        settings.setValue("%s/zmax" % (name), "18")
+        settings.setValue("%s/zmin" % (name), "0")
+        if tilePixelRatio >= 0 and tilePixelRatio <= 2:
+            settings.setValue("%s/tilePixelRatio" % (name), str(tilePixelRatio))
+        settings.endGroup()
 
     def replaceLayer(self, group, oldLayer, newLayer):
         index = 0
@@ -316,8 +386,7 @@ class OpenlayersPlugin:
                     QgsProject.instance().removeMapLayer(
                         oldLayer.id())
 
-                    msg = "Updated layer '%s' from old \
-                     OpenLayers Plugin version" % newLayer.name()
+                    msg = "Updated layer '%s' from old OpenLayers Plugin version" % newLayer.name()
                     self.iface.messageBar().pushMessage(
                         "OpenLayers Plugin", msg, level=Qgis.MessageLevel(0))
                     QgsMessageLog.logMessage(

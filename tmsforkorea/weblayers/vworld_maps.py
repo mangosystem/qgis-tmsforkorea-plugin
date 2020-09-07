@@ -46,34 +46,34 @@ class OlVWorldMapsLayer(WebLayer3857):
     
     emitsLoadEnd = False
     
-    def __init__(self, name, html, xyzUrl=None):
+    def __init__(self, name, html, xyzUrl, tilePixelRatio=0):
         WebLayer3857.__init__(self, groupName=self.groupName, groupIcon=self.groupIcon,
-                              name=name, html=html, xyzUrl=xyzUrl)
+                              name=name, html=html, xyzUrl=xyzUrl, tilePixelRatio=0) # Temporary
 
 
 class OlVWorldStreetLayer(OlVWorldMapsLayer):
 
     def __init__(self):
         tmsUrl = 'http://xdworld.vworld.kr:8080/2d/Base/service/{z}/{x}/{y}.png'
-        OlVWorldMapsLayer.__init__(self, name='VWorld Street', html='vworld_street.html', xyzUrl=tmsUrl)
+        OlVWorldMapsLayer.__init__(self, name='VWorld Street', html='vworld_street.html', xyzUrl=tmsUrl, tilePixelRatio=1)
 
 
 class OlVWorldHybridLayer(OlVWorldMapsLayer):
 
     def __init__(self):
-        tmsUrl = 'http://xdworld.vworld.kr:8080/2d/Hybrid/service/{z}/{x}/{y}.png'
-        OlVWorldMapsLayer.__init__(self, name='VWorld Hybrid', html='vworld_hybrid.html', xyzUrl=tmsUrl)
+        tmsUrl = ['http://xdworld.vworld.kr:8080/2d/Satellite/service/{z}/{x}/{y}.jpeg', 'http://xdworld.vworld.kr:8080/2d/Hybrid/service/{z}/{x}/{y}.png']
+        OlVWorldMapsLayer.__init__(self, name='VWorld Hybrid', html='vworld_hybrid.html', xyzUrl=tmsUrl, tilePixelRatio=1)
 
 
 class OlVWorldSatelliteLayer(OlVWorldMapsLayer):
 
     def __init__(self):
         tmsUrl = 'http://xdworld.vworld.kr:8080/2d/Satellite/service/{z}/{x}/{y}.jpeg'
-        OlVWorldMapsLayer.__init__(self, name='VWorld Satellite', html='vworld_satellite.html', xyzUrl=tmsUrl)
+        OlVWorldMapsLayer.__init__(self, name='VWorld Satellite', html='vworld_satellite.html', xyzUrl=tmsUrl, tilePixelRatio=1)
 
 
 class OlVWorldGrayLayer(OlVWorldMapsLayer):
 
     def __init__(self):
         tmsUrl = 'http://xdworld.vworld.kr:8080/2d/gray/service/{z}/{x}/{y}.png'
-        OlVWorldMapsLayer.__init__(self, name='VWorld Gray', html='vworld_gray.html', xyzUrl=tmsUrl)
+        OlVWorldMapsLayer.__init__(self, name='VWorld Gray', html='vworld_gray.html', xyzUrl=tmsUrl, tilePixelRatio=1)

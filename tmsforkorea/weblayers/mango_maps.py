@@ -46,34 +46,34 @@ class OlMangoMapsLayer(WebLayer3857):
     
     emitsLoadEnd = False
     
-    def __init__(self, name, html, xyzUrl=None):
+    def __init__(self, name, html, xyzUrl, tilePixelRatio=0):
         WebLayer3857.__init__(self, groupName=self.groupName, groupIcon=self.groupIcon,
-                              name=name, html=html, xyzUrl=xyzUrl)
+                              name=name, html=html, xyzUrl=xyzUrl, tilePixelRatio=0)  # Temporary
 
 
 class OlMangoBaseMapLayer(OlMangoMapsLayer):
 
     def __init__(self):
         tmsUrl = 'http://mango.iptime.org:8995/v.1.0.0/{z}/{x}/{y}.png?gray=false'
-        OlMangoMapsLayer.__init__(self, name='Mango BaseMap', html='mango_base.html', xyzUrl=tmsUrl)
+        OlMangoMapsLayer.__init__(self, name='Mango BaseMap', html='mango_base.html', xyzUrl=tmsUrl, tilePixelRatio=1)
 
 
 class OlMangoBaseMapGrayLayer(OlMangoMapsLayer):
 
     def __init__(self):
         tmsUrl = 'http://mango.iptime.org:8995/v.1.0.0/{z}/{x}/{y}.png?gray=true'
-        OlMangoMapsLayer.__init__(self, name='Mango BaseMap Gray', html='mango_base_gray.html', xyzUrl=tmsUrl)
+        OlMangoMapsLayer.__init__(self, name='Mango BaseMap Gray', html='mango_base_gray.html', xyzUrl=tmsUrl, tilePixelRatio=1)
 
 
 class OlMangoHiDPIMapLayer(OlMangoMapsLayer):
 
     def __init__(self):
         tmsUrl = 'http://mango.iptime.org:8996/v.1.0.0/{z}/{x}/{y}.png?gray=false'
-        OlMangoMapsLayer.__init__(self, name='Mango BaseMap HiDPI', html='mango_hidpi.html', xyzUrl=tmsUrl)
+        OlMangoMapsLayer.__init__(self, name='Mango BaseMap HiDPI', html='mango_hidpi.html', xyzUrl=tmsUrl, tilePixelRatio=2)
 
 
 class OlMangoHiDPIMapGrayLayer(OlMangoMapsLayer):
 
     def __init__(self):
         tmsUrl = 'http://mango.iptime.org:8996/v.1.0.0/{z}/{x}/{y}.png?gray=true'
-        OlMangoMapsLayer.__init__(self, name='Mango BaseMap HiDPI Gray', html='mango_hidpi_gray.html', xyzUrl=tmsUrl)
+        OlMangoMapsLayer.__init__(self, name='Mango BaseMap HiDPI Gray', html='mango_hidpi_gray.html', xyzUrl=tmsUrl, tilePixelRatio=2)
