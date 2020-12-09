@@ -42,7 +42,7 @@
             var streetLayer = new OpenLayers.Layer.XYZ(
                 "Naver Street",
                 [
-                    "https://map.pstatic.net/nrb/styles/basic/1597915238/${z}/${x}/${y}@2x.png?mt=bg.ol.sw"
+                    "https://map.pstatic.net/nrb/styles/basic/1606381232/${z}/${x}/${y}@2x.png?mt=bg.ol.ts.lko"
                 ], {
                     attribution: '<a href="https://www.naver.com/" target="_blank" style="text-decoration: none !important;">© <span style="display: inline; font-family: Tahoma,sans-serif !important; font-size: 9px !important; font-weight: bold !important; font-style: normal !important; color: #009BC8 !important; text-decoration: none !important;">'
                       + 'NHN Corp.</span></a>'
@@ -58,23 +58,7 @@
                 }
             );
             
-            var hybridLayer = new OpenLayers.Layer.XYZ(
-                "Naver Hybrid",
-                [
-                    "https://map.pstatic.net/ozone/raster/7492ec55-c5c8-4005-be56-7d0b7c771b35/${z}/${x}/${y}?mapType=NORMAL&pixelRatio=2&language=ko&layers=TRANSIT,POI"
-                ], {
-                    sphericalMercator: true,
-                    wrapDateLine: true,
-                    numZoomLevels: 19,
-                    isBaseLayer: false,
-                    eventListeners: {
-                      "loadstart": layerLoadStart,
-                      "loadend": layerLoadEnd
-                   }
-                }
-            );
-            
-            map.addLayers([streetLayer, hybridLayer]);
+            map.addLayers([streetLayer]);
             map.setCenter(new OpenLayers.LonLat(14243425.793355, 4302305.8698004), 7); // Zoom level
             
             oloMarker = new OlOverviewMarker(map, getPathUpper(document.URL) + '/x.png');

@@ -64,11 +64,6 @@ from .weblayers.ngii_maps import (OlNgiiStreetLayer,
                                   OlNgiiEnglishLayer,
                                   OlNgiiHighDensityLayer,
                                   OlNgiiColorBlindLayer)
-
-from .weblayers.mango_maps import (OlMangoBaseMapLayer,
-                                   OlMangoBaseMapGrayLayer,
-                                   OlMangoHiDPIMapLayer,
-                                   OlMangoHiDPIMapGrayLayer)
                                     
 import os.path
 import time
@@ -150,12 +145,6 @@ class OpenlayersPlugin:
         self._olLayerTypeRegistry.register(OlNgiiEnglishLayer())
         self._olLayerTypeRegistry.register(OlNgiiHighDensityLayer())
         self._olLayerTypeRegistry.register(OlNgiiColorBlindLayer())
-        
-        # Mango - 3857
-        #self._olLayerTypeRegistry.register(OlMangoBaseMapLayer())
-        #self._olLayerTypeRegistry.register(OlMangoBaseMapGrayLayer())
-        self._olLayerTypeRegistry.register(OlMangoHiDPIMapLayer())
-        self._olLayerTypeRegistry.register(OlMangoHiDPIMapGrayLayer())
         
         for group in self._olLayerTypeRegistry.groups():
             groupMenu = group.menu()

@@ -55,36 +55,33 @@ class OlNaverMapsLayer(WebLayer3857):
 class OlNaverStreetLayer(OlNaverMapsLayer):
 
     def __init__(self):
-        tmsUrl = ["https://map.pstatic.net/nrb/styles/basic/1597915238/{z}/{x}/{y}@2x.png?mt=bg.ol.sw", \
-                  "https://map.pstatic.net/ozone/raster/7492ec55-c5c8-4005-be56-7d0b7c771b35/{z}/{x}/{y}?mapType=NORMAL%26pixelRatio=2%26language=ko%26layers=TRANSIT,POI"]
+        tmsUrl = "https://map.pstatic.net/nrb/styles/basic/1606381232/{z}/{x}/{y}@2x.png?mt=bg.ol.ts.lko"
         OlNaverMapsLayer.__init__(self, name="Naver Street", html="naver_street.html", xyzUrl=tmsUrl)
 
 
 class OlNaverHybridLayer(OlNaverMapsLayer):
 
     def __init__(self):
-        tmsUrl = ["https://map.pstatic.net/nrb/styles/satellite/1597915238/{z}/{x}/{y}@2x.png?mt=bg.ol.sw", \
-                  "https://map.pstatic.net/ozone/raster/7492ec55-c5c8-4005-be56-7d0b7c771b35/{z}/{x}/{y}?mapType=HYBRID%26pixelRatio=2%26language=ko%26layers=TRANSIT,POI"]
+        tmsUrl = "https://map.pstatic.net/nrb/styles/satellite/1606381232/{z}/{x}/{y}@2x.png?mt=bg.ol.ts.lko"
         OlNaverMapsLayer.__init__(self, name="Naver Hybrid", html="naver_hybrid.html", xyzUrl=tmsUrl)
 
 
 class OlNaverSatelliteLayer(OlNaverMapsLayer):
 
     def __init__(self):
-        tmsUrl = "https://map.pstatic.net/nrb/styles/satellite/1597915238/{z}/{x}/{y}@2x.png?mt=bg.ol.sw"
+        tmsUrl = "https://map.pstatic.net/nrb/styles/satellite/1606381232/{z}/{x}/{y}@2x.png?mt=bg.ol.ts"
         OlNaverMapsLayer.__init__(self, name="Naver Satellite", html="naver_satellite.html", xyzUrl=tmsUrl)
 
 
 class OlNaverPhysicalLayer(OlNaverMapsLayer):
 
     def __init__(self):
-        tmsUrl = ["https://map.pstatic.net/nrb/styles/terrain/1597915238/{z}/{x}/{y}@2x.png?mt=bg.ol.sw", \
-                  "https://map.pstatic.net/ozone/raster/7492ec55-c5c8-4005-be56-7d0b7c771b35/{z}/{x}/{y}?mapType=TERRAIN%26pixelRatio=2%26language=ko%26layers=TRANSIT,POI"]
+        tmsUrl = "https://map.pstatic.net/nrb/styles/terrain/1606381232/{z}/{x}/{y}@2x.png?mt=bg.ol.ts.lko"
         OlNaverMapsLayer.__init__(self, name="Naver Physical", html="naver_physical.html", xyzUrl=tmsUrl)
 
 
 class OlNaverCadastralLayer(OlNaverMapsLayer):
 
     def __init__(self):     
-        tmsUrl = "https://map.pstatic.net/nrb/styles/basic/1597915238/{z}/{x}/{y}@2x.png?mt=bg.ol.sw.lp"
+        tmsUrl = "https://map.pstatic.net/nrb/styles/basic/1606381232/{z}/{x}/{y}@2x.png?mt=bg.ol.ts.lp"
         OlNaverMapsLayer.__init__(self, name="Naver Cadastral", html="naver_cadastral.html", xyzUrl=tmsUrl)
