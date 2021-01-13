@@ -1,7 +1,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-    <title>Naver Street Layer</title>
+    <title>Mango BaseMap HiDPI Gray Layer</title>
     <link rel="stylesheet" href="qgis.css" type="text/css">
     <script src="OpenLayers.js"></script>
     <script src="OlOverviewMarker.js"></script>
@@ -39,18 +39,15 @@
               loadEnd = true;
             }
             
-            var streetLayer = new OpenLayers.Layer.XYZ(
-                "Naver Street",
+            var vWorldStreet = new OpenLayers.Layer.XYZ(
+                "VWorld Gray Map",
                 [
-                    "https://map.pstatic.net/nrb/styles/basic/1610000532/${z}/${x}/${y}@2x.png?mt=bg.ol.ts.lko"
+                    "http://mango.iptime.org:8996/v.1.0.0/${z}/${x}/${y}.png?gray=true"
                 ], {
-                    attribution: '<a href="https://www.naver.com/" target="_blank" style="text-decoration: none !important;">© <span style="display: inline; font-family: Tahoma,sans-serif !important; font-size: 9px !important; font-weight: bold !important; font-style: normal !important; color: #009BC8 !important; text-decoration: none !important;">'
-                      + 'NHN Corp.</span></a>'
-                      + '<img class="nmap_logo_map" src="http://static.naver.net/maps2/logo_naver_s.png" width="43" height="9" alt="NAVER">',
+                    attribution: '&copy; <a href="http://mangosystem.com">Mango</a> & <a href="http://www.openstreetmap.org/copyright">OSM</a> contributors',
                     sphericalMercator: true,
                     wrapDateLine: true,
                     numZoomLevels: 19,
-                    isBaseLayer: true,
                     eventListeners: {
                       "loadstart": layerLoadStart,
                       "loadend": layerLoadEnd
@@ -58,7 +55,7 @@
                 }
             );
             
-            map.addLayers([streetLayer]);
+            map.addLayers([vWorldStreet]);
             map.setCenter(new OpenLayers.LonLat(14243425.793355, 4302305.8698004), 7); // Zoom level
             
             oloMarker = new OlOverviewMarker(map, getPathUpper(document.URL) + '/x.png');

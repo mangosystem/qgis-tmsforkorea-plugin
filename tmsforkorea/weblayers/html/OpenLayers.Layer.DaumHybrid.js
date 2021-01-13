@@ -9,14 +9,16 @@
 
 OpenLayers.Layer.DaumHybrid = OpenLayers.Class(OpenLayers.Layer.XYZ, {
 
-    name: "Daum Hybrid Map",
+    name: "Kakao Hybrid Map",
     url: [
-    "http://map0.daumcdn.net/map_hybrid/2009alo/L${z}/${y}/${x}.png",
-    "http://map1.daumcdn.net/map_hybrid/2009alo/L${z}/${y}/${x}.png",
-    "http://map2.daumcdn.net/map_hybrid/2009alo/L${z}/${y}/${x}.png",
-    "http://map3.daumcdn.net/map_hybrid/2009alo/L${z}/${y}/${x}.png"
+    "http://map0.daumcdn.net/map_hybrid/2012tlq/L${z}/${y}/${x}.png",
+    "http://map1.daumcdn.net/map_hybrid/2012tlq/L${z}/${y}/${x}.png",
+    "http://map2.daumcdn.net/map_hybrid/2012tlq/L${z}/${y}/${x}.png",
+    "http://map3.daumcdn.net/map_hybrid/2012tlq/L${z}/${y}/${x}.png"
     ],
   resolutions: [2048, 1024, 512, 256, 128, 64, 32, 16, 8, 4, 2, 1, 0.5, 0.25],
+  attribution: '<a target="_blank" href="http://map.kakao.com/" title="Kakao 지도로 보시려면 클릭하세요." style="float: left; width: 32px; height: 10px;">'
+    + '<img style="float: left; width: 32px; height: 10px; border: medium none;" src="https://t1.daumcdn.net/mapjsapi/images/2x/m_bi_b.png" alt="Kakao 지도로 이동"></a>',
   sphericalMercator: false,
   buffer: 1,
   numZoomLevels: 14,

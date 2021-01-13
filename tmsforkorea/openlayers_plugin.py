@@ -64,6 +64,11 @@ from .weblayers.ngii_maps import (OlNgiiStreetLayer,
                                   OlNgiiEnglishLayer,
                                   OlNgiiHighDensityLayer,
                                   OlNgiiColorBlindLayer)
+
+from .weblayers.mango_maps import (OlMangoBaseMapLayer,
+                                   OlMangoBaseMapGrayLayer,
+                                   OlMangoHiDPIMapLayer,
+                                   OlMangoHiDPIMapGrayLayer)
                                     
 import os.path
 import time
@@ -146,6 +151,12 @@ class OpenlayersPlugin:
         self._olLayerTypeRegistry.register(OlNgiiHighDensityLayer())
         self._olLayerTypeRegistry.register(OlNgiiColorBlindLayer())
         
+        # Mango - 3857
+        #self._olLayerTypeRegistry.register(OlMangoBaseMapLayer())
+        #self._olLayerTypeRegistry.register(OlMangoBaseMapGrayLayer())
+        #self._olLayerTypeRegistry.register(OlMangoHiDPIMapLayer())
+        #self._olLayerTypeRegistry.register(OlMangoHiDPIMapGrayLayer())
+        
         for group in self._olLayerTypeRegistry.groups():
             groupMenu = group.menu()
             for layer in self._olLayerTypeRegistry.groupLayerTypes(group):
@@ -201,12 +212,6 @@ class OpenlayersPlugin:
 
                 # last added layer is new reference
                 self.setReferenceLayer(layer)
-
-        if not layerType.hasXYZUrl():
-            msg = "Printing and rotating of Javascript API " \
-                  "based layers is currently not supported!"
-            self.iface.messageBar().pushMessage(
-                "OpenLayers Plugin", msg, level=Qgis.MessageLevel(0), duration=3)
 
     def setReferenceLayer(self, layer):
         self.layer = layer

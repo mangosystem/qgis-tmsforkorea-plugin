@@ -9,7 +9,7 @@
 
 OpenLayers.Layer.DaumSatellite = OpenLayers.Class(OpenLayers.Layer.XYZ, {
 
-    name: "Daum Satellite Map",
+    name: "Kakao Satellite Map",
     url: [
     "http://map0.daumcdn.net/map_skyview/L${z}/${y}/${x}.jpg?v=160107",
     "http://map1.daumcdn.net/map_skyview/L${z}/${y}/${x}.jpg?v=160107",
@@ -17,10 +17,8 @@ OpenLayers.Layer.DaumSatellite = OpenLayers.Class(OpenLayers.Layer.XYZ, {
     "http://map3.daumcdn.net/map_skyview/L${z}/${y}/${x}.jpg?v=160107"
     ],
   resolutions: [2048, 1024, 512, 256, 128, 64, 32, 16, 8, 4, 2, 1, 0.5, 0.25],
-  attribution: '<a target="_blank" href="http://local.daum.net/map/index.jsp" '
-    + 'style="float: left; width: 38px; height: 17px; cursor: pointer; background-image: url(http://i1.daumcdn.net/localimg/localimages/07/2008/map/n_local_img_03_b.png); background-repeat: no-repeat no-repeat; " '
-    + 'title="Daum 지도로 보시려면 클릭하세요."></a>' 
-    + 'ⓒ Daum, Samah',
+  attribution: '<a target="_blank" href="http://map.kakao.com/" title="Kakao 지도로 보시려면 클릭하세요." style="float: left; width: 32px; height: 10px;">'
+    + '<img style="float: left; width: 32px; height: 10px; border: medium none;" src="https://t1.daumcdn.net/mapjsapi/images/2x/m_bi_b.png" alt="Kakao 지도로 이동"></a>',
   sphericalMercator: false,
   transitionEffect: "resize",
   buffer: 1,

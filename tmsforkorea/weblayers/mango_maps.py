@@ -20,17 +20,16 @@ email                : mapplus at gmail.com
  ***************************************************************************/
 """
 
-from qgis.core import (Qgis, QgsCoordinateReferenceSystem)
 from .weblayer import WebLayer3857
 
 
-class OlNaverMapsLayer(WebLayer3857):
+class OlMangoMapsLayer(WebLayer3857):
 
     # Group in menu
-    groupName = 'Naver Maps v5'
+    groupName = 'Mango Maps'
     
     # Group icon in menu
-    groupIcon = 'naver_icon.png'
+    groupIcon = 'mango_icon.png'
     
     # Supported EPSG projections, ordered by preference
     epsgList = [3857]
@@ -47,41 +46,34 @@ class OlNaverMapsLayer(WebLayer3857):
     
     emitsLoadEnd = False
     
-    def __init__(self, name, html, xyzUrl, tilePixelRatio=2):
+    def __init__(self, name, html, xyzUrl, tilePixelRatio=0):
         WebLayer3857.__init__(self, groupName=self.groupName, groupIcon=self.groupIcon,
-                              name=name, html=html, xyzUrl=xyzUrl, tilePixelRatio=tilePixelRatio)
+                              name=name, html=html, xyzUrl=xyzUrl, tilePixelRatio=0)  # Temporary
 
 
-class OlNaverStreetLayer(OlNaverMapsLayer):
-
-    def __init__(self):
-        tmsUrl = "https://map.pstatic.net/nrb/styles/basic/1610000532/{z}/{x}/{y}@2x.png?mt=bg.ol.ts.lko"
-        OlNaverMapsLayer.__init__(self, name="Naver Street", html="naver_street.html", xyzUrl=tmsUrl)
-
-
-class OlNaverHybridLayer(OlNaverMapsLayer):
+class OlMangoBaseMapLayer(OlMangoMapsLayer):
 
     def __init__(self):
-        tmsUrl = "https://map.pstatic.net/nrb/styles/satellite/1610000532/{z}/{x}/{y}@2x.png?mt=bg.ol.ts.lko"
-        OlNaverMapsLayer.__init__(self, name="Naver Hybrid", html="naver_hybrid.html", xyzUrl=tmsUrl)
+        tmsUrl = 'http://mango.iptime.org:8995/v.1.0.0/{z}/{x}/{y}.png?gray=false'
+        OlMangoMapsLayer.__init__(self, name='Mango BaseMap', html='mango_base.html', xyzUrl=tmsUrl, tilePixelRatio=1)
 
 
-class OlNaverSatelliteLayer(OlNaverMapsLayer):
-
-    def __init__(self):
-        tmsUrl = "https://map.pstatic.net/nrb/styles/satellite/1610000532/{z}/{x}/{y}@2x.png?mt=bg.ol.ts"
-        OlNaverMapsLayer.__init__(self, name="Naver Satellite", html="naver_satellite.html", xyzUrl=tmsUrl)
-
-
-class OlNaverPhysicalLayer(OlNaverMapsLayer):
+class OlMangoBaseMapGrayLayer(OlMangoMapsLayer):
 
     def __init__(self):
-        tmsUrl = "https://map.pstatic.net/nrb/styles/terrain/1610000532/{z}/{x}/{y}@2x.png?mt=bg.ol.ts.lko"
-        OlNaverMapsLayer.__init__(self, name="Naver Physical", html="naver_physical.html", xyzUrl=tmsUrl)
+        tmsUrl = 'http://mango.iptime.org:8995/v.1.0.0/{z}/{x}/{y}.png?gray=true'
+        OlMangoMapsLayer.__init__(self, name='Mango BaseMap Gray', html='mango_base_gray.html', xyzUrl=tmsUrl, tilePixelRatio=1)
 
 
-class OlNaverCadastralLayer(OlNaverMapsLayer):
+class OlMangoHiDPIMapLayer(OlMangoMapsLayer):
 
-    def __init__(self):     
-        tmsUrl = "https://map.pstatic.net/nrb/styles/basic/1610000532/{z}/{x}/{y}@2x.png?mt=bg.ol.ts.lp"
-        OlNaverMapsLayer.__init__(self, name="Naver Cadastral", html="naver_cadastral.html", xyzUrl=tmsUrl)
+    def __init__(self):
+        tmsUrl = 'http://mango.iptime.org:8996/v.1.0.0/{z}/{x}/{y}.png?gray=false'
+        OlMangoMapsLayer.__init__(self, name='Mango BaseMap HiDPI', html='mango_hidpi.html', xyzUrl=tmsUrl, tilePixelRatio=2)
+
+
+class OlMangoHiDPIMapGrayLayer(OlMangoMapsLayer):
+
+    def __init__(self):
+        tmsUrl = 'http://mango.iptime.org:8996/v.1.0.0/{z}/{x}/{y}.png?gray=true'
+        OlMangoMapsLayer.__init__(self, name='Mango BaseMap HiDPI Gray', html='mango_hidpi_gray.html', xyzUrl=tmsUrl, tilePixelRatio=2)
