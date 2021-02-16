@@ -55,33 +55,33 @@ class OlNaverMapsLayer(WebLayer3857):
 class OlNaverStreetLayer(OlNaverMapsLayer):
 
     def __init__(self):
-        tmsUrl = "https://map.pstatic.net/nrb/styles/basic/1610000532/{z}/{x}/{y}@2x.png?mt=bg.ol.ts.lko"
+        tmsUrl = "https://map.pstatic.net/nrb/styles/basic/1612440822/{z}/{x}/{y}@2x.png?mt=bg.ol.ts.lko"
         OlNaverMapsLayer.__init__(self, name="Naver Street", html="naver_street.html", xyzUrl=tmsUrl)
 
 
 class OlNaverHybridLayer(OlNaverMapsLayer):
 
     def __init__(self):
-        tmsUrl = "https://map.pstatic.net/nrb/styles/satellite/1610000532/{z}/{x}/{y}@2x.png?mt=bg.ol.ts.lko"
+        tmsUrl = "https://map.pstatic.net/nrb/styles/satellite/1612440822/{z}/{x}/{y}@2x.png?mt=bg.ol.ts.lko"
         OlNaverMapsLayer.__init__(self, name="Naver Hybrid", html="naver_hybrid.html", xyzUrl=tmsUrl)
 
 
 class OlNaverSatelliteLayer(OlNaverMapsLayer):
 
     def __init__(self):
-        tmsUrl = "https://map.pstatic.net/nrb/styles/satellite/1610000532/{z}/{x}/{y}@2x.png?mt=bg.ol.ts"
+        tmsUrl = "https://map.pstatic.net/nrb/styles/satellite/1612440822/{z}/{x}/{y}@2x.png?mt=bg.ol.ts"
         OlNaverMapsLayer.__init__(self, name="Naver Satellite", html="naver_satellite.html", xyzUrl=tmsUrl)
 
 
 class OlNaverPhysicalLayer(OlNaverMapsLayer):
 
     def __init__(self):
-        tmsUrl = "https://map.pstatic.net/nrb/styles/terrain/1610000532/{z}/{x}/{y}@2x.png?mt=bg.ol.ts.lko"
+        tmsUrl = "https://map.pstatic.net/nrb/styles/terrain/1612440822/{z}/{x}/{y}@2x.png?mt=bg.ol.ts.lko"
         OlNaverMapsLayer.__init__(self, name="Naver Physical", html="naver_physical.html", xyzUrl=tmsUrl)
 
 
 class OlNaverCadastralLayer(OlNaverMapsLayer):
 
     def __init__(self):     
-        tmsUrl = "https://map.pstatic.net/nrb/styles/basic/1610000532/{z}/{x}/{y}@2x.png?mt=bg.ol.ts.lp"
+        tmsUrl = "https://map.pstatic.net/nrb/styles/basic/1612440822/{z}/{x}/{y}@2x.png?mt=bg.ol.ts.lp"
         OlNaverMapsLayer.__init__(self, name="Naver Cadastral", html="naver_cadastral.html", xyzUrl=tmsUrl)

@@ -3,7 +3,7 @@ name=TMS for Korea
 qgisMinimumVersion=3.10.0
 description=QGIS plugin. Kakao(Daum), Naver, VWorld, NGII Map Layers for Korean users
 about=QGIS plugin. Kakao(Daum), Naver, VWorld, NGII Map Layers for Korean users
-version=3.0.2
+version=3.0.3
 
 # tags are comma separated with spaces allowed
 tags=openlayers, kakao, naver, vworld, ngii
@@ -25,6 +25,8 @@ email=mapplus@gmail.com
 
 # Uncomment the following line and add your changelog entries:
 changelog=
+    3.0.3
+        - Update Kakao(Daum), Naver Maps (2021/02/16)
     3.0.2
         - Update Kakao(Daum), Naver Maps (2021/01/13)
     3.0.1
