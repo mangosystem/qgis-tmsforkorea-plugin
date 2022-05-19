@@ -8,8 +8,8 @@ version=3.0.5
 # tags are comma separated with spaces allowed
 tags=openlayers, kakao, naver, vworld, ngii
 
-homepage=http://www.onspatial.com/2013/02/qgis-tms-for-korean-users-plugin.html
-tracker=http://hub.qgis.org/projects/tmsforkorea
+homepage=https://github.com/mangosystem/qgis-tmsforkorea-plugin
+tracker=https://github.com/mangosystem/qgis-tmsforkorea-plugin
 repository=https://github.com/MapPlus/qgis-tmsforkorea-plugin.git
 icon=openlayers.png
 
