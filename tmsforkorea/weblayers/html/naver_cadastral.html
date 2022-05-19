@@ -33,16 +33,16 @@
             {
               loadEnd = false;
             }
-            
+
             function layerLoadEnd(event)
             {
               loadEnd = true;
             }
-            
+
             var cadastralLayer = new OpenLayers.Layer.XYZ(
                 "Naver Cadstral",
                 [
-                    "https://map.pstatic.net/nrb/styles/basic/1616065399/${z}/${x}/${y}@2x.png?mt=bg.ol.ts.lp"
+                    "https://map.pstatic.net/nrb/styles/basic/1651664082/${z}/${x}/${y}@2x.png?mt=bg.ol.ts.lp"
                 ], {
                     attribution: '<a href="https://www.naver.com/" target="_blank" style="text-decoration: none !important;">© <span style="display: inline; font-family: Tahoma,sans-serif !important; font-size: 9px !important; font-weight: bold !important; font-style: normal !important; color: #009BC8 !important; text-decoration: none !important;">'
                       + 'NHN Corp.</span></a>'
@@ -57,10 +57,10 @@
                    }
                 }
             );
-            
+
             map.addLayers([cadastralLayer]);
             map.setCenter(new OpenLayers.LonLat(14243425.793355, 4302305.8698004), 7); // Zoom level
-            
+
             oloMarker = new OlOverviewMarker(map, getPathUpper(document.URL) + '/x.png');
         }
     </script>

@@ -369,7 +369,7 @@ class OpenlayersLayer(QgsPluginLayer):
         self.iface = iface
         self.olWebPage = OLWebPage(self)
 
-    def readXml(self, node):
+    def readXml(self, node, context):
         # early read of custom properties
         self.readCustomProperties(node)
 
@@ -404,7 +404,7 @@ class OpenlayersLayer(QgsPluginLayer):
 
         return True
 
-    def writeXml(self, node, doc):
+    def writeXml(self, node, doc, context):
         element = node.toElement()
         # write plugin layer type to project
         # (essential to be read from project)

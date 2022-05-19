@@ -69,7 +69,7 @@ from .weblayers.mango_maps import (OlMangoBaseMapLayer,
                                    OlMangoBaseMapGrayLayer,
                                    OlMangoHiDPIMapLayer,
                                    OlMangoHiDPIMapGrayLayer)
-                                    
+
 import os.path
 import time
 import collections
@@ -92,7 +92,7 @@ class OpenlayersPlugin:
         if os.path.exists(localePath):
             self.translator = QTranslator()
             self.translator.load(localePath)
-            
+
             if qVersion() > "4.3.3":
                 QCoreApplication.installTranslator(self.translator)
 
@@ -116,53 +116,53 @@ class OpenlayersPlugin:
         self._actionAbout.triggered.connect(self.dlgAbout.show)
         self._olMenu.addAction(self._actionAbout)
         self.dlgAbout.finished.connect(self._publicationInfoClosed)
-        
+
         # Kakao Maps - 5181
         self._olLayerTypeRegistry.register(OlDaumStreetLayer())
         self._olLayerTypeRegistry.register(OlDaumHybridLayer())
         self._olLayerTypeRegistry.register(OlDaumSatelliteLayer())
         self._olLayerTypeRegistry.register(OlDaumPhysicalLayer())
         self._olLayerTypeRegistry.register(OlDaumCadstralLayer())
-        
+
         # Naver Maps - 3857(New)
         self._olLayerTypeRegistry.register(OlNaverStreetLayer())
         self._olLayerTypeRegistry.register(OlNaverHybridLayer())
         self._olLayerTypeRegistry.register(OlNaverSatelliteLayer())
         self._olLayerTypeRegistry.register(OlNaverPhysicalLayer())
         self._olLayerTypeRegistry.register(OlNaverCadastralLayer())
-        
+
         # Naver Maps - 5179(Old)
-        self._olLayerTypeRegistry.register(OlNaverStreet5179Layer())
-        self._olLayerTypeRegistry.register(OlNaverHybrid5179Layer())
-        self._olLayerTypeRegistry.register(OlNaverSatellite5179Layer())
-        self._olLayerTypeRegistry.register(OlNaverPhysical5179Layer())
-        self._olLayerTypeRegistry.register(OlNaverCadastral5179Layer())
-        
+        #self._olLayerTypeRegistry.register(OlNaverStreet5179Layer())
+        #self._olLayerTypeRegistry.register(OlNaverHybrid5179Layer())
+        #self._olLayerTypeRegistry.register(OlNaverSatellite5179Layer())
+        #self._olLayerTypeRegistry.register(OlNaverPhysical5179Layer())
+        #self._olLayerTypeRegistry.register(OlNaverCadastral5179Layer())
+
         # VWorld - 3857
         self._olLayerTypeRegistry.register(OlVWorldStreetLayer())
         self._olLayerTypeRegistry.register(OlVWorldSatelliteLayer())
         self._olLayerTypeRegistry.register(OlVWorldGrayLayer())
         self._olLayerTypeRegistry.register(OlVWorldHybridLayer())
-        
+
         # NGII - 5179
-        self._olLayerTypeRegistry.register(OlNgiiStreetLayer())
-        self._olLayerTypeRegistry.register(OlNgiiBlankLayer())
-        self._olLayerTypeRegistry.register(OlNgiiEnglishLayer())
-        self._olLayerTypeRegistry.register(OlNgiiHighDensityLayer())
-        self._olLayerTypeRegistry.register(OlNgiiColorBlindLayer())
-        
+        #self._olLayerTypeRegistry.register(OlNgiiStreetLayer())
+        #self._olLayerTypeRegistry.register(OlNgiiBlankLayer())
+        #self._olLayerTypeRegistry.register(OlNgiiEnglishLayer())
+        #self._olLayerTypeRegistry.register(OlNgiiHighDensityLayer())
+        #self._olLayerTypeRegistry.register(OlNgiiColorBlindLayer())
+
         # Mango - 3857
         #self._olLayerTypeRegistry.register(OlMangoBaseMapLayer())
         #self._olLayerTypeRegistry.register(OlMangoBaseMapGrayLayer())
         #self._olLayerTypeRegistry.register(OlMangoHiDPIMapLayer())
         #self._olLayerTypeRegistry.register(OlMangoHiDPIMapGrayLayer())
-        
+
         for group in self._olLayerTypeRegistry.groups():
             groupMenu = group.menu()
             for layer in self._olLayerTypeRegistry.groupLayerTypes(group):
                 layer.addMenuEntry(groupMenu, self.iface.mainWindow())
             self._olMenu.addMenu(groupMenu)
-            
+
         # Create Web menu, if it doesn't exist yet
         self.iface.addPluginToWebMenu("_tmp", self._actionAbout)
         self._menu = self.iface.webMenu()
@@ -230,7 +230,7 @@ class OpenlayersPlugin:
     def setMapCrs(self, targetCRS):
         mapCanvas = self.iface.mapCanvas()
         mapExtent = mapCanvas.extent()
-        
+
         sourceCRS = self.canvasCrs()
         QgsProject.instance().setCrs(targetCRS)
         mapCanvas.freeze(False)
@@ -287,36 +287,36 @@ class OpenlayersPlugin:
     def createXYZLayer(self, layerType, name):
         # create XYZ layer with tms url as uri
         provider = "wms"
-            
+
         # isinstance(P, (list, tuple, np.ndarray))
         xyzUrls = layerType.xyzUrlConfig()
         layerName = name
         tilePixelRatio = layerType.tilePixelRatio
-        
+
         coordRefSys = layerType.coordRefSys(self.canvasCrs())
         self.setMapCrs(coordRefSys)
-        
+
         if isinstance(xyzUrls, (list)):
             # create group layer
             root = QgsProject.instance().layerTreeRoot()
             layer = root.addGroup(layerType.groupName)
-            
+
             i = 0
             for xyzUrl in xyzUrls:
                 tmsLayerName = layerName;
-                
+
                 # https://github.com/qgis/QGIS/blob/master/src/providers/wms/qgsxyzconnectiondialog.cpp
-                
+
                 uri = "url=" + xyzUrl + "&zmax=18&zmin=0&type=xyz"
                 if (tilePixelRatio > 0):
                     uri = uri + "&tilePixelRatio=" + str(tilePixelRatio)
-                
+
                 if i > 0:
                     tmsLayerName = layerName + " Label"
-                
+
                 tmsLayer = QgsRasterLayer(uri, tmsLayerName, provider, QgsRasterLayer.LayerOptions())
                 tmsLayer.setCustomProperty("ol_layer_type", tmsLayerName)
-                
+
                 layer.insertChildNode(0, QgsLayerTreeLayer(tmsLayer))
                 i = i + 1
 
@@ -326,13 +326,13 @@ class OpenlayersPlugin:
 
                     # last added layer is new reference
                     self.setReferenceLayer(tmsLayer)
-                    # add to XYT Tiles 
+                    # add to XYT Tiles
                     self.addToXYZTiles(tmsLayerName, xyzUrl, tilePixelRatio)
         else:
             uri = "url=" + xyzUrls + "&zmax=18&zmin=0&type=xyz"
             if (tilePixelRatio > 0):
                 uri = uri + "&tilePixelRatio=" + str(tilePixelRatio)
-            
+
             layer = QgsRasterLayer(uri, layerName, provider, QgsRasterLayer.LayerOptions())
             layer.setCustomProperty("ol_layer_type", layerName)
 
@@ -342,12 +342,12 @@ class OpenlayersPlugin:
 
                 # last added layer is new reference
                 self.setReferenceLayer(layer)
-                # add to XYT Tiles 
+                # add to XYT Tiles
                 self.addToXYZTiles(layerName, xyzUrls, tilePixelRatio)
-        
+
         # reload connections to update Browser Panel content
         self.iface.reloadConnections()
-        
+
         return layer, xyzUrls
 
     def addToXYZTiles(self, name, url, tilePixelRatio):

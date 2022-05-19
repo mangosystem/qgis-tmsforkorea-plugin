@@ -27,25 +27,25 @@ class OlVWorldMapsLayer(WebLayer3857):
 
     # Group in menu
     groupName = 'VWorld Maps'
-    
+
     # Group icon in menu
     groupIcon = 'vworld_icon.png'
-    
+
     # Supported EPSG projections, ordered by preference
     epsgList = [3857]
-    
+
     # WGS84 bounds
     fullExtent = [124.41714675, 33.0022776231, 131.971482078, 38.6568782776]
-    
+
     MIN_ZOOM_LEVEL = 7
 
     MAX_ZOOM_LEVEL = 18
-    
+
     # QGIS scale for 72 dpi
     SCALE_ON_MAX_ZOOM = 13540
-    
+
     emitsLoadEnd = False
-    
+
     def __init__(self, name, html, xyzUrl, tilePixelRatio=0):
         WebLayer3857.__init__(self, groupName=self.groupName, groupIcon=self.groupIcon,
                               name=name, html=html, xyzUrl=xyzUrl, tilePixelRatio=0) # Temporary
@@ -54,26 +54,26 @@ class OlVWorldMapsLayer(WebLayer3857):
 class OlVWorldStreetLayer(OlVWorldMapsLayer):
 
     def __init__(self):
-        tmsUrl = 'http://xdworld.vworld.kr:8080/2d/Base/service/{z}/{x}/{y}.png'
+        tmsUrl = 'https://xdworld.vworld.kr/2d/Base/service/{z}/{x}/{y}.png'
         OlVWorldMapsLayer.__init__(self, name='VWorld Street', html='vworld_street.html', xyzUrl=tmsUrl, tilePixelRatio=1)
 
 
 class OlVWorldHybridLayer(OlVWorldMapsLayer):
 
     def __init__(self):
-        tmsUrl = ['http://xdworld.vworld.kr:8080/2d/Satellite/service/{z}/{x}/{y}.jpeg', 'http://xdworld.vworld.kr:8080/2d/Hybrid/service/{z}/{x}/{y}.png']
+        tmsUrl = ['https://xdworld.vworld.kr/2d/Satellite/service/{z}/{x}/{y}.jpeg', 'https://xdworld.vworld.kr/2d/Hybrid/service/{z}/{x}/{y}.png']
         OlVWorldMapsLayer.__init__(self, name='VWorld Hybrid', html='vworld_hybrid.html', xyzUrl=tmsUrl, tilePixelRatio=1)
 
 
 class OlVWorldSatelliteLayer(OlVWorldMapsLayer):
 
     def __init__(self):
-        tmsUrl = 'http://xdworld.vworld.kr:8080/2d/Satellite/service/{z}/{x}/{y}.jpeg'
+        tmsUrl = 'https://xdworld.vworld.kr/2d/Satellite/service/{z}/{x}/{y}.jpeg'
         OlVWorldMapsLayer.__init__(self, name='VWorld Satellite', html='vworld_satellite.html', xyzUrl=tmsUrl, tilePixelRatio=1)
 
 
 class OlVWorldGrayLayer(OlVWorldMapsLayer):
 
     def __init__(self):
-        tmsUrl = 'http://xdworld.vworld.kr:8080/2d/gray/service/{z}/{x}/{y}.png'
+        tmsUrl = 'https://xdworld.vworld.kr/2d/gray/service/{z}/{x}/{y}.png'
         OlVWorldMapsLayer.__init__(self, name='VWorld Gray', html='vworld_gray.html', xyzUrl=tmsUrl, tilePixelRatio=1)

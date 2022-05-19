@@ -1,20 +1,20 @@
-﻿/* Copyright (c) 2006-2012 by OpenLayers Contributors (see authors.txt for 
+﻿/* Copyright (c) 2006-2012 by OpenLayers Contributors (see authors.txt for
  * full list of contributors). Published under the 2-clause BSD license.
  * See license.txt in the OpenLayers distribution or repository for the
  * full text of the license. */
 
 /**
  * @requires OpenLayers/Layer/XYZ.js
- */ 
+ */
 
 OpenLayers.Layer.DaumCadstral = OpenLayers.Class(OpenLayers.Layer.XYZ, {
 
-    name: "Kakao Cadstral Map", 
+    name: "Kakao Cadstral Map",
     url: [
-    "http://map0.daumcdn.net/map_usedistrict/2103dor/L${z}/${y}/${x}.png",
-    "http://map1.daumcdn.net/map_usedistrict/2103dor/L${z}/${y}/${x}.png",
-    "http://map2.daumcdn.net/map_usedistrict/2103dor/L${z}/${y}/${x}.png",
-    "http://map3.daumcdn.net/map_usedistrict/2103dor/L${z}/${y}/${x}.png"
+    "http://map0.daumcdn.net/map_usedistrict/2204hep/L${z}/${y}/${x}.png",
+    "http://map1.daumcdn.net/map_usedistrict/2204hep/L${z}/${y}/${x}.png",
+    "http://map2.daumcdn.net/map_usedistrict/2204hep/L${z}/${y}/${x}.png",
+    "http://map3.daumcdn.net/map_usedistrict/2204hep/L${z}/${y}/${x}.png"
     ],
   resolutions: [2048, 1024, 512, 256, 128, 64, 32, 16, 8, 4, 2, 1, 0.5, 0.25],
   attribution: '<a target="_blank" href="http://map.kakao.com/" title="Kakao 지도로 보시려면 클릭하세요." style="float: left; width: 32px; height: 10px;">'
@@ -56,6 +56,6 @@ OpenLayers.Layer.DaumCadstral = OpenLayers.Class(OpenLayers.Layer.XYZ, {
 
         return {'x': x, 'y': y, 'z': z};
     },
-  
+
     CLASS_NAME: "OpenLayers.Layer.DaumCadstral"
 });

@@ -33,16 +33,16 @@
             {
               loadEnd = false;
             }
-            
+
             function layerLoadEnd(event)
             {
               loadEnd = true;
             }
-            
+
             var vWorldHybrid = new OpenLayers.Layer.XYZ(
                 "VWorld Hybrid Map",
                 [
-                    "http://xdworld.vworld.kr:8080/2d/Hybrid/service/${z}/${x}/${y}.png"
+                    "https://xdworld.vworld.kr/2d/Hybrid/service/${z}/${x}/${y}.png"
                 ], {
                     sphericalMercator: true,
                     wrapDateLine: true,
@@ -54,15 +54,15 @@
                    }
                 }
             );
-            
+
             var vWorldSatellite = new OpenLayers.Layer.XYZ(
                 "VWorld Satellite Map",
                 [
-                    "http://xdworld.vworld.kr:8080/2d/Satellite/service/${z}/${x}/${y}.jpeg"
+                    "https://xdworld.vworld.kr/2d/Satellite/service/${z}/${x}/${y}.jpeg"
                 ], {
-                    attribution: '<a target="_blank" href="http://map.vworld.kr/" '
-                        + 'style="float: left; width: 353px; height: 29px; cursor: pointer; background-image: url(http://map.vworld.kr/images/maps/logo_openplatform.png); background-repeat: no-repeat no-repeat; " '
-                        + 'title="VWorld 지도로 보시려면 클릭하세요."></a>' 
+                    attribution: '<a target="_blank" href="https://map.vworld.kr/" '
+                        + 'style="float: left; width: 353px; height: 29px; cursor: pointer; background-image: url(https://map.vworld.kr/images/maps/logo_openplatform.png); background-repeat: no-repeat no-repeat; " '
+                        + 'title="VWorld 지도로 보시려면 클릭하세요."></a>'
                         + '',
                     sphericalMercator: true,
                     wrapDateLine: true,
@@ -70,10 +70,10 @@
                     isBaseLayer: true
                 }
             );
-            
+
             map.addLayers([vWorldSatellite, vWorldHybrid]);
             map.setCenter(new OpenLayers.LonLat(14243425.793355, 4302305.8698004), 7); // Zoom level
-            
+
             oloMarker = new OlOverviewMarker(map, getPathUpper(document.URL) + '/x.png');
         }
     </script>
