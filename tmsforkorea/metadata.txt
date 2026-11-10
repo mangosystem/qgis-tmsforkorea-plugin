@@ -30,6 +30,7 @@ changelog=
           Windows 배치 파일(.bat 2개)을 패키지에서 제거 (플러그인 동작과 무관).
         - Qt6 호환 수정: QEventLoop 실행 호출을 exec() 로, 플러그인 레이어 판별을
           Qgis.LayerType 열거형으로, 예외 처리를 except Exception 으로 정리.
+        - 예외를 조용히 삼키던 코드(try/except/pass)를 contextlib.suppress 로 정리.
         - 영문 설명(description) 추가, 한국어 상세 설명은 about 에 유지.
         - English: Security-scan fixes for the official repository (removed the
           developer upload script and .bat files), Qt6 compatibility fixes

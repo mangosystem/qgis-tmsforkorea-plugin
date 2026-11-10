@@ -21,6 +21,8 @@ modified             : 2018-11-23 by Minpa Lee, mapplus at gmail.com
  ***************************************************************************/
 """
 # Import the PyQt and QGIS libraries
+import contextlib
+
 from qgis.PyQt.QtCore import (QSettings, QTranslator, QCoreApplication, qVersion)
 from qgis.PyQt.QtWidgets import (QApplication, QLineEdit, QInputDialog,
                                  QAction, QMenu)
@@ -373,12 +375,10 @@ class OpenlayersPlugin:
         sourceCRS = self.canvasCrs()
         QgsProject.instance().setCrs(targetCRS)
         mapCanvas.freeze(False)
-        try:
+        with contextlib.suppress(Exception):
             coordTrans = QgsCoordinateTransform(sourceCRS, targetCRS, QgsProject.instance())
             mapExtent = coordTrans.transform(mapExtent, Qgis.TransformDirection.Forward)
             mapCanvas.setExtent(mapExtent)
-        except Exception:
-            pass
 
     def projectLoaded(self):
         # replace old OpenlayersLayer with XYZ layer(OL plugin <= 1.3.6)
