@@ -1,9 +1,9 @@
 [general]
 name=TMS for Korea
 qgisMinimumVersion=4.0
-description=한국 사용자를 위한 QGIS 지도 타일 플러그인 — 브이월드, 네이버, OpenStreetMap, Azure 지도 (QGIS 4.x. Azure 지도는 사용자 구독 키 필요)
-about=한국 사용자를 위한 QGIS 지도 타일 플러그인 — 브이월드, 네이버, OpenStreetMap, Azure 지도 (QGIS 4.x. Azure 지도는 사용자 구독 키 필요). QGIS plugin for Korean and international users.
-version=4.1.4
+description=Korean web map tile layers for QGIS 4.x — VWorld, Naver, OpenStreetMap and Azure Maps (Azure requires your own subscription key)
+about=한국 사용자를 위한 QGIS 지도 타일 플러그인입니다. 브이월드, 네이버 지도, OpenStreetMap, Azure 지도를 XYZ 타일 레이어로 추가합니다 (QGIS 4.x 전용. Azure 지도는 사용자 본인의 구독 키가 필요합니다). English: QGIS plugin for Korean and international users. Adds Korean web map tile layers (VWorld, Naver, OpenStreetMap, Azure Maps) as XYZ layers for QGIS 4.x. Azure Maps requires your own subscription key.
+version=4.1.5
 
 # tags are comma separated with spaces allowed
 tags=openlayers, vworld, naver, openstreetmap, osm, cadastral, azure, azure maps
@@ -25,6 +25,15 @@ email=mapplus@gmail.com
 
 # Uncomment the following line and add your changelog entries:
 changelog=
+    4.1.5
+        - 공식 저장소 보안 검사 대응: 개발용 업로드 스크립트(plugin_upload.py)와
+          Windows 배치 파일(.bat 2개)을 패키지에서 제거 (플러그인 동작과 무관).
+        - Qt6 호환 수정: QEventLoop 실행 호출을 exec() 로, 플러그인 레이어 판별을
+          Qgis.LayerType 열거형으로, 예외 처리를 except Exception 으로 정리.
+        - 영문 설명(description) 추가, 한국어 상세 설명은 about 에 유지.
+        - English: Security-scan fixes for the official repository (removed the
+          developer upload script and .bat files), Qt6 compatibility fixes
+          (exec, Qgis.LayerType), English description added.
     4.1.4
         - UI 한글화: 모든 사용자 노출 메뉴 라벨, 다이얼로그, 메시지 바,
           툴팁을 한글로 번역. 그룹 메뉴는 "브이월드 (VWorld)",
