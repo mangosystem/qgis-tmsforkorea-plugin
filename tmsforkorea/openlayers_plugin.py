@@ -26,7 +26,7 @@ from qgis.PyQt.QtWidgets import (QApplication, QLineEdit, QInputDialog,
                                  QAction, QMenu)
 from qgis.PyQt.QtGui import QIcon
 from qgis.core import (QgsCoordinateTransform, Qgis, QgsProject,
-                       QgsPluginLayerRegistry, QgsLayerTree, QgsMapLayer, QgsLayerTreeLayer,
+                       QgsPluginLayerRegistry, QgsLayerTree, QgsLayerTreeLayer,
                        QgsRasterLayer, QgsMessageLog)
 
 from . import resources_rc
@@ -377,14 +377,14 @@ class OpenlayersPlugin:
             coordTrans = QgsCoordinateTransform(sourceCRS, targetCRS, QgsProject.instance())
             mapExtent = coordTrans.transform(mapExtent, Qgis.TransformDirection.Forward)
             mapCanvas.setExtent(mapExtent)
-        except:
+        except Exception:
             pass
 
     def projectLoaded(self):
         # replace old OpenlayersLayer with XYZ layer(OL plugin <= 1.3.6)
         rootGroup = self.iface.layerTreeView().layerTreeModel().rootGroup()
         for layer in QgsProject.instance().mapLayers().values():
-            if layer.type() == QgsMapLayer.PluginLayer and layer.pluginLayerType() == OpenlayersLayer.LAYER_TYPE:
+            if layer.type() == Qgis.LayerType.PluginLayer and layer.pluginLayerType() == OpenlayersLayer.LAYER_TYPE:
                 # Defensive: readXml may have set layerType=None when the
                 # stored ol_layer_type is unregistered and OSM fallback is absent.
                 if layer.layerType is None:

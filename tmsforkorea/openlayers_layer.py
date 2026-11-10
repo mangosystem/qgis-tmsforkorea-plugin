@@ -310,7 +310,7 @@ class OpenlayersRenderer(QgsMapLayerRenderer):
         debug("[WORKER THREAD] Waiting for the async request to complete", 3)
         self.loop = QEventLoop()
         self.controller.finished.connect(self.loop.exit)
-        self.loop.exec_()
+        self.loop.exec()
 
         debug("[WORKER THREAD] Async request finished", 3)
 
