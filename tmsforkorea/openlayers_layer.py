@@ -21,6 +21,8 @@ modified             : 2018-11-23 by Minpa Lee, mapplus at gmail.com
  ***************************************************************************/
 """
 
+import contextlib
+
 from qgis.PyQt.QtCore import (QUrl, Qt, QMetaObject, QTimer, QEventLoop,
                               QSize, QObject, pyqtSignal, qDebug, pyqtSlot)
 from qgis.PyQt.QtGui import QImage, QPainter
@@ -33,10 +35,8 @@ debuglevel = 0  # 0 (none) - 4 (all)
 
 def debug(msg, verbosity=1):
     if debuglevel >= verbosity:
-        try:
+        with contextlib.suppress(Exception):
             qDebug(msg)
-        except Exception:
-            pass
 
 
 class OpenlayersController(QObject):
@@ -310,7 +310,7 @@ class OpenlayersRenderer(QgsMapLayerRenderer):
         debug("[WORKER THREAD] Waiting for the async request to complete", 3)
         self.loop = QEventLoop()
         self.controller.finished.connect(self.loop.exit)
-        self.loop.exec_()
+        self.loop.exec()
 
         debug("[WORKER THREAD] Async request finished", 3)
 
