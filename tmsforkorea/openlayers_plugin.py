@@ -21,12 +21,14 @@ modified             : 2018-11-23 by Minpa Lee, mapplus at gmail.com
  ***************************************************************************/
 """
 # Import the PyQt and QGIS libraries
+import contextlib
+
 from qgis.PyQt.QtCore import (QSettings, QTranslator, QCoreApplication, qVersion)
 from qgis.PyQt.QtWidgets import (QApplication, QLineEdit, QInputDialog,
                                  QAction, QMenu)
 from qgis.PyQt.QtGui import QIcon
 from qgis.core import (QgsCoordinateTransform, Qgis, QgsProject,
-                       QgsPluginLayerRegistry, QgsLayerTree, QgsMapLayer, QgsLayerTreeLayer,
+                       QgsPluginLayerRegistry, QgsLayerTree, QgsLayerTreeLayer,
                        QgsRasterLayer, QgsMessageLog)
 
 from . import resources_rc
@@ -373,18 +375,16 @@ class OpenlayersPlugin:
         sourceCRS = self.canvasCrs()
         QgsProject.instance().setCrs(targetCRS)
         mapCanvas.freeze(False)
-        try:
+        with contextlib.suppress(Exception):
             coordTrans = QgsCoordinateTransform(sourceCRS, targetCRS, QgsProject.instance())
             mapExtent = coordTrans.transform(mapExtent, Qgis.TransformDirection.Forward)
             mapCanvas.setExtent(mapExtent)
-        except:
-            pass
 
     def projectLoaded(self):
         # replace old OpenlayersLayer with XYZ layer(OL plugin <= 1.3.6)
         rootGroup = self.iface.layerTreeView().layerTreeModel().rootGroup()
         for layer in QgsProject.instance().mapLayers().values():
-            if layer.type() == QgsMapLayer.PluginLayer and layer.pluginLayerType() == OpenlayersLayer.LAYER_TYPE:
+            if layer.type() == Qgis.LayerType.PluginLayer and layer.pluginLayerType() == OpenlayersLayer.LAYER_TYPE:
                 # Defensive: readXml may have set layerType=None when the
                 # stored ol_layer_type is unregistered and OSM fallback is absent.
                 if layer.layerType is None:

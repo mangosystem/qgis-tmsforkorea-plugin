@@ -17,6 +17,8 @@ Verified 2026-05-15 via curl against map.pstatic.net:
     HTTP 200  UA="Mozilla/5.0 (Windows NT 10.0; Win64; x64) ..."  (after fix)
 """
 
+import contextlib
+
 from qgis.core import QgsNetworkAccessManager, QgsMessageLog, Qgis
 
 
@@ -33,13 +35,12 @@ NAVER_UA = (
 
 
 def _naver_preprocessor(request):
-    try:
+    # A preprocessor exception must never break unrelated network
+    # traffic, so swallow anything unexpected here (no logging: this runs
+    # for every request).
+    with contextlib.suppress(Exception):
         if request.url().host() == NAVER_HOST:
             request.setRawHeader(b"User-Agent", NAVER_UA.encode("utf-8"))
-    except Exception:
-        # A preprocessor exception must never break unrelated network
-        # traffic, so swallow anything unexpected here.
-        pass
 
 
 def install():
@@ -65,7 +66,5 @@ def install():
 def uninstall(processor_id):
     if not processor_id:
         return
-    try:
+    with contextlib.suppress(Exception):
         QgsNetworkAccessManager.removeRequestPreprocessor(processor_id)
-    except Exception:
-        pass

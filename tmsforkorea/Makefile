@@ -18,8 +18,6 @@
 # ***************************************************************************/
 
 # CONFIGURATION
-PLUGIN_UPLOAD = $(CURDIR)/plugin_upload.py
-
 QGISDIR=.qgis2
 
 # Makefile for a PyQGIS plugin
@@ -101,9 +99,6 @@ package: compile
 		git archive --prefix=$(PLUGINNAME)/ -o $(PLUGINNAME).zip $(VERSION)
 		echo "Created package: $(PLUGINNAME).zip"
 
-upload: #zip
-	$(PLUGIN_UPLOAD) $(PLUGINNAME).zip
-
 # transup
 # update .ts translation files
 transup:
@@ -127,4 +122,4 @@ doc:
 
 # To plugins.qgis.org:
 # make package VERSION=master
-# make upload
+# (upload the resulting zip on plugins.qgis.org by hand)
